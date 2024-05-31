@@ -1,0 +1,315 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:launcher="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/radio_music_widget"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingTop="0px" >
+
+    <AbsoluteLayout
+        android:layout_width="match_parent"
+        android:layout_height="534px"
+        android:layout_marginTop="40px"
+        android:orientation="horizontal" >
+
+        <RelativeLayout
+            android:layout_width="312px"
+            android:layout_height="match_parent"
+            android:layout_x="968px"
+            android:background="@drawable/music_back" >
+
+            <AbsoluteLayout
+                android:id="@+id/entry_music"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="right"
+                android:onClick="onLauncherButtonClick"
+                android:orientation="horizontal"
+                android:paddingLeft="30px"
+                android:visibility="visible" >
+
+                <ImageButton
+                    android:id="@+id/music_button_play"
+                    style="@style/RadioMusicButtonStyle"
+                    android:layout_width="80px"
+                    android:layout_height="70px"
+                    android:layout_x="0px"
+                    android:layout_y="238px"
+                    android:src="@drawable/play_level" />
+
+                <LinearLayout
+                    android:layout_width="160px"
+                    android:layout_height="match_parent"
+                    android:layout_x="80px"
+                    android:gravity="center"
+                    android:orientation="vertical" >
+
+                    <ImageButton
+                        android:id="@+id/music_button_prev"
+                        style="@style/RadioMusicButtonStyle"
+                        android:layout_width="100px"
+                        android:onClick="onLauncherButtonClick"
+                        android:src="@drawable/prev" />
+
+                    <ImageView
+                        android:id="@+id/album_art"
+                        android:layout_width="160px"
+                        android:layout_height="160px"
+                        android:layout_marginTop="25px"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/music_pic" />
+
+                    <ImageButton
+                        android:id="@+id/music_button_next"
+                        style="@style/RadioMusicButtonStyle"
+                        android:layout_width="100px"
+                        android:layout_marginTop="25px"
+                        android:src="@drawable/next" />
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/music_icon"
+                    android:layout_width="0px"
+                    android:layout_height="45px"
+                    android:layout_x="270px"
+                    android:layout_y="22px"
+                    android:background="@drawable/music_icon" />
+
+                <TextView
+                    android:id="@+id/music_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_x="240px"
+                    android:layout_y="0px"
+                    android:background="#11000000"
+                    android:ems="1"
+                    android:gravity="left"
+                    android:paddingBottom="20px"
+                    android:paddingTop="20px"
+                    android:textAppearance="@style/CommonStyleFonts"
+                    android:textColor="#ffffff"
+                    android:textSize="17sp" />
+
+                <TextView
+                    android:id="@+id/music_time"
+                    android:layout_width="290px"
+                    android:layout_height="0px"
+                    android:layout_x="120px"
+                    android:layout_y="80px"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:textAppearance="@style/CommonStyleFonts"
+                    android:textColor="#ffffff"
+                    android:textSize="14sp" />
+
+                <SeekBar
+                    android:id="@+id/music_progress"
+                    android:layout_width="0px"
+                    android:layout_height="15px"
+                    android:layout_x="124px"
+                    android:layout_y="78px"
+                    android:background="@drawable/seek_bar_bg0"
+                    android:focusable="false"
+                    android:paddingLeft="30.0px"
+                    android:paddingRight="30.0px"
+                    android:progress="0"
+                    android:progressDrawable="@drawable/rl_progress"
+                    android:thumb="@null" />
+            </AbsoluteLayout>
+
+            <AbsoluteLayout
+                android:id="@+id/entry_radio"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:onClick="onLauncherButtonClick"
+                android:orientation="horizontal"
+                android:paddingLeft="60px"
+                android:paddingTop="0px"
+                android:visibility="gone" >
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_y="-15px"
+                    android:scaleType="center"
+                    android:src="@drawable/radio_freq" />
+
+                <TextView
+                    android:id="@+id/radio_music_freq"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_x="0px"
+                    android:layout_y="200px"
+                    android:fontFamily="sans-serif-light"
+                    android:gravity="center"
+                    android:textColor="#FFFFFFFF"
+                    android:textSize="68px" />
+
+                <TextView
+                    android:id="@+id/radio_music_baud"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_x="30px"
+                    android:layout_y="120px"
+                    android:gravity="center"
+                    android:textAppearance="@style/CommonStyleFonts"
+                    android:textColor="#ae9679"
+                    android:textSize="34px" />
+
+                <TextView
+                    android:id="@+id/radio_music_hz"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_x="160px"
+                    android:layout_y="120px"
+                    android:gravity="center"
+                    android:textAppearance="@style/CommonStyleFonts"
+                    android:textColor="#ae9679"
+                    android:textSize="34px" />
+
+                <com.my.radio.MarkFaceView
+                    android:id="@+id/radio_mark_face_view"
+                    android:layout_width="0px"
+                    android:layout_height="42px"
+                    android:layout_x="128px"
+                    android:layout_y="7px"
+                    android:background="@drawable/radio_freq" />
+
+                <LinearLayout
+                    android:id="@+id/radio_info_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_x="83px"
+                    android:layout_y="36px"
+                    android:gravity="bottom"
+                    android:orientation="horizontal" >
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_x="0px"
+                    android:layout_y="310px"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingLeft="8px"
+                    android:paddingRight="8px" >
+
+                    <ImageButton
+                        android:id="@+id/radio_button_prev"
+                        style="@style/RadioMusicButtonStyle"
+                        android:layout_width="0px"
+                        android:layout_weight="1"
+                        android:src="@drawable/prev" />
+
+                    <ImageButton
+                        android:id="@+id/radio_button_play"
+                        style="@style/RadioMusicButtonStyle"
+                        android:layout_width="0px"
+                        android:src="@drawable/radio_power_off" />
+
+                    <ImageButton
+                        android:id="@+id/radio_button_next"
+                        style="@style/RadioMusicButtonStyle"
+                        android:layout_width="0px"
+                        android:layout_weight="1"
+                        android:src="@drawable/next" />
+                </LinearLayout>
+            </AbsoluteLayout>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/entry_time"
+            android:layout_width="310px"
+            android:layout_height="match_parent"
+            android:background="@drawable/time_back"
+            android:gravity="center"
+            android:onClick="onLauncherButtonClick"
+            android:orientation="vertical"
+            android:paddingRight="80px" >
+
+            <TextView
+                android:id="@+id/radio_music_time"
+                android:layout_width="0px"
+                android:layout_height="0px"
+                android:gravity="right"
+                android:textColor="#FFFFFFFF"
+                android:textSize="114px" />
+
+            <TextView
+                android:id="@+id/radio_music_date2"
+                android:layout_width="match_parent"
+                android:layout_height="120px"
+                android:gravity="center"
+                android:paddingLeft="20px"
+                android:paddingRight="8px"
+                android:textAppearance="@style/CommonStyleFonts"
+                android:textColor="#FFFFFFFF"
+                android:textSize="32px" />
+
+            <AbsoluteLayout
+                android:layout_width="match_parent"
+                android:layout_height="120px"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingTop="20px" >
+
+                <ImageView
+                    android:id="@+id/timehour_h"
+                    android:layout_width="37.0px"
+                    android:layout_height="68.0px"
+                    android:layout_x="35px"
+                    android:layout_y="4px"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/time_num_level" />
+
+                <ImageView
+                    android:id="@+id/timehour_l"
+                    android:layout_width="37.0px"
+                    android:layout_height="68.0px"
+                    android:layout_x="80px"
+                    android:layout_y="4px"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/time_num_level" />
+
+                <ImageView
+                    android:id="@+id/digital_colon"
+                    android:layout_width="14px"
+                    android:layout_height="68.0px"
+                    android:layout_x="125px"
+                    android:layout_y="0px"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/num_time_col" />
+
+                <ImageView
+                    android:id="@+id/timeminute_h"
+                    android:layout_width="37.0px"
+                    android:layout_height="68.0px"
+                    android:layout_x="147px"
+                    android:layout_y="4px"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/time_num_level" />
+
+                <ImageView
+                    android:id="@+id/timeminute_l"
+                    android:layout_width="37.0px"
+                    android:layout_height="68.0px"
+                    android:layout_x="192px"
+                    android:layout_y="4px"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/time_num_level" />
+            </AbsoluteLayout>
+
+            <TextView
+                android:id="@+id/radio_music_date"
+                android:layout_width="match_parent"
+                android:layout_height="120px"
+                android:gravity="center"
+                android:paddingLeft="10px"
+                android:textAppearance="@style/CommonStyleFonts"
+                android:textColor="#FFFFFFFF"
+                android:textSize="32px" />
+        </LinearLayout>
+    </AbsoluteLayout>
+
+</LinearLayout>

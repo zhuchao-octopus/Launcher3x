@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2009 The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+
+<favorites xmlns:launcher="http://schemas.android.com/apk/res-auto/com.android.launcher3" >
+
+    <favorite
+        launcher:className="com.my.auxplayer.AUXPlayer"
+        launcher:packageName="com.car.ui"
+        launcher:screen="1"
+        launcher:x="2"
+        launcher:y="0" />
+
+    <favorite
+        launcher:className="com.eqset.EQActivity"
+        launcher:packageName="com.eqset"
+        launcher:screen="1"
+        launcher:x="1"
+        launcher:y="1" />
+<!--     <favorite -->
+<!--         launcher:className="com.android.gallery3d.app.GalleryActivity" -->
+<!--         launcher:packageName="com.android.gallery3d" -->
+<!--         launcher:screen="1" -->
+<!--         launcher:x="2" -->
+<!--         launcher:y="0" /> -->
+    <favorite
+        launcher:className="com.my.btmusic.BTMusicActivity"
+        launcher:packageName="com.car.ui"
+        launcher:screen="1"
+        launcher:x="4"
+        launcher:y="0" />
+    
+        <favorite
+        launcher:className="com.my.video.VideoActivity"
+        launcher:packageName="com.car.ui"
+        launcher:screen="1"
+        launcher:x="0"
+        launcher:y="0" />
+        
+    <favorite
+        launcher:className="com.my.bt.ATBluetoothActivity"
+        launcher:packageName="com.my.bt"
+        launcher:screen="0"
+        launcher:x="3"
+        launcher:y="1" />
+    <favorite
+        launcher:className="com.android.settings.Settings"
+        launcher:packageName="com.android.settings"
+        launcher:screen="0"
+        launcher:x="4"
+        launcher:y="1"/>
+
+    <favorite
+        launcher:className="com.my.navi.NaviEmptyActivity"
+        launcher:packageName="com.car.ui"
+        launcher:screen="0"
+        launcher:x="0"
+        launcher:y="1" />
+    <favorite
+        launcher:className="com.my.radio.RadioActivity"
+        launcher:packageName="com.car.ui"
+        launcher:screen="0"
+        launcher:x="1"
+        launcher:y="1"/>
+    <favorite
+        launcher:className="com.my.audio.MusicActivity"
+        launcher:packageName="com.car.ui"
+        launcher:screen="1"
+        launcher:x="3"
+        launcher:y="0" />
+
+     <favorite
+        launcher:className="com.carletter.car.ui.CarletterActivity"
+        launcher:packageName="com.carletter.car"
+        launcher:screen="0"
+        launcher:x="2"
+        launcher:y="1" />
+     
+</favorites>

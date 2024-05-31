@@ -1,0 +1,22 @@
+<!-- ?xml version="1.0" encoding="utf-8"? -->
+<resources>
+    
+    <integer name="freq_x1">5</integer>
+    <integer name="freq_x2">58</integer>
+    <integer name="freq_x3">111</integer>
+    <integer name="freq_x4">164</integer>
+    <integer name="freq_x5">217</integer>
+    <integer name="freq_x6">270</integer>
+    
+    <integer name="start_freq_px">10</integer>
+    <integer name="end_freq_px">280</integer>
+
+    <integer name="point_y">50</integer>
+
+    
+    
+    <integer name="cell0_height">600</integer>
+    <integer name="cell0_width">720</integer>
+    
+    
+</resources>
