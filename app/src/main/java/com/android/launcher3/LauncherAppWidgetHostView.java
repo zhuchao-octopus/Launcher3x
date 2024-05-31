@@ -47,8 +47,7 @@ import java.util.concurrent.Executor;
 /**
  * {@inheritDoc}
  */
-public class LauncherAppWidgetHostView extends AppWidgetHostView
-        implements TouchCompleteListener, View.OnLongClickListener {
+public class LauncherAppWidgetHostView extends AppWidgetHostView implements TouchCompleteListener, View.OnLongClickListener {
 
     private static final String TAG = "LauncherWidgetHostView";
 
@@ -99,8 +98,7 @@ public class LauncherAppWidgetHostView extends AppWidgetHostView
 
         if (Utilities.isAtLeastO()) {
             try {
-                Method asyncMethod = AppWidgetHostView.class
-                        .getMethod("setExecutor", Executor.class);
+                Method asyncMethod = AppWidgetHostView.class.getMethod("setExecutor", Executor.class);
                 asyncMethod.invoke(this, Utilities.THREAD_POOL_EXECUTOR);
             } catch (Exception e) {
                 Log.e(TAG, "Unable to set async executor", e);
@@ -141,7 +139,7 @@ public class LauncherAppWidgetHostView extends AppWidgetHostView
         if (viewGroup instanceof AdapterView) {
             return true;
         } else {
-            for (int i=0; i < viewGroup.getChildCount(); i++) {
+            for (int i = 0; i < viewGroup.getChildCount(); i++) {
                 View child = viewGroup.getChildAt(i);
                 if (child instanceof ViewGroup) {
                     if (checkScrollableRecursively((ViewGroup) child)) {
@@ -157,9 +155,9 @@ public class LauncherAppWidgetHostView extends AppWidgetHostView
         // Re-inflate is required if the orientation has changed since last inflated.
         int orientation = mContext.getResources().getConfiguration().orientation;
         if (mPreviousOrientation != orientation) {
-           return true;
-       }
-       return false;
+            return true;
+        }
+        return false;
     }
 
     public boolean onInterceptTouchEvent(MotionEvent ev) {
@@ -187,7 +185,7 @@ public class LauncherAppWidgetHostView extends AppWidgetHostView
                 DragLayer dragLayer = Launcher.getLauncher(getContext()).getDragLayer();
 
                 if (mIsScrollable) {
-                     dragLayer.requestDisallowInterceptTouchEvent(true);
+                    dragLayer.requestDisallowInterceptTouchEvent(true);
                 }
                 if (!mStylusEventHelper.inStylusButtonPressed()) {
                     mLongPressHelper.postCheckForLongPress();
@@ -257,8 +255,7 @@ public class LauncherAppWidgetHostView extends AppWidgetHostView
     public AppWidgetProviderInfo getAppWidgetInfo() {
         AppWidgetProviderInfo info = super.getAppWidgetInfo();
         if (info != null && !(info instanceof LauncherAppWidgetProviderInfo)) {
-            throw new IllegalStateException("Launcher widget must have"
-                    + " LauncherAppWidgetProviderInfo");
+            throw new IllegalStateException("Launcher widget must have" + " LauncherAppWidgetProviderInfo");
         }
         return info;
     }
@@ -274,14 +271,12 @@ public class LauncherAppWidgetHostView extends AppWidgetHostView
 
     @Override
     public int getDescendantFocusability() {
-        return mChildrenFocused ? ViewGroup.FOCUS_BEFORE_DESCENDANTS
-                : ViewGroup.FOCUS_BLOCK_DESCENDANTS;
+        return mChildrenFocused ? ViewGroup.FOCUS_BEFORE_DESCENDANTS : ViewGroup.FOCUS_BLOCK_DESCENDANTS;
     }
 
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
-        if (mChildrenFocused && event.getKeyCode() == KeyEvent.KEYCODE_ESCAPE
-                && event.getAction() == KeyEvent.ACTION_UP) {
+        if (mChildrenFocused && event.getKeyCode() == KeyEvent.KEYCODE_ESCAPE && event.getAction() == KeyEvent.ACTION_UP) {
             mChildrenFocused = false;
             requestFocus();
             return true;
@@ -427,8 +422,7 @@ public class LauncherAppWidgetHostView extends AppWidgetHostView
 
     private void maybeRegisterAutoAdvance() {
         Handler handler = getHandler();
-        boolean shouldRegisterAutoAdvance = getWindowVisibility() == VISIBLE && handler != null
-                && (sAutoAdvanceWidgetIds.indexOfKey(getAppWidgetId()) >= 0);
+        boolean shouldRegisterAutoAdvance = getWindowVisibility() == VISIBLE && handler != null && (sAutoAdvanceWidgetIds.indexOfKey(getAppWidgetId()) >= 0);
         if (shouldRegisterAutoAdvance != mIsAutoAdvanceRegistered) {
             mIsAutoAdvanceRegistered = shouldRegisterAutoAdvance;
             if (mAutoAdvanceRunnable == null) {
@@ -450,8 +444,7 @@ public class LauncherAppWidgetHostView extends AppWidgetHostView
             return;
         }
         long now = SystemClock.uptimeMillis();
-        long advanceTime = now + (ADVANCE_INTERVAL - (now % ADVANCE_INTERVAL)) +
-                ADVANCE_STAGGER * sAutoAdvanceWidgetIds.indexOfKey(getAppWidgetId());
+        long advanceTime = now + (ADVANCE_INTERVAL - (now % ADVANCE_INTERVAL)) + ADVANCE_STAGGER * sAutoAdvanceWidgetIds.indexOfKey(getAppWidgetId());
         Handler handler = getHandler();
         if (handler != null) {
             handler.postAtTime(mAutoAdvanceRunnable, advanceTime);

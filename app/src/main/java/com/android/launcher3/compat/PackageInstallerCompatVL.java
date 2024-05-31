@@ -34,9 +34,11 @@ import java.util.HashMap;
 
 public class PackageInstallerCompatVL extends PackageInstallerCompat {
 
-    @Thunk final SparseArray<String> mActiveSessions = new SparseArray<>();
+    @Thunk
+    final SparseArray<String> mActiveSessions = new SparseArray<>();
 
-    @Thunk final PackageInstaller mInstaller;
+    @Thunk
+    final PackageInstaller mInstaller;
     private final IconCache mCache;
     private final Handler mWorker;
 
@@ -62,11 +64,11 @@ public class PackageInstallerCompatVL extends PackageInstallerCompat {
         return activePackages;
     }
 
-    @Thunk void addSessionInfoToCache(SessionInfo info, UserHandle user) {
+    @Thunk
+    void addSessionInfoToCache(SessionInfo info, UserHandle user) {
         String packageName = info.getAppPackageName();
         if (packageName != null) {
-            mCache.cachePackageInstallInfo(packageName, user, info.getAppIcon(),
-                    info.getAppLabel());
+            mCache.cachePackageInstallInfo(packageName, user, info.getAppIcon(), info.getAppLabel());
         }
     }
 
@@ -75,7 +77,8 @@ public class PackageInstallerCompatVL extends PackageInstallerCompat {
         mInstaller.unregisterSessionCallback(mCallback);
     }
 
-    @Thunk void sendUpdate(PackageInstallInfo info) {
+    @Thunk
+    void sendUpdate(PackageInstallInfo info) {
         LauncherAppState app = LauncherAppState.getInstanceNoCreate();
         if (app != null) {
             app.getModel().setPackageState(info);
@@ -97,8 +100,7 @@ public class PackageInstallerCompatVL extends PackageInstallerCompat {
             mActiveSessions.remove(sessionId);
 
             if (packageName != null) {
-                sendUpdate(new PackageInstallInfo(packageName,
-                        success ? STATUS_INSTALLED : STATUS_FAILED, 0));
+                sendUpdate(new PackageInstallInfo(packageName, success ? STATUS_INSTALLED : STATUS_FAILED, 0));
             }
         }
 
@@ -106,14 +108,13 @@ public class PackageInstallerCompatVL extends PackageInstallerCompat {
         public void onProgressChanged(int sessionId, float progress) {
             SessionInfo session = mInstaller.getSessionInfo(sessionId);
             if (session != null && session.getAppPackageName() != null) {
-                sendUpdate(new PackageInstallInfo(session.getAppPackageName(),
-                        STATUS_INSTALLING,
-                        (int) (session.getProgress() * 100)));
+                sendUpdate(new PackageInstallInfo(session.getAppPackageName(), STATUS_INSTALLING, (int) (session.getProgress() * 100)));
             }
         }
 
         @Override
-        public void onActiveChanged(int sessionId, boolean active) { }
+        public void onActiveChanged(int sessionId, boolean active) {
+        }
 
         @Override
         public void onBadgingChanged(int sessionId) {

@@ -37,8 +37,7 @@ public class FolderBadgeInfo extends BadgeInfo {
             return;
         }
         mNumNotifications += badgeToAdd.getNotificationKeys().size();
-        mNumNotifications = Utilities.boundToRange(
-                mNumNotifications, MIN_COUNT, BadgeInfo.MAX_COUNT);
+        mNumNotifications = Utilities.boundToRange(mNumNotifications, MIN_COUNT, BadgeInfo.MAX_COUNT);
     }
 
     public void subtractBadgeInfo(BadgeInfo badgeToSubtract) {
@@ -46,8 +45,7 @@ public class FolderBadgeInfo extends BadgeInfo {
             return;
         }
         mNumNotifications -= badgeToSubtract.getNotificationKeys().size();
-        mNumNotifications = Utilities.boundToRange(
-                mNumNotifications, MIN_COUNT, BadgeInfo.MAX_COUNT);
+        mNumNotifications = Utilities.boundToRange(mNumNotifications, MIN_COUNT, BadgeInfo.MAX_COUNT);
     }
 
     @Override

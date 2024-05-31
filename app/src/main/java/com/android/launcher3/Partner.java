@@ -33,9 +33,10 @@ public class Partner {
 
     static final String TAG = "Launcher.Partner";
 
-    /** Marker action used to discover partner */
-    private static final String
-            ACTION_PARTNER_CUSTOMIZATION = "com.android.launcher3.action.PARTNER_CUSTOMIZATION";
+    /**
+     * Marker action used to discover partner
+     */
+    private static final String ACTION_PARTNER_CUSTOMIZATION = "com.android.launcher3.action.PARTNER_CUSTOMIZATION";
 
     public static final String RES_FOLDER = "partner_folder";
     public static final String RES_WALLPAPERS = "partner_wallpapers";
@@ -46,7 +47,9 @@ public class Partner {
 
     public static final String RES_REQUIRE_FIRST_RUN_FLOW = "requires_first_run_flow";
 
-    /** These resources are used to override the device profile  */
+    /**
+     * These resources are used to override the device profile
+     */
     public static final String RES_GRID_NUM_ROWS = "grid_num_rows";
     public static final String RES_GRID_NUM_COLUMNS = "grid_num_columns";
     public static final String RES_GRID_ICON_SIZE_DP = "grid_icon_size_dp";
@@ -85,32 +88,27 @@ public class Partner {
     }
 
     public boolean hasDefaultLayout() {
-        int defaultLayout = getResources().getIdentifier(Partner.RES_DEFAULT_LAYOUT,
-                "xml", getPackageName());
+        int defaultLayout = getResources().getIdentifier(Partner.RES_DEFAULT_LAYOUT, "xml", getPackageName());
         return defaultLayout != 0;
     }
 
     public boolean hasFolder() {
-        int folder = getResources().getIdentifier(Partner.RES_FOLDER,
-                "xml", getPackageName());
+        int folder = getResources().getIdentifier(Partner.RES_FOLDER, "xml", getPackageName());
         return folder != 0;
     }
 
     public boolean hideDefaultWallpaper() {
-        int resId = getResources().getIdentifier(RES_DEFAULT_WALLPAPER_HIDDEN, "bool",
-                getPackageName());
+        int resId = getResources().getIdentifier(RES_DEFAULT_WALLPAPER_HIDDEN, "bool", getPackageName());
         return resId != 0 && getResources().getBoolean(resId);
     }
 
     public File getWallpaperDirectory() {
-        int resId = getResources().getIdentifier(RES_SYSTEM_WALLPAPER_DIR, "string",
-                getPackageName());
+        int resId = getResources().getIdentifier(RES_SYSTEM_WALLPAPER_DIR, "string", getPackageName());
         return (resId != 0) ? new File(getResources().getString(resId)) : null;
     }
 
     public boolean requiresFirstRunFlow() {
-        int resId = getResources().getIdentifier(RES_REQUIRE_FIRST_RUN_FLOW, "bool",
-                getPackageName());
+        int resId = getResources().getIdentifier(RES_REQUIRE_FIRST_RUN_FLOW, "bool", getPackageName());
         return resId != 0 && getResources().getBoolean(resId);
     }
 
@@ -120,20 +118,17 @@ public class Partner {
         float iconSize = -1;
 
         try {
-            int resId = getResources().getIdentifier(RES_GRID_NUM_ROWS,
-                    "integer", getPackageName());
+            int resId = getResources().getIdentifier(RES_GRID_NUM_ROWS, "integer", getPackageName());
             if (resId > 0) {
                 numRows = getResources().getInteger(resId);
             }
 
-            resId = getResources().getIdentifier(RES_GRID_NUM_COLUMNS,
-                    "integer", getPackageName());
+            resId = getResources().getIdentifier(RES_GRID_NUM_COLUMNS, "integer", getPackageName());
             if (resId > 0) {
                 numColumns = getResources().getInteger(resId);
             }
 
-            resId = getResources().getIdentifier(RES_GRID_ICON_SIZE_DP,
-                    "dimen", getPackageName());
+            resId = getResources().getIdentifier(RES_GRID_ICON_SIZE_DP, "dimen", getPackageName());
             if (resId > 0) {
                 int px = getResources().getDimensionPixelSize(resId);
                 iconSize = Utilities.dpiFromPx(px, dm);

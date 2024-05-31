@@ -52,22 +52,19 @@ public class LauncherAppsCompatVO extends LauncherAppsCompatVL {
             }
 
             ApplicationInfo info = mLauncherApps.getApplicationInfo(packageName, flags, user);
-            return (info.flags & ApplicationInfo.FLAG_INSTALLED) == 0 || !info.enabled
-                    ? null : info;
+            return (info.flags & ApplicationInfo.FLAG_INSTALLED) == 0 || !info.enabled ? null : info;
         } catch (PackageManager.NameNotFoundException e) {
             return null;
         }
     }
 
     @Override
-    public List<ShortcutConfigActivityInfo> getCustomShortcutActivityList(
-            @Nullable PackageUserKey packageUser) {
+    public List<ShortcutConfigActivityInfo> getCustomShortcutActivityList(@Nullable PackageUserKey packageUser) {
         List<ShortcutConfigActivityInfo> result = new ArrayList<>();
         UserHandle myUser = Process.myUserHandle();
 
         try {
-            Method m = LauncherApps.class.getDeclaredMethod("getShortcutConfigActivityList",
-                    String.class, UserHandle.class);
+            Method m = LauncherApps.class.getDeclaredMethod("getShortcutConfigActivityList", String.class, UserHandle.class);
             final List<UserHandle> users;
             final String packageName;
             if (packageUser == null) {
@@ -80,11 +77,9 @@ public class LauncherAppsCompatVO extends LauncherAppsCompatVL {
             }
             for (UserHandle user : users) {
                 boolean ignoreTargetSdk = myUser.equals(user);
-                List<LauncherActivityInfo> activities =
-                        (List<LauncherActivityInfo>) m.invoke(mLauncherApps, packageName, user);
+                List<LauncherActivityInfo> activities = (List<LauncherActivityInfo>) m.invoke(mLauncherApps, packageName, user);
                 for (LauncherActivityInfo activityInfo : activities) {
-                    if (ignoreTargetSdk || activityInfo.getApplicationInfo().targetSdkVersion >=
-                            Build.VERSION_CODES.O) {
+                    if (ignoreTargetSdk || activityInfo.getApplicationInfo().targetSdkVersion >= Build.VERSION_CODES.O) {
                         result.add(new ShortcutConfigActivityInfoVO(activityInfo));
                     }
                 }

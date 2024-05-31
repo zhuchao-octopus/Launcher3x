@@ -48,8 +48,7 @@ import com.android.launcher3.util.Thunk;
 /**
  * Implements a DropTarget.
  */
-public abstract class ButtonDropTarget extends TextView
-        implements DropTarget, DragController.DragListener, OnClickListener {
+public abstract class ButtonDropTarget extends TextView implements DropTarget, DragController.DragListener, OnClickListener {
 
     private static final int DRAG_VIEW_DROP_DURATION = 285;
 
@@ -59,21 +58,30 @@ public abstract class ButtonDropTarget extends TextView
     private int mBottomDragPadding;
     protected DropTargetBar mDropTargetBar;
 
-    /** Whether this drop target is active for the current drag */
+    /**
+     * Whether this drop target is active for the current drag
+     */
     protected boolean mActive;
-    /** Whether an accessible drag is in progress */
+    /**
+     * Whether an accessible drag is in progress
+     */
     private boolean mAccessibleDrag;
-    /** An item must be dragged at least this many pixels before this drop target is enabled. */
+    /**
+     * An item must be dragged at least this many pixels before this drop target is enabled.
+     */
     private final int mDragDistanceThreshold;
 
-    /** The paint applied to the drag view on hover */
+    /**
+     * The paint applied to the drag view on hover
+     */
     protected int mHoverColor = 0;
 
     protected ColorStateList mOriginalTextColor;
     protected Drawable mDrawable;
 
     private AnimatorSet mCurrentColorAnim;
-    @Thunk ColorMatrix mSrcFilter, mDstFilter, mCurrentFilter;
+    @Thunk
+    ColorMatrix mSrcFilter, mDstFilter, mCurrentFilter;
 
     public ButtonDropTarget(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
@@ -86,8 +94,7 @@ public abstract class ButtonDropTarget extends TextView
         Resources resources = getResources();
         mBottomDragPadding = resources.getDimensionPixelSize(R.dimen.drop_target_drag_padding);
 
-        TypedArray a = context.obtainStyledAttributes(attrs,
-                R.styleable.ButtonDropTarget, defStyle, 0);
+        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.ButtonDropTarget, defStyle, 0);
         mHideParentOnDisable = a.getBoolean(R.styleable.ButtonDropTarget_hideParentOnDisable, false);
         a.recycle();
         mDragDistanceThreshold = resources.getDimensionPixelSize(R.dimen.drag_distanceThreshold);
@@ -145,9 +152,7 @@ public abstract class ButtonDropTarget extends TextView
 
         Themes.setColorScaleOnMatrix(getTextColor(), mSrcFilter);
         Themes.setColorScaleOnMatrix(targetColor, mDstFilter);
-        ValueAnimator anim1 = ValueAnimator.ofObject(
-                new FloatArrayEvaluator(mCurrentFilter.getArray()),
-                mSrcFilter.getArray(), mDstFilter.getArray());
+        ValueAnimator anim1 = ValueAnimator.ofObject(new FloatArrayEvaluator(mCurrentFilter.getArray()), mSrcFilter.getArray(), mDstFilter.getArray());
         anim1.addUpdateListener(new AnimatorUpdateListener() {
 
             @Override
@@ -182,8 +187,7 @@ public abstract class ButtonDropTarget extends TextView
             mCurrentColorAnim = null;
         }
         setTextColor(mOriginalTextColor);
-        (mHideParentOnDisable ? ((ViewGroup) getParent()) : this)
-                .setVisibility(mActive ? View.VISIBLE : View.GONE);
+        (mHideParentOnDisable ? ((ViewGroup) getParent()) : this).setVisibility(mActive ? View.VISIBLE : View.GONE);
 
         mAccessibleDrag = options.isAccessibleDrag;
         setOnClickListener(mAccessibleDrag ? this : null);
@@ -198,8 +202,7 @@ public abstract class ButtonDropTarget extends TextView
 
     @Override
     public boolean isDropEnabled() {
-        return mActive && (mAccessibleDrag ||
-                mLauncher.getDragController().getDistanceDragged() >= mDragDistanceThreshold);
+        return mActive && (mAccessibleDrag || mLauncher.getDragController().getDistanceDragged() >= mDragDistanceThreshold);
     }
 
     @Override
@@ -229,15 +232,12 @@ public abstract class ButtonDropTarget extends TextView
                 mLauncher.exitSpringLoadedDragModeDelayed(true, 0, null);
             }
         };
-        dragLayer.animateView(d.dragView, from, to, scale, 1f, 1f, 0.1f, 0.1f,
-                DRAG_VIEW_DROP_DURATION,
-                new DecelerateInterpolator(2),
-                new LinearInterpolator(), onAnimationEndRunnable,
-                DragLayer.ANIMATION_END_DISAPPEAR, null);
+        dragLayer.animateView(d.dragView, from, to, scale, 1f, 1f, 0.1f, 0.1f, DRAG_VIEW_DROP_DURATION, new DecelerateInterpolator(2), new LinearInterpolator(), onAnimationEndRunnable, DragLayer.ANIMATION_END_DISAPPEAR, null);
     }
 
     @Override
-    public void prepareAccessibilityDrop() { }
+    public void prepareAccessibilityDrop() {
+    }
 
     public abstract void completeDrop(DragObject d);
 
@@ -277,7 +277,7 @@ public abstract class ButtonDropTarget extends TextView
         }
 
         final int top = to.top + (getMeasuredHeight() - height) / 2;
-        final int bottom = top +  height;
+        final int bottom = top + height;
 
         to.set(left, top, right, bottom);
 

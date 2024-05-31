@@ -71,9 +71,7 @@ public class NotificationListener extends NotificationListenerService {
                     mUiHandler.obtainMessage(message.what, message.obj).sendToTarget();
                     break;
                 case MSG_NOTIFICATION_FULL_REFRESH:
-                    final List<StatusBarNotification> activeNotifications = sIsConnected
-                            ? filterNotifications(getActiveNotifications())
-                            : new ArrayList<StatusBarNotification>();
+                    final List<StatusBarNotification> activeNotifications = sIsConnected ? filterNotifications(getActiveNotifications()) : new ArrayList<StatusBarNotification>();
                     mUiHandler.obtainMessage(message.what, activeNotifications).sendToTarget();
                     break;
             }
@@ -88,21 +86,18 @@ public class NotificationListener extends NotificationListenerService {
                 case MSG_NOTIFICATION_POSTED:
                     if (sNotificationsChangedListener != null) {
                         NotificationPostedMsg msg = (NotificationPostedMsg) message.obj;
-                        sNotificationsChangedListener.onNotificationPosted(msg.packageUserKey,
-                                msg.notificationKey, msg.shouldBeFilteredOut);
+                        sNotificationsChangedListener.onNotificationPosted(msg.packageUserKey, msg.notificationKey, msg.shouldBeFilteredOut);
                     }
                     break;
                 case MSG_NOTIFICATION_REMOVED:
                     if (sNotificationsChangedListener != null) {
-                        Pair<PackageUserKey, NotificationKeyData> pair
-                                = (Pair<PackageUserKey, NotificationKeyData>) message.obj;
+                        Pair<PackageUserKey, NotificationKeyData> pair = (Pair<PackageUserKey, NotificationKeyData>) message.obj;
                         sNotificationsChangedListener.onNotificationRemoved(pair.first, pair.second);
                     }
                     break;
                 case MSG_NOTIFICATION_FULL_REFRESH:
                     if (sNotificationsChangedListener != null) {
-                        sNotificationsChangedListener.onNotificationFullRefresh(
-                                (List<StatusBarNotification>) message.obj);
+                        sNotificationsChangedListener.onNotificationFullRefresh((List<StatusBarNotification>) message.obj);
                     }
                     break;
                 default:
@@ -158,8 +153,7 @@ public class NotificationListener extends NotificationListenerService {
     @Override
     public void onNotificationPosted(final StatusBarNotification sbn) {
         super.onNotificationPosted(sbn);
-        mWorkerHandler.obtainMessage(MSG_NOTIFICATION_POSTED, new NotificationPostedMsg(sbn))
-                .sendToTarget();
+        mWorkerHandler.obtainMessage(MSG_NOTIFICATION_POSTED, new NotificationPostedMsg(sbn)).sendToTarget();
     }
 
     /**
@@ -180,18 +174,15 @@ public class NotificationListener extends NotificationListenerService {
     @Override
     public void onNotificationRemoved(final StatusBarNotification sbn) {
         super.onNotificationRemoved(sbn);
-        Pair<PackageUserKey, NotificationKeyData> packageUserKeyAndNotificationKey
-                = new Pair<>(PackageUserKey.fromNotification(sbn),
-                        NotificationKeyData.fromNotification(sbn));
-        mWorkerHandler.obtainMessage(MSG_NOTIFICATION_REMOVED, packageUserKeyAndNotificationKey)
-                .sendToTarget();
+        Pair<PackageUserKey, NotificationKeyData> packageUserKeyAndNotificationKey = new Pair<>(PackageUserKey.fromNotification(sbn), NotificationKeyData.fromNotification(sbn));
+        mWorkerHandler.obtainMessage(MSG_NOTIFICATION_REMOVED, packageUserKeyAndNotificationKey).sendToTarget();
     }
 
-    /** This makes a potentially expensive binder call and should be run on a background thread. */
+    /**
+     * This makes a potentially expensive binder call and should be run on a background thread.
+     */
     public List<StatusBarNotification> getNotificationsForKeys(List<NotificationKeyData> keys) {
-        StatusBarNotification[] notifications = NotificationListener.this
-                .getActiveNotifications(NotificationKeyData.extractKeysOnly(keys)
-                        .toArray(new String[keys.size()]));
+        StatusBarNotification[] notifications = NotificationListener.this.getActiveNotifications(NotificationKeyData.extractKeysOnly(keys).toArray(new String[keys.size()]));
         return notifications == null ? Collections.EMPTY_LIST : Arrays.asList(notifications);
     }
 
@@ -201,8 +192,7 @@ public class NotificationListener extends NotificationListenerService {
      *
      * @see #shouldBeFilteredOut(StatusBarNotification)
      */
-    private List<StatusBarNotification> filterNotifications(
-            StatusBarNotification[] notifications) {
+    private List<StatusBarNotification> filterNotifications(StatusBarNotification[] notifications) {
         if (notifications == null) return null;
         Set<Integer> removedNotifications = new HashSet<>();
         for (int i = 0; i < notifications.length; i++) {
@@ -210,8 +200,7 @@ public class NotificationListener extends NotificationListenerService {
                 removedNotifications.add(i);
             }
         }
-        List<StatusBarNotification> filteredNotifications = new ArrayList<>(
-                notifications.length - removedNotifications.size());
+        List<StatusBarNotification> filteredNotifications = new ArrayList<>(notifications.length - removedNotifications.size());
         for (int i = 0; i < notifications.length; i++) {
             if (!removedNotifications.contains(i)) {
                 filteredNotifications.add(notifications[i]);
@@ -240,10 +229,10 @@ public class NotificationListener extends NotificationListenerService {
     }
 
     public interface NotificationsChangedListener {
-        void onNotificationPosted(PackageUserKey postedPackageUserKey,
-                NotificationKeyData notificationKey, boolean shouldBeFilteredOut);
-        void onNotificationRemoved(PackageUserKey removedPackageUserKey,
-                NotificationKeyData notificationKey);
+        void onNotificationPosted(PackageUserKey postedPackageUserKey, NotificationKeyData notificationKey, boolean shouldBeFilteredOut);
+
+        void onNotificationRemoved(PackageUserKey removedPackageUserKey, NotificationKeyData notificationKey);
+
         void onNotificationFullRefresh(List<StatusBarNotification> activeNotifications);
     }
 }

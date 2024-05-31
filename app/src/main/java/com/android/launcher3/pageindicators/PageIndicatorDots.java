@@ -58,8 +58,7 @@ public class PageIndicatorDots extends PageIndicator {
 
     private static final RectF sTempRect = new RectF();
 
-    private static final Property<PageIndicatorDots, Float> CURRENT_POSITION
-            = new Property<PageIndicatorDots, Float>(float.class, "current_position") {
+    private static final Property<PageIndicatorDots, Float> CURRENT_POSITION = new Property<PageIndicatorDots, Float>(float.class, "current_position") {
         @Override
         public Float get(PageIndicatorDots obj) {
             return obj.mCurrentPosition;
@@ -84,11 +83,11 @@ public class PageIndicatorDots extends PageIndicator {
     /**
      * The current position of the active dot including the animation progress.
      * For ex:
-     *   0.0  => Active dot is at position 0
-     *   0.33 => Active dot is at position 0 and is moving towards 1
-     *   0.50 => Active dot is at position [0, 1]
-     *   0.77 => Active dot has left position 0 and is collapsing towards position 1
-     *   1.0  => Active dot is at position 1
+     * 0.0  => Active dot is at position 0
+     * 0.33 => Active dot is at position 0 and is moving towards 1
+     * 0.50 => Active dot is at position [0, 1]
+     * 0.77 => Active dot has left position 0 and is collapsing towards position 1
+     * 1.0  => Active dot is at position 1
      */
     private float mCurrentPosition;
     private float mFinalPosition;
@@ -149,8 +148,7 @@ public class PageIndicatorDots extends PageIndicator {
             mCurrentPosition = mFinalPosition;
         }
         if (mAnimator == null && Float.compare(mCurrentPosition, mFinalPosition) != 0) {
-            float positionForThisAnim = mCurrentPosition > mFinalPosition ?
-                    mCurrentPosition - SHIFT_PER_ANIMATION : mCurrentPosition + SHIFT_PER_ANIMATION;
+            float positionForThisAnim = mCurrentPosition > mFinalPosition ? mCurrentPosition - SHIFT_PER_ANIMATION : mCurrentPosition + SHIFT_PER_ANIMATION;
             mAnimator = ObjectAnimator.ofFloat(this, CURRENT_POSITION, positionForThisAnim);
             mAnimator.addListener(new AnimationCycleListener());
             mAnimator.setDuration(ANIMATION_DURATION);
@@ -177,7 +175,7 @@ public class PageIndicatorDots extends PageIndicator {
     }
 
     public void playEntryAnimation() {
-        int count  = mEntryAnimationRadiusFactors.length;
+        int count = mEntryAnimationRadiusFactors.length;
         if (count == 0) {
             mEntryAnimationRadiusFactors = null;
             invalidate();
@@ -228,10 +226,8 @@ public class PageIndicatorDots extends PageIndicator {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         // Add extra spacing of mDotRadius on all sides so than entry animation could be run.
-        int width = MeasureSpec.getMode(widthMeasureSpec) == MeasureSpec.EXACTLY ?
-                MeasureSpec.getSize(widthMeasureSpec) : (int) ((mNumPages * 3 + 2) * mDotRadius);
-        int height= MeasureSpec.getMode(heightMeasureSpec) == MeasureSpec.EXACTLY ?
-                MeasureSpec.getSize(heightMeasureSpec) : (int) (4 * mDotRadius);
+        int width = MeasureSpec.getMode(widthMeasureSpec) == MeasureSpec.EXACTLY ? MeasureSpec.getSize(widthMeasureSpec) : (int) ((mNumPages * 3 + 2) * mDotRadius);
+        int height = MeasureSpec.getMode(heightMeasureSpec) == MeasureSpec.EXACTLY ? MeasureSpec.getSize(heightMeasureSpec) : (int) (4 * mDotRadius);
         setMeasuredDimension(width, height);
     }
 
@@ -304,13 +300,7 @@ public class PageIndicatorDots extends PageIndicator {
         public void getOutline(View view, Outline outline) {
             if (mEntryAnimationRadiusFactors == null) {
                 RectF activeRect = getActiveRect();
-                outline.setRoundRect(
-                        (int) activeRect.left,
-                        (int) activeRect.top,
-                        (int) activeRect.right,
-                        (int) activeRect.bottom,
-                        mDotRadius
-                );
+                outline.setRoundRect((int) activeRect.left, (int) activeRect.top, (int) activeRect.right, (int) activeRect.bottom, mDotRadius);
             }
         }
     }

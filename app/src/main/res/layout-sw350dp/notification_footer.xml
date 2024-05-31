@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (C) 2017 The Android Open Source Project
+<?xml version="1.0" encoding="utf-8"?><!-- Copyright (C) 2017 The Android Open Source Project
 
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
@@ -15,8 +14,7 @@
 -->
 
 
-<com.android.launcher3.notification.NotificationFooterLayout
-    android:layout_width="match_parent"
+<com.android.launcher3.notification.NotificationFooterLayout android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:elevation="@dimen/notification_elevation"
@@ -32,7 +30,7 @@
         android:gravity="end|center_vertical"
         android:padding="@dimen/notification_footer_icon_row_padding"
         android:clipToPadding="false"
-        android:clipChildren="false"/>
+        android:clipChildren="false" />
 
     <View
         android:id="@+id/overflow"

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.RemoteViews;
@@ -40,8 +39,7 @@ public class LivePreviewWidgetCell extends WidgetCell {
     @Override
     public void ensurePreview() {
         if (mPreview != null && mActiveRequest == null) {
-            Bitmap preview = generateFromRemoteViews(
-                    mActivity, mPreview, mItem.widgetInfo, mPresetPreviewSize, new int[1]);
+            Bitmap preview = generateFromRemoteViews(mActivity, mPreview, mItem.widgetInfo, mPresetPreviewSize, new int[1]);
             if (preview != null) {
                 applyPreview(preview);
                 return;
@@ -52,12 +50,12 @@ public class LivePreviewWidgetCell extends WidgetCell {
 
     /**
      * Generates a bitmap by inflating {@param views}.
-     * @see com.android.launcher3.WidgetPreviewLoader#generateWidgetPreview
      *
+     * @see com.android.launcher3.WidgetPreviewLoader#generateWidgetPreview
+     * <p>
      * TODO: Consider moving this to the background thread.
      */
-    public static Bitmap generateFromRemoteViews(BaseActivity activity, RemoteViews views,
-            LauncherAppWidgetProviderInfo info, int previewSize, int[] preScaledWidthOut) {
+    public static Bitmap generateFromRemoteViews(BaseActivity activity, RemoteViews views, LauncherAppWidgetProviderInfo info, int previewSize, int[] preScaledWidthOut) {
 
         DeviceProfile dp = activity.getDeviceProfile();
         int viewWidth = dp.cellWidthPx * info.spanX;
@@ -66,8 +64,7 @@ public class LivePreviewWidgetCell extends WidgetCell {
         final View v;
         try {
             v = views.apply(activity, new FrameLayout(activity));
-            v.measure(MeasureSpec.makeMeasureSpec(viewWidth, MeasureSpec.EXACTLY),
-                    MeasureSpec.makeMeasureSpec(viewHeight, MeasureSpec.EXACTLY));
+            v.measure(MeasureSpec.makeMeasureSpec(viewWidth, MeasureSpec.EXACTLY), MeasureSpec.makeMeasureSpec(viewHeight, MeasureSpec.EXACTLY));
 
             viewWidth = v.getMeasuredWidth();
             viewHeight = v.getMeasuredHeight();

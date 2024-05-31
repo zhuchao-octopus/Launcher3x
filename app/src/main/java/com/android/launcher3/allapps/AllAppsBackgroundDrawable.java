@@ -48,8 +48,7 @@ public class AllAppsBackgroundDrawable extends Drawable {
          * @param gravity If one of the Gravity center values, the x and y offset will take the width
          *                and height of the image into account to center the image to the offset.
          */
-        public TransformedImageDrawable(Resources res, int resourceId, float xPct, float yPct,
-                int gravity) {
+        public TransformedImageDrawable(Resources res, int resourceId, float xPct, float yPct, int gravity) {
             mImage = res.getDrawable(resourceId);
             mXPercent = xPct;
             mYPercent = yPct;
@@ -97,17 +96,12 @@ public class AllAppsBackgroundDrawable extends Drawable {
 
     public AllAppsBackgroundDrawable(Context context) {
         Resources res = context.getResources();
-        mHand = new TransformedImageDrawable(res, R.drawable.ic_all_apps_bg_hand,
-                0.575f, 0.f, Gravity.CENTER_HORIZONTAL);
+        mHand = new TransformedImageDrawable(res, R.drawable.ic_all_apps_bg_hand, 0.575f, 0.f, Gravity.CENTER_HORIZONTAL);
         mIcons = new TransformedImageDrawable[4];
-        mIcons[0] = new TransformedImageDrawable(res, R.drawable.ic_all_apps_bg_icon_1,
-                0.375f, 0, Gravity.CENTER_HORIZONTAL);
-        mIcons[1] = new TransformedImageDrawable(res, R.drawable.ic_all_apps_bg_icon_2,
-                0.3125f, 0.2f, Gravity.CENTER_HORIZONTAL);
-        mIcons[2] = new TransformedImageDrawable(res, R.drawable.ic_all_apps_bg_icon_3,
-                0.475f, 0.26f, Gravity.CENTER_HORIZONTAL);
-        mIcons[3] = new TransformedImageDrawable(res, R.drawable.ic_all_apps_bg_icon_4,
-                0.7f, 0.125f, Gravity.CENTER_HORIZONTAL);
+        mIcons[0] = new TransformedImageDrawable(res, R.drawable.ic_all_apps_bg_icon_1, 0.375f, 0, Gravity.CENTER_HORIZONTAL);
+        mIcons[1] = new TransformedImageDrawable(res, R.drawable.ic_all_apps_bg_icon_2, 0.3125f, 0.2f, Gravity.CENTER_HORIZONTAL);
+        mIcons[2] = new TransformedImageDrawable(res, R.drawable.ic_all_apps_bg_icon_3, 0.475f, 0.26f, Gravity.CENTER_HORIZONTAL);
+        mIcons[3] = new TransformedImageDrawable(res, R.drawable.ic_all_apps_bg_icon_4, 0.7f, 0.125f, Gravity.CENTER_HORIZONTAL);
         mWidth = res.getDimensionPixelSize(R.dimen.all_apps_background_canvas_width);
         mHeight = res.getDimensionPixelSize(R.dimen.all_apps_background_canvas_height);
     }

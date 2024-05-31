@@ -23,10 +23,10 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 
-import com.android.launcher3.graphics.HolographicOutlineHelper;
 import com.android.launcher3.Launcher;
 import com.android.launcher3.Utilities;
 import com.android.launcher3.graphics.DragPreviewProvider;
+import com.android.launcher3.graphics.HolographicOutlineHelper;
 
 /**
  * Extension of {@link DragPreviewProvider} which generates bitmaps scaled to the default icon size.
@@ -44,8 +44,7 @@ public class ShortcutDragPreviewProvider extends DragPreviewProvider {
     public Bitmap createDragOutline(Canvas canvas) {
         Bitmap b = drawScaledPreview(canvas, Bitmap.Config.ALPHA_8);
 
-        HolographicOutlineHelper.getInstance(mView.getContext())
-                .applyExpensiveOutlineWithBlur(b, canvas);
+        HolographicOutlineHelper.getInstance(mView.getContext()).applyExpensiveOutlineWithBlur(b, canvas);
         canvas.setBitmap(null);
         return b;
     }
@@ -63,10 +62,7 @@ public class ShortcutDragPreviewProvider extends DragPreviewProvider {
 
         int size = Launcher.getLauncher(mView.getContext()).getDeviceProfile().iconSizePx;
 
-        final Bitmap b = Bitmap.createBitmap(
-                size + blurSizeOutline,
-                size + blurSizeOutline,
-                config);
+        final Bitmap b = Bitmap.createBitmap(size + blurSizeOutline, size + blurSizeOutline, config);
 
         canvas.setBitmap(b);
         canvas.save();//(Canvas.MATRIX_SAVE_FLAG);
@@ -89,10 +85,8 @@ public class ShortcutDragPreviewProvider extends DragPreviewProvider {
             iconLeft = mView.getWidth() - iconSize - iconLeft;
         }
 
-        outPos[0] += Math.round(scale * iconLeft + (scale * iconSize - preview.getWidth()) / 2 +
-                mPositionShift.x);
-        outPos[1] += Math.round((scale * mView.getHeight() - preview.getHeight()) / 2
-                + mPositionShift.y);
+        outPos[0] += Math.round(scale * iconLeft + (scale * iconSize - preview.getWidth()) / 2 + mPositionShift.x);
+        outPos[1] += Math.round((scale * mView.getHeight() - preview.getHeight()) / 2 + mPositionShift.y);
         float size = launcher.getDeviceProfile().iconSizePx;
         return scale * iconSize / size;
     }

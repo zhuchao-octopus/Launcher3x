@@ -76,8 +76,7 @@ public final class Utilities {
 
     private static final String TAG = "Launcher.Utilities";
 
-    private static final Pattern sTrimPattern =
-            Pattern.compile("^[\\s|\\p{javaSpaceChar}]*(.*)[\\s|\\p{javaSpaceChar}]*$");
+    private static final Pattern sTrimPattern = Pattern.compile("^[\\s|\\p{javaSpaceChar}]*(.*)[\\s|\\p{javaSpaceChar}]*$");
 
     private static final int[] sLoc0 = new int[2];
     private static final int[] sLoc1 = new int[2];
@@ -89,17 +88,13 @@ public final class Utilities {
         return BuildCompat.isAtLeastO();
     }
 
-    public static final boolean ATLEAST_NOUGAT_MR1 =
-        Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1;
+    public static final boolean ATLEAST_NOUGAT_MR1 = Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1;
 
-    public static final boolean ATLEAST_NOUGAT =
-        Build.VERSION.SDK_INT >= Build.VERSION_CODES.N;
+    public static final boolean ATLEAST_NOUGAT = Build.VERSION.SDK_INT >= Build.VERSION_CODES.N;
 
-    public static final boolean ATLEAST_MARSHMALLOW =
-            Build.VERSION.SDK_INT >= Build.VERSION_CODES.M;
+    public static final boolean ATLEAST_MARSHMALLOW = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M;
 
-    public static final boolean ATLEAST_LOLLIPOP_MR1 =
-            Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1;
+    public static final boolean ATLEAST_LOLLIPOP_MR1 = Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1;
 
     /**
      * Indicates if the device has a debug build. Should only be used to store additional info or
@@ -120,9 +115,7 @@ public final class Utilities {
     /**
      * An {@link Executor} to be used with async task with no limit on the queue size.
      */
-    public static final Executor THREAD_POOL_EXECUTOR = new ThreadPoolExecutor(
-            CORE_POOL_SIZE, MAXIMUM_POOL_SIZE, KEEP_ALIVE,
-            TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>());
+    public static final Executor THREAD_POOL_EXECUTOR = new ThreadPoolExecutor(CORE_POOL_SIZE, MAXIMUM_POOL_SIZE, KEEP_ALIVE, TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>());
 
     public static final String ALLOW_ROTATION_PREFERENCE_KEY = "pref_allowRotation";
 
@@ -131,8 +124,7 @@ public final class Utilities {
     }
 
     public static boolean isAllowRotationPrefEnabled(Context context) {
-        return getPrefs(context).getBoolean(ALLOW_ROTATION_PREFERENCE_KEY,
-                getAllowRotationDefaultValue(context));
+        return getPrefs(context).getBoolean(ALLOW_ROTATION_PREFERENCE_KEY, getAllowRotationDefaultValue(context));
     }
 
     public static boolean getAllowRotationDefaultValue(Context context) {
@@ -140,8 +132,7 @@ public final class Utilities {
             // If the device was scaled, used the original dimensions to determine if rotation
             // is allowed of not.
             Resources res = context.getResources();
-            int originalSmallestWidth = res.getConfiguration().smallestScreenWidthDp
-                    * res.getDisplayMetrics().densityDpi / DisplayMetrics.DENSITY_DEVICE_STABLE;
+            int originalSmallestWidth = res.getConfiguration().smallestScreenWidthDp * res.getDisplayMetrics().densityDpi / DisplayMetrics.DENSITY_DEVICE_STABLE;
             return originalSmallestWidth >= 600;
         }
         return false;
@@ -151,23 +142,22 @@ public final class Utilities {
      * Given a coordinate relative to the descendant, find the coordinate in a parent view's
      * coordinates.
      *
-     * @param descendant The descendant to which the passed coordinate is relative.
-     * @param ancestor The root view to make the coordinates relative to.
-     * @param coord The coordinate that we want mapped.
+     * @param descendant        The descendant to which the passed coordinate is relative.
+     * @param ancestor          The root view to make the coordinates relative to.
+     * @param coord             The coordinate that we want mapped.
      * @param includeRootScroll Whether or not to account for the scroll of the descendant:
-     *          sometimes this is relevant as in a child's coordinates within the descendant.
+     *                          sometimes this is relevant as in a child's coordinates within the descendant.
      * @return The factor by which this descendant is scaled relative to this DragLayer. Caution
-     *         this scale factor is assumed to be equal in X and Y, and so if at any point this
-     *         assumption fails, we will need to return a pair of scale factors.
+     * this scale factor is assumed to be equal in X and Y, and so if at any point this
+     * assumption fails, we will need to return a pair of scale factors.
      */
-    public static float getDescendantCoordRelativeToAncestor(
-            View descendant, View ancestor, int[] coord, boolean includeRootScroll) {
+    public static float getDescendantCoordRelativeToAncestor(View descendant, View ancestor, int[] coord, boolean includeRootScroll) {
         sPoint[0] = coord[0];
         sPoint[1] = coord[1];
 
         float scale = 1.0f;
         View v = descendant;
-        while(v != ancestor && v != null) {
+        while (v != ancestor && v != null) {
             // For TextViews, scroll has a meaning which relates to the text position
             // which is very strange... ignore the scroll.
             if (v != descendant || includeRootScroll) {
@@ -194,7 +184,7 @@ public final class Utilities {
     public static void mapCoordInSelfToDescendant(View descendant, View root, int[] coord) {
         sMatrix.reset();
         View v = descendant;
-        while(v != root) {
+        while (v != root) {
             sMatrix.postTranslate(-v.getScrollX(), -v.getScrollY());
             sMatrix.postConcat(v.getMatrix());
             sMatrix.postTranslate(v.getLeft(), v.getTop());
@@ -217,8 +207,7 @@ public final class Utilities {
      * is still within the view.
      */
     public static boolean pointInView(View v, float localX, float localY, float slop) {
-        return localX >= -slop && localY >= -slop && localX < (v.getWidth() + slop) &&
-                localY < (v.getHeight() + slop);
+        return localX >= -slop && localY >= -slop && localX < (v.getWidth() + slop) && localY < (v.getHeight() + slop);
     }
 
     public static int[] getCenterDeltaInScreenSpace(View v0, View v1) {
@@ -229,7 +218,7 @@ public final class Utilities {
         sLoc0[1] += (v0.getMeasuredHeight() * v0.getScaleY()) / 2;
         sLoc1[0] += (v1.getMeasuredWidth() * v1.getScaleX()) / 2;
         sLoc1[1] += (v1.getMeasuredHeight() * v1.getScaleY()) / 2;
-        return new int[] {sLoc1[0] - sLoc0[0], sLoc1[1] - sLoc0[1]};
+        return new int[]{sLoc1[0] - sLoc0[0], sLoc1[1] - sLoc0[1]};
     }
 
     public static void scaleRectAboutCenter(Rect r, float scale) {
@@ -276,8 +265,7 @@ public final class Utilities {
         if (packageName != null) {
             try {
                 PackageInfo info = pm.getPackageInfo(packageName, 0);
-                return (info != null) && (info.applicationInfo != null) &&
-                        ((info.applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) != 0);
+                return (info != null) && (info.applicationInfo != null) && ((info.applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) != 0);
             } catch (NameNotFoundException e) {
                 return false;
             }
@@ -288,7 +276,8 @@ public final class Utilities {
 
     /**
      * This picks a dominant color, looking for high-saturation, high-value, repeated hues.
-     * @param bitmap The bitmap to scan
+     *
+     * @param bitmap  The bitmap to scan
      * @param samples The approximate max number of samples to use.
      */
     public static int findDominantColorByHue(Bitmap bitmap, int samples) {
@@ -373,8 +362,7 @@ public final class Utilities {
     static Pair<String, Resources> findSystemApk(String action, PackageManager pm) {
         final Intent intent = new Intent(action);
         for (ResolveInfo info : pm.queryBroadcastReceivers(intent, 0)) {
-            if (info.activityInfo != null &&
-                    (info.activityInfo.applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) != 0) {
+            if (info.activityInfo != null && (info.activityInfo.applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) != 0) {
                 final String packageName = info.activityInfo.packageName;
                 try {
                     final Resources res = pm.getResourcesForApplication(packageName);
@@ -461,13 +449,7 @@ public final class Utilities {
      * @param launchIntent The intent that will be launched when the shortcut is clicked.
      */
     public static boolean isLauncherAppTarget(Intent launchIntent) {
-        if (launchIntent != null
-                && Intent.ACTION_MAIN.equals(launchIntent.getAction())
-                && launchIntent.getComponent() != null
-                && launchIntent.getCategories() != null
-                && launchIntent.getCategories().size() == 1
-                && launchIntent.hasCategory(Intent.CATEGORY_LAUNCHER)
-                && TextUtils.isEmpty(launchIntent.getDataString())) {
+        if (launchIntent != null && Intent.ACTION_MAIN.equals(launchIntent.getAction()) && launchIntent.getComponent() != null && launchIntent.getCategories() != null && launchIntent.getCategories().size() == 1 && launchIntent.hasCategory(Intent.CATEGORY_LAUNCHER) && TextUtils.isEmpty(launchIntent.getDataString())) {
             // An app target can either have no extra or have ItemInfo.EXTRA_PROFILE.
             Bundle extras = launchIntent.getExtras();
             return extras == null || extras.keySet().isEmpty();
@@ -475,17 +457,17 @@ public final class Utilities {
         return false;
     }
 
-    public static float dpiFromPx(int size, DisplayMetrics metrics){
+    public static float dpiFromPx(int size, DisplayMetrics metrics) {
         float densityRatio = (float) metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT;
         return (size / densityRatio);
     }
+
     public static int pxFromDp(float size, DisplayMetrics metrics) {
-        return (int) Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-                size, metrics));
+        return (int) Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, size, metrics));
     }
+
     public static int pxFromSp(float size, DisplayMetrics metrics) {
-        return (int) Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP,
-                size, metrics));
+        return (int) Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, size, metrics));
     }
 
     public static String createDbSelectionQuery(String columnName, Iterable<?> values) {
@@ -529,13 +511,13 @@ public final class Utilities {
     /**
      * Wraps a message with a TTS span, so that a different message is spoken than
      * what is getting displayed.
-     * @param msg original message
+     *
+     * @param msg    original message
      * @param ttsMsg message to be spoken
      */
     public static CharSequence wrapForTts(CharSequence msg, String ttsMsg) {
         SpannableString spanned = new SpannableString(msg);
-        spanned.setSpan(new TtsSpan.TextBuilder(ttsMsg).build(),
-                0, spanned.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+        spanned.setSpan(new TtsSpan.TextBuilder(ttsMsg).build(), 0, spanned.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
         return spanned;
     }
 
@@ -547,8 +529,7 @@ public final class Utilities {
     }
 
     public static SharedPreferences getPrefs(Context context) {
-        return context.getSharedPreferences(
-                LauncherFiles.SHARED_PREFERENCES_KEY, Context.MODE_PRIVATE);
+        return context.getSharedPreferences(LauncherFiles.SHARED_PREFERENCES_KEY, Context.MODE_PRIVATE);
     }
 
     public static boolean isPowerSaverOn(Context context) {
@@ -560,9 +541,9 @@ public final class Utilities {
         if (ATLEAST_NOUGAT) {
             try {
                 WallpaperManager wm = context.getSystemService(WallpaperManager.class);
-                return (Boolean) wm.getClass().getDeclaredMethod("isSetWallpaperAllowed")
-                        .invoke(wm);
-            } catch (Exception e) { }
+                return (Boolean) wm.getClass().getDeclaredMethod("isSetWallpaperAllowed").invoke(wm);
+            } catch (Exception e) {
+            }
         }
         return true;
     }
@@ -599,14 +580,15 @@ public final class Utilities {
         return true;
     }
 
-    /** Returns whether the collection is null or empty. */
+    /**
+     * Returns whether the collection is null or empty.
+     */
     public static boolean isEmpty(Collection c) {
         return c == null || c.isEmpty();
     }
 
     public static void sendCustomAccessibilityEvent(View target, int type, String text) {
-        AccessibilityManager accessibilityManager = (AccessibilityManager)
-                target.getContext().getSystemService(Context.ACCESSIBILITY_SERVICE);
+        AccessibilityManager accessibilityManager = (AccessibilityManager) target.getContext().getSystemService(Context.ACCESSIBILITY_SERVICE);
         if (accessibilityManager.isEnabled()) {
             AccessibilityEvent event = AccessibilityEvent.obtain(type);
             target.onInitializeAccessibilityEvent(event);
@@ -616,8 +598,7 @@ public final class Utilities {
     }
 
     public static boolean isBinderSizeError(Exception e) {
-        return e.getCause() instanceof TransactionTooLargeException
-                || e.getCause() instanceof DeadObjectException;
+        return e.getCause() instanceof TransactionTooLargeException || e.getCause() instanceof DeadObjectException;
     }
 
     public static <T> T getOverrideObject(Class<T> clazz, Context context, int resId) {
@@ -626,15 +607,14 @@ public final class Utilities {
             try {
                 Class<?> cls = Class.forName(className);
                 return (T) cls.getDeclaredConstructor(Context.class).newInstance(context);
-            } catch (ClassNotFoundException | InstantiationException | IllegalAccessException
-                    | ClassCastException | NoSuchMethodException | InvocationTargetException e) {
+            } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | ClassCastException | NoSuchMethodException | InvocationTargetException e) {
                 Log.e(TAG, "Bad overriden class", e);
             }
         }
 
         try {
             return clazz.newInstance();
-        } catch (InstantiationException|IllegalAccessException e) {
+        } catch (InstantiationException | IllegalAccessException e) {
             throw new RuntimeException(e);
         }
     }
@@ -649,10 +629,10 @@ public final class Utilities {
         return hashSet;
     }
 
-	public static boolean mIsDSP = false;
+    public static boolean mIsDSP = false;
 
-	public static String mIconPath = "/mnt/paramter/icon/";
+    public static String mIconPath = "/mnt/paramter/icon/";
 
-	public static boolean mDark = false;
-	public static int mDarkSwitch = 0;
+    public static boolean mDark = false;
+    public static int mDarkSwitch = 0;
 }

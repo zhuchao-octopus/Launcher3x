@@ -16,7 +16,6 @@
 package com.android.launcher3.logging;
 
 import android.content.Context;
-import android.os.UserHandle;
 import android.os.UserManager;
 import android.text.TextUtils;
 
@@ -213,17 +212,18 @@ public class DumpTargetWrapper {
             builder.setComponent(((LauncherAppWidgetInfo) info).providerName.flattenToString());
             builder.setPackageName(((LauncherAppWidgetInfo) info).providerName.getPackageName());
         }
-        builder.setGridX(info.cellX);builder.setGridY(info.cellY);
+        builder.setGridX(info.cellX);
+        builder.setGridY(info.cellY);
         builder.setSpanX(info.spanX);
         builder.setSpanY(info.spanY);
-        if(mContext != null) {
+        if (mContext != null) {
             UserManager userManager = (UserManager) mContext.getSystemService(Context.USER_SERVICE);
             // Get the serial number of the current user
             long currentUserSerial = userManager.getSerialNumberForUser(android.os.Process.myUserHandle());
             // Get the serial number of info.user
             long infoUserSerial = userManager.getSerialNumberForUser(info.user);
         }
-        builder.setUserType((info.user.equals(android.os.Process.myUserHandle()))? LauncherDumpProto.UserType.DEFAULT : LauncherDumpProto.UserType.WORK);
+        builder.setUserType((info.user.equals(android.os.Process.myUserHandle())) ? LauncherDumpProto.UserType.DEFAULT : LauncherDumpProto.UserType.WORK);
         return builder.build();
     }
 }

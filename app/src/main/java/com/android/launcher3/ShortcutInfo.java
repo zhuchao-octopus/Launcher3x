@@ -139,7 +139,9 @@ public class ShortcutInfo extends ItemInfoWithIcon {
         isDisabled = info.isDisabled;
     }
 
-    /** TODO: Remove this.  It's only called by ApplicationInfo.makeShortcut. */
+    /**
+     * TODO: Remove this.  It's only called by ApplicationInfo.makeShortcut.
+     */
     public ShortcutInfo(AppInfo info) {
         super(info);
         title = Utilities.trim(info.title);
@@ -160,17 +162,13 @@ public class ShortcutInfo extends ItemInfoWithIcon {
     @Override
     public void onAddToDatabase(ContentWriter writer) {
         super.onAddToDatabase(writer);
-        writer.put(LauncherSettings.BaseLauncherColumns.TITLE, title)
-                .put(LauncherSettings.BaseLauncherColumns.INTENT, getIntent())
-                .put(LauncherSettings.Favorites.RESTORED, status);
+        writer.put(LauncherSettings.BaseLauncherColumns.TITLE, title).put(LauncherSettings.BaseLauncherColumns.INTENT, getIntent()).put(LauncherSettings.Favorites.RESTORED, status);
 
         if (!usingLowResIcon) {
             writer.putIcon(iconBitmap, user);
         }
         if (iconResource != null) {
-            writer.put(LauncherSettings.BaseLauncherColumns.ICON_PACKAGE, iconResource.packageName)
-                    .put(LauncherSettings.BaseLauncherColumns.ICON_RESOURCE,
-                            iconResource.resourceName);
+            writer.put(LauncherSettings.BaseLauncherColumns.ICON_PACKAGE, iconResource.packageName).put(LauncherSettings.BaseLauncherColumns.ICON_RESOURCE, iconResource.resourceName);
         }
     }
 
@@ -206,8 +204,7 @@ public class ShortcutInfo extends ItemInfoWithIcon {
         if (TextUtils.isEmpty(label)) {
             label = shortcutInfo.getShortLabel();
         }
-        contentDescription = UserManagerCompat.getInstance(context)
-                .getBadgedLabelForUser(label, user);
+        contentDescription = UserManagerCompat.getInstance(context).getBadgedLabelForUser(label, user);
         if (shortcutInfo.isEnabled()) {
             isDisabled &= ~FLAG_DISABLED_BY_PUBLISHER;
         } else {
@@ -216,10 +213,11 @@ public class ShortcutInfo extends ItemInfoWithIcon {
         disabledMessage = shortcutInfo.getDisabledMessage();
     }
 
-    /** Returns the ShortcutInfo id associated with the deep shortcut. */
+    /**
+     * Returns the ShortcutInfo id associated with the deep shortcut.
+     */
     public String getDeepShortcutId() {
-        return itemType == Favorites.ITEM_TYPE_DEEP_SHORTCUT ?
-                getIntent().getStringExtra(ShortcutInfoCompat.EXTRA_SHORTCUT_ID) : null;
+        return itemType == Favorites.ITEM_TYPE_DEEP_SHORTCUT ? getIntent().getStringExtra(ShortcutInfoCompat.EXTRA_SHORTCUT_ID) : null;
     }
 
     @Override

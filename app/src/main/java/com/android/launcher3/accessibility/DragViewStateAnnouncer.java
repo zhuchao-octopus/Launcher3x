@@ -59,8 +59,7 @@ public class DragViewStateAnnouncer implements Runnable {
     }
 
     public static DragViewStateAnnouncer createFor(View v) {
-        if (((AccessibilityManager) v.getContext().getSystemService(Context.ACCESSIBILITY_SERVICE))
-                .isEnabled()) {
+        if (((AccessibilityManager) v.getContext().getSystemService(Context.ACCESSIBILITY_SERVICE)).isEnabled()) {
             return new DragViewStateAnnouncer(v);
         } else {
             return null;

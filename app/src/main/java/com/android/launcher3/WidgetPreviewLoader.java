@@ -67,8 +67,8 @@ public class WidgetPreviewLoader {
      * Note: synchronized block used for this variable is expensive and the block should always
      * be posted to a background thread.
      */
-    @Thunk final Set<Bitmap> mUnusedBitmaps =
-            Collections.newSetFromMap(new WeakHashMap<Bitmap, Boolean>());
+    @Thunk
+    final Set<Bitmap> mUnusedBitmaps = Collections.newSetFromMap(new WeakHashMap<Bitmap, Boolean>());
 
     private final Context mContext;
     private final IconCache mIconCache;
@@ -77,7 +77,8 @@ public class WidgetPreviewLoader {
     private final CacheDb mDb;
 
     private final MainThreadExecutor mMainThreadExecutor = new MainThreadExecutor();
-    @Thunk final Handler mWorkerHandler;
+    @Thunk
+    final Handler mWorkerHandler;
 
     public WidgetPreviewLoader(Context context, IconCache iconCache) {
         mContext = context;
@@ -94,13 +95,11 @@ public class WidgetPreviewLoader {
      *
      * @return a request id which can be used to cancel the request.
      */
-    public CancellationSignal getPreview(WidgetItem item, int previewWidth,
-            int previewHeight, WidgetCell caller, boolean animate) {
+    public CancellationSignal getPreview(WidgetItem item, int previewWidth, int previewHeight, WidgetCell caller, boolean animate) {
         String size = previewWidth + "x" + previewHeight;
         WidgetCacheKey key = new WidgetCacheKey(item.componentName, item.user, size);
 
-        PreviewLoadTask task = new PreviewLoadTask(key, item, previewWidth, previewHeight, caller,
-                animate);
+        PreviewLoadTask task = new PreviewLoadTask(key, item, previewWidth, previewHeight, caller, animate);
         task.executeOnExecutor(Utilities.THREAD_POOL_EXECUTOR);
 
         CancellationSignal signal = new CancellationSignal();
@@ -130,20 +129,12 @@ public class WidgetPreviewLoader {
 
         @Override
         public void onCreateTable(SQLiteDatabase database) {
-            database.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" +
-                    COLUMN_COMPONENT + " TEXT NOT NULL, " +
-                    COLUMN_USER + " INTEGER NOT NULL, " +
-                    COLUMN_SIZE + " TEXT NOT NULL, " +
-                    COLUMN_PACKAGE + " TEXT NOT NULL, " +
-                    COLUMN_LAST_UPDATED + " INTEGER NOT NULL DEFAULT 0, " +
-                    COLUMN_VERSION + " INTEGER NOT NULL DEFAULT 0, " +
-                    COLUMN_PREVIEW_BITMAP + " BLOB, " +
-                    "PRIMARY KEY (" + COLUMN_COMPONENT + ", " + COLUMN_USER + ", " + COLUMN_SIZE + ") " +
-                    ");");
+            database.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" + COLUMN_COMPONENT + " TEXT NOT NULL, " + COLUMN_USER + " INTEGER NOT NULL, " + COLUMN_SIZE + " TEXT NOT NULL, " + COLUMN_PACKAGE + " TEXT NOT NULL, " + COLUMN_LAST_UPDATED + " INTEGER NOT NULL DEFAULT 0, " + COLUMN_VERSION + " INTEGER NOT NULL DEFAULT 0, " + COLUMN_PREVIEW_BITMAP + " BLOB, " + "PRIMARY KEY (" + COLUMN_COMPONENT + ", " + COLUMN_USER + ", " + COLUMN_SIZE + ") " + ");");
         }
     }
 
-    @Thunk void writeToDb(WidgetCacheKey key, long[] versions, Bitmap preview) {
+    @Thunk
+    void writeToDb(WidgetCacheKey key, long[] versions, Bitmap preview) {
         ContentValues values = new ContentValues();
         values.put(CacheDb.COLUMN_COMPONENT, key.componentName.flattenToShortString());
         values.put(CacheDb.COLUMN_USER, mUserManager.getSerialNumberForUser(key.user));
@@ -160,26 +151,23 @@ public class WidgetPreviewLoader {
     }
 
     private void removePackage(String packageName, UserHandle user, long userSerial) {
-        synchronized(mPackageVersions) {
+        synchronized (mPackageVersions) {
             mPackageVersions.remove(packageName);
         }
 
-        mDb.delete(
-                CacheDb.COLUMN_PACKAGE + " = ? AND " + CacheDb.COLUMN_USER + " = ?",
-                new String[]{packageName, Long.toString(userSerial)});
+        mDb.delete(CacheDb.COLUMN_PACKAGE + " = ? AND " + CacheDb.COLUMN_USER + " = ?", new String[]{packageName, Long.toString(userSerial)});
     }
 
     /**
      * Updates the persistent DB:
-     *   1. Any preview generated for an old package version is removed
-     *   2. Any preview for an absent package is removed
+     * 1. Any preview generated for an old package version is removed
+     * 2. Any preview for an absent package is removed
      * This ensures that we remove entries for packages which changed while the launcher was dead.
      *
      * @param packageUser if provided, specifies that list only contains previews for the
      *                    given package/user, otherwise the list contains all previews
      */
-    public void removeObsoletePreviews(ArrayList<? extends ComponentKey> list,
-            @Nullable PackageUserKey packageUser) {
+    public void removeObsoletePreviews(ArrayList<? extends ComponentKey> list, @Nullable PackageUserKey packageUser) {
         Preconditions.assertWorkerThread();
 
         LongSparseArray<HashSet<String>> validPackages = new LongSparseArray<>();
@@ -195,22 +183,19 @@ public class WidgetPreviewLoader {
         }
 
         LongSparseArray<HashSet<String>> packagesToDelete = new LongSparseArray<>();
-        long passedUserId = packageUser == null ? 0
-                : mUserManager.getSerialNumberForUser(packageUser.mUser);
+        long passedUserId = packageUser == null ? 0 : mUserManager.getSerialNumberForUser(packageUser.mUser);
         Cursor c = null;
         try {
-            c = mDb.query(
-                    new String[]{CacheDb.COLUMN_USER, CacheDb.COLUMN_PACKAGE,
-                            CacheDb.COLUMN_LAST_UPDATED, CacheDb.COLUMN_VERSION},
-                    null, null);
+            c = mDb.query(new String[]{
+                    CacheDb.COLUMN_USER, CacheDb.COLUMN_PACKAGE, CacheDb.COLUMN_LAST_UPDATED, CacheDb.COLUMN_VERSION
+            }, null, null);
             while (c.moveToNext()) {
                 long userId = c.getLong(0);
                 String pkg = c.getString(1);
                 long lastUpdated = c.getLong(2);
                 long version = c.getLong(3);
 
-                if (packageUser != null && (!pkg.equals(packageUser.mPackageName)
-                        || userId != passedUserId)) {
+                if (packageUser != null && (!pkg.equals(packageUser.mPackageName) || userId != passedUserId)) {
                     // This preview is associated with a different package/user, no need to remove.
                     continue;
                 }
@@ -252,18 +237,13 @@ public class WidgetPreviewLoader {
     /**
      * Reads the preview bitmap from the DB or null if the preview is not in the DB.
      */
-    @Thunk Bitmap readFromDb(WidgetCacheKey key, Bitmap recycle, PreviewLoadTask loadTask) {
+    @Thunk
+    Bitmap readFromDb(WidgetCacheKey key, Bitmap recycle, PreviewLoadTask loadTask) {
         Cursor cursor = null;
         try {
-            cursor = mDb.query(
-                    new String[]{CacheDb.COLUMN_PREVIEW_BITMAP},
-                    CacheDb.COLUMN_COMPONENT + " = ? AND " + CacheDb.COLUMN_USER + " = ? AND "
-                            + CacheDb.COLUMN_SIZE + " = ?",
-                    new String[]{
-                            key.componentName.flattenToShortString(),
-                            Long.toString(mUserManager.getSerialNumberForUser(key.user)),
-                            key.size
-                    });
+            cursor = mDb.query(new String[]{CacheDb.COLUMN_PREVIEW_BITMAP}, CacheDb.COLUMN_COMPONENT + " = ? AND " + CacheDb.COLUMN_USER + " = ? AND " + CacheDb.COLUMN_SIZE + " = ?", new String[]{
+                    key.componentName.flattenToShortString(), Long.toString(mUserManager.getSerialNumberForUser(key.user)), key.size
+            });
             // If cancelled, skip getting the blob and decoding it into a bitmap
             if (loadTask.isCancelled()) {
                 return null;
@@ -290,14 +270,11 @@ public class WidgetPreviewLoader {
         return null;
     }
 
-    private Bitmap generatePreview(BaseActivity launcher, WidgetItem item, Bitmap recycle,
-            int previewWidth, int previewHeight) {
+    private Bitmap generatePreview(BaseActivity launcher, WidgetItem item, Bitmap recycle, int previewWidth, int previewHeight) {
         if (item.widgetInfo != null) {
-            return generateWidgetPreview(launcher, item.widgetInfo,
-                    previewWidth, recycle, null);
+            return generateWidgetPreview(launcher, item.widgetInfo, previewWidth, recycle, null);
         } else {
-            return generateShortcutPreview(launcher, item.activityInfo,
-                    previewWidth, previewHeight, recycle);
+            return generateShortcutPreview(launcher, item.activityInfo, previewWidth, previewHeight, recycle);
         }
     }
 
@@ -306,14 +283,13 @@ public class WidgetPreviewLoader {
      * and add badge at the bottom right corner.
      *
      * @param launcher
-     * @param info                        information about the widget
-     * @param maxPreviewWidth             width of the preview on either workspace or tray
-     * @param preview                     bitmap that can be recycled
-     * @param preScaledWidthOut           return the width of the returned bitmap
+     * @param info              information about the widget
+     * @param maxPreviewWidth   width of the preview on either workspace or tray
+     * @param preview           bitmap that can be recycled
+     * @param preScaledWidthOut return the width of the returned bitmap
      * @return
      */
-    public Bitmap generateWidgetPreview(BaseActivity launcher, LauncherAppWidgetProviderInfo info,
-            int maxPreviewWidth, Bitmap preview, int[] preScaledWidthOut) {
+    public Bitmap generateWidgetPreview(BaseActivity launcher, LauncherAppWidgetProviderInfo info, int maxPreviewWidth, Bitmap preview, int[] preScaledWidthOut) {
         // Load the preview image if possible
         if (maxPreviewWidth < 0) maxPreviewWidth = Integer.MAX_VALUE;
 
@@ -330,8 +306,7 @@ public class WidgetPreviewLoader {
             if (drawable != null) {
                 drawable = mutateOnMainThread(drawable);
             } else {
-                Log.w(TAG, "Can't load widget preview drawable 0x" +
-                        Integer.toHexString(info.previewImage) + " for provider: " + info.provider);
+                Log.w(TAG, "Can't load widget preview drawable 0x" + Integer.toHexString(info.previewImage) + " for provider: " + info.provider);
             }
         }
 
@@ -394,8 +369,7 @@ public class WidgetPreviewLoader {
 
             // Draw horizontal and vertical lines to represent individual columns.
             p.setStyle(Paint.Style.STROKE);
-            p.setStrokeWidth(mContext.getResources()
-                    .getDimension(R.dimen.widget_preview_cell_divider_width));
+            p.setStrokeWidth(mContext.getResources().getDimension(R.dimen.widget_preview_cell_divider_width));
             p.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
 
             float t = boxRect.left;
@@ -417,8 +391,7 @@ public class WidgetPreviewLoader {
                 Drawable icon = info.getIcon(launcher, mIconCache);
                 if (icon != null) {
                     int appIconSize = launcher.getDeviceProfile().iconSizePx;
-                    int iconSize = (int) Math.min(appIconSize * scale,
-                            Math.min(boxRect.width(), boxRect.height()));
+                    int iconSize = (int) Math.min(appIconSize * scale, Math.min(boxRect.width(), boxRect.height()));
 
                     icon = mutateOnMainThread(icon);
                     int hoffset = (previewWidth - iconSize) / 2;
@@ -426,7 +399,8 @@ public class WidgetPreviewLoader {
                     icon.setBounds(hoffset, yoffset, hoffset + iconSize, yoffset + iconSize);
                     icon.draw(c);
                 }
-            } catch (Resources.NotFoundException e) { }
+            } catch (Resources.NotFoundException e) {
+            }
             c.setBitmap(null);
         }
         return preview;
@@ -438,29 +412,24 @@ public class WidgetPreviewLoader {
         float keyShadowDistance = res.getDimension(R.dimen.widget_preview_key_shadow_distance);
         float corner = res.getDimension(R.dimen.widget_preview_corner_radius);
 
-        RectF bounds = new RectF(shadowBlur, shadowBlur,
-                width - shadowBlur, height - shadowBlur - keyShadowDistance);
+        RectF bounds = new RectF(shadowBlur, shadowBlur, width - shadowBlur, height - shadowBlur - keyShadowDistance);
         p.setColor(Color.WHITE);
 
         // Key shadow
-        p.setShadowLayer(shadowBlur, 0, keyShadowDistance,
-                ShadowGenerator.KEY_SHADOW_ALPHA << 24);
+        p.setShadowLayer(shadowBlur, 0, keyShadowDistance, ShadowGenerator.KEY_SHADOW_ALPHA << 24);
         c.drawRoundRect(bounds, corner, corner, p);
 
         // Ambient shadow
-        p.setShadowLayer(shadowBlur, 0, 0,
-                ColorUtils.setAlphaComponent(Color.BLACK, ShadowGenerator.AMBIENT_SHADOW_ALPHA));
+        p.setShadowLayer(shadowBlur, 0, 0, ColorUtils.setAlphaComponent(Color.BLACK, ShadowGenerator.AMBIENT_SHADOW_ALPHA));
         c.drawRoundRect(bounds, corner, corner, p);
 
         p.clearShadowLayer();
         return bounds;
     }
 
-    private Bitmap generateShortcutPreview(BaseActivity launcher, ShortcutConfigActivityInfo info,
-            int maxWidth, int maxHeight, Bitmap preview) {
+    private Bitmap generateShortcutPreview(BaseActivity launcher, ShortcutConfigActivityInfo info, int maxWidth, int maxHeight, Bitmap preview) {
         int iconSize = launcher.getDeviceProfile().iconSizePx;
-        int padding = launcher.getResources()
-                .getDimensionPixelSize(R.dimen.widget_preview_shortcut_padding);
+        int padding = launcher.getResources().getDimensionPixelSize(R.dimen.widget_preview_shortcut_padding);
 
         int size = iconSize + 2 * padding;
         if (maxHeight < size || maxWidth < size) {
@@ -482,8 +451,7 @@ public class WidgetPreviewLoader {
         Paint p = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG);
         RectF boxRect = drawBoxWithShadow(c, p, size, size);
 
-        Bitmap icon = LauncherIcons.createScaledBitmapWithoutShadow(
-                mutateOnMainThread(info.getFullResIcon(mIconCache)), mContext, Build.VERSION_CODES.O);
+        Bitmap icon = LauncherIcons.createScaledBitmapWithoutShadow(mutateOnMainThread(info.getFullResIcon(mIconCache)), mContext, Build.VERSION_CODES.O);
         Rect src = new Rect(0, 0, icon.getWidth(), icon.getHeight());
 
         boxRect.set(0, 0, iconSize, iconSize);
@@ -512,14 +480,14 @@ public class WidgetPreviewLoader {
     /**
      * @return an array of containing versionCode and lastUpdatedTime for the package.
      */
-    @Thunk long[] getPackageVersion(String packageName) {
+    @Thunk
+    long[] getPackageVersion(String packageName) {
         synchronized (mPackageVersions) {
             long[] versions = mPackageVersions.get(packageName);
             if (versions == null) {
                 versions = new long[2];
                 try {
-                    PackageInfo info = mContext.getPackageManager().getPackageInfo(packageName,
-                            PackageManager.GET_UNINSTALLED_PACKAGES);
+                    PackageInfo info = mContext.getPackageManager().getPackageInfo(packageName, PackageManager.GET_UNINSTALLED_PACKAGES);
                     versions[0] = info.versionCode;
                     versions[1] = info.lastUpdateTime;
                 } catch (NameNotFoundException e) {
@@ -531,20 +499,21 @@ public class WidgetPreviewLoader {
         }
     }
 
-    public class PreviewLoadTask extends AsyncTask<Void, Void, Bitmap>
-            implements CancellationSignal.OnCancelListener {
-        @Thunk final WidgetCacheKey mKey;
+    public class PreviewLoadTask extends AsyncTask<Void, Void, Bitmap> implements CancellationSignal.OnCancelListener {
+        @Thunk
+        final WidgetCacheKey mKey;
         private final WidgetItem mInfo;
         private final int mPreviewHeight;
         private final int mPreviewWidth;
         private final WidgetCell mCaller;
         private final boolean mAnimatePreviewIn;
         private final BaseActivity mActivity;
-        @Thunk long[] mVersions;
-        @Thunk Bitmap mBitmapToRecycle;
+        @Thunk
+        long[] mVersions;
+        @Thunk
+        Bitmap mBitmapToRecycle;
 
-        PreviewLoadTask(WidgetCacheKey key, WidgetItem info, int previewWidth,
-                int previewHeight, WidgetCell caller, boolean animate) {
+        PreviewLoadTask(WidgetCacheKey key, WidgetItem info, int previewWidth, int previewHeight, WidgetCell caller, boolean animate) {
             mKey = key;
             mInfo = info;
             mPreviewHeight = previewHeight;
@@ -553,8 +522,7 @@ public class WidgetPreviewLoader {
             mAnimatePreviewIn = animate;
             mActivity = BaseActivity.fromContext(mCaller.getContext());
             if (DEBUG) {
-                Log.d(TAG, String.format("%s, %s, %d, %d",
-                        mKey, mInfo, mPreviewHeight, mPreviewWidth));
+                Log.d(TAG, String.format("%s, %s, %d, %d", mKey, mInfo, mPreviewHeight, mPreviewWidth));
             }
         }
 
@@ -569,9 +537,7 @@ public class WidgetPreviewLoader {
             synchronized (mUnusedBitmaps) {
                 // Check if we can re-use a bitmap
                 for (Bitmap candidate : mUnusedBitmaps) {
-                    if (candidate != null && candidate.isMutable() &&
-                            candidate.getWidth() == mPreviewWidth &&
-                            candidate.getHeight() == mPreviewHeight) {
+                    if (candidate != null && candidate.isMutable() && candidate.getWidth() == mPreviewWidth && candidate.getHeight() == mPreviewHeight) {
                         unusedBitmap = candidate;
                         mUnusedBitmaps.remove(unusedBitmap);
                         break;
@@ -593,10 +559,8 @@ public class WidgetPreviewLoader {
                 // Fetch the version info before we generate the preview, so that, in-case the
                 // app was updated while we are generating the preview, we use the old version info,
                 // which would gets re-written next time.
-                boolean persistable = mInfo.activityInfo == null
-                        || mInfo.activityInfo.isPersistable();
-                mVersions = persistable ? getPackageVersion(mKey.componentName.getPackageName())
-                        : null;
+                boolean persistable = mInfo.activityInfo == null || mInfo.activityInfo.isPersistable();
+                mVersions = persistable ? getPackageVersion(mKey.componentName.getPackageName()) : null;
 
                 // it's not in the db... we need to generate it
                 preview = generatePreview(mActivity, mInfo, unusedBitmap, mPreviewWidth, mPreviewHeight);
@@ -676,7 +640,8 @@ public class WidgetPreviewLoader {
 
     private static final class WidgetCacheKey extends ComponentKey {
 
-        @Thunk final String size;
+        @Thunk
+        final String size;
 
         public WidgetCacheKey(ComponentName componentName, UserHandle user, String size) {
             super(componentName, user);

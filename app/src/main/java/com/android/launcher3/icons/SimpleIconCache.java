@@ -48,8 +48,7 @@ public class SimpleIconCache extends BaseIconCache {
     private final SparseLongArray mUserSerialMap = new SparseLongArray(2);
     private final UserManager mUserManager;
 
-    public SimpleIconCache(Context context, String dbFileName, Looper bgLooper, int iconDpi,
-            int iconPixelSize, boolean inMemoryCache) {
+    public SimpleIconCache(Context context, String dbFileName, Looper bgLooper, int iconDpi, int iconPixelSize, boolean inMemoryCache) {
         super(context, dbFileName, bgLooper, iconDpi, iconPixelSize, inMemoryCache);
         mUserManager = context.getSystemService(UserManager.class);
 
@@ -77,11 +76,13 @@ public class SimpleIconCache extends BaseIconCache {
             return serial;
         }
     }
+
     // 假设有一个方法可以获取用户的唯一ID
     private int getUserId(UserHandle user) {
         // 实现获取用户ID的逻辑
         return user.hashCode(); // 示例：使用hashCode作为用户ID
     }
+
     private void resetUserCache() {
         synchronized (mUserSerialMap) {
             mUserSerialMap.clear();
@@ -110,17 +111,13 @@ public class SimpleIconCache extends BaseIconCache {
             if (sIconCache != null) {
                 return sIconCache;
             }
-            boolean inMemoryCache =
-                    context.getResources().getBoolean(R.bool.simple_cache_enable_im_memory);
+            boolean inMemoryCache = context.getResources().getBoolean(R.bool.simple_cache_enable_im_memory);
             String dbFileName = context.getString(R.string.cache_db_name);
 
             HandlerThread bgThread = new HandlerThread("simple-icon-cache");
             bgThread.start();
 
-            sIconCache = new SimpleIconCache(context.getApplicationContext(), dbFileName,
-                    bgThread.getLooper(), context.getResources().getConfiguration().densityDpi,
-                    context.getResources().getDimensionPixelSize(R.dimen.default_icon_bitmap_size),
-                    inMemoryCache);
+            sIconCache = new SimpleIconCache(context.getApplicationContext(), dbFileName, bgThread.getLooper(), context.getResources().getConfiguration().densityDpi, context.getResources().getDimensionPixelSize(R.dimen.default_icon_bitmap_size), inMemoryCache);
             return sIconCache;
         }
     }

@@ -6,7 +6,6 @@ import android.os.Message;
 import android.util.Log;
 import android.util.Pair;
 
-import com.android.launcher3.LauncherModel;
 import com.android.launcher3.Utilities;
 import com.android.launcher3.config.ProviderConfig;
 
@@ -24,15 +23,14 @@ import java.util.concurrent.TimeUnit;
 /**
  * Wrapper around {@link Log} to allow writing to a file.
  * This class can safely be called from main thread.
- *
+ * <p>
  * Note: This should only be used for logging errors which have a persistent effect on user's data,
  * but whose effect may not be visible immediately.
  */
 public final class FileLog {
 
     private static final String FILE_NAME_PREFIX = "log-";
-    private static final DateFormat DATE_FORMAT =
-            DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT);
+    private static final DateFormat DATE_FORMAT = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT);
 
     private static final long MAX_LOG_FILE_SIZE = 4 << 20;  // 4 mb
 
@@ -100,6 +98,7 @@ public final class FileLog {
 
     /**
      * Blocks until all the pending logs are written to the disk
+     *
      * @param out if not null, all the persisted logs are copied to the writer.
      */
     public static void flushAll(PrintWriter out) throws InterruptedException {
@@ -107,8 +106,7 @@ public final class FileLog {
             return;
         }
         CountDownLatch latch = new CountDownLatch(1);
-        Message.obtain(getHandler(), LogWriterCallback.MSG_FLUSH,
-                Pair.create(out, latch)).sendToTarget();
+        Message.obtain(getHandler(), LogWriterCallback.MSG_FLUSH, Pair.create(out, latch)).sendToTarget();
 
         latch.await(2, TimeUnit.SECONDS);
     }
@@ -162,8 +160,7 @@ public final class FileLog {
                                 // If the file was modified more that 36 hours ago, purge the file.
                                 // We use instead of 24 to account for day-365 followed by day-1
                                 modifiedTime.add(Calendar.HOUR, 36);
-                                append = cal.before(modifiedTime)
-                                        && logFile.length() < MAX_LOG_FILE_SIZE;
+                                append = cal.before(modifiedTime) && logFile.length() < MAX_LOG_FILE_SIZE;
                             }
                             mCurrentWriter = new PrintWriter(new FileWriter(logFile, append));
                         }
@@ -187,8 +184,7 @@ public final class FileLog {
                 }
                 case MSG_FLUSH: {
                     closeWriter();
-                    Pair<PrintWriter, CountDownLatch> p =
-                            (Pair<PrintWriter, CountDownLatch>) msg.obj;
+                    Pair<PrintWriter, CountDownLatch> p = (Pair<PrintWriter, CountDownLatch>) msg.obj;
 
                     if (p.first != null) {
                         dumpFile(p.first, FILE_NAME_PREFIX + 0);

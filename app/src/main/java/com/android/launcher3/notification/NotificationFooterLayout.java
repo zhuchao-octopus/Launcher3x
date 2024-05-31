@@ -86,11 +86,9 @@ public class NotificationFooterLayout extends FrameLayout {
         // Compute margin start for each icon such that the icons between the first one
         // and the ellipsis are evenly spaced out.
         int paddingEnd = res.getDimensionPixelSize(R.dimen.notification_footer_icon_row_padding);
-        int ellipsisSpace = res.getDimensionPixelSize(R.dimen.horizontal_ellipsis_offset)
-                + res.getDimensionPixelSize(R.dimen.horizontal_ellipsis_size);
+        int ellipsisSpace = res.getDimensionPixelSize(R.dimen.horizontal_ellipsis_offset) + res.getDimensionPixelSize(R.dimen.horizontal_ellipsis_size);
         int footerWidth = res.getDimensionPixelSize(R.dimen.bg_popup_item_width);
-        int availableIconRowSpace = footerWidth - paddingEnd - ellipsisSpace
-                - iconSize * MAX_FOOTER_NOTIFICATIONS;
+        int availableIconRowSpace = footerWidth - paddingEnd - ellipsisSpace - iconSize * MAX_FOOTER_NOTIFICATIONS;
         mIconLayoutParams.setMarginStart(availableIconRowSpace / MAX_FOOTER_NOTIFICATIONS);
     }
 
@@ -134,6 +132,7 @@ public class NotificationFooterLayout extends FrameLayout {
 
     /**
      * Creates an icon for the given NotificationInfo, and adds it to the icon row.
+     *
      * @return the icon view that was added
      */
     private View addNotificationIconForInfo(NotificationInfo info) {
@@ -146,17 +145,14 @@ public class NotificationFooterLayout extends FrameLayout {
         return icon;
     }
 
-    public void animateFirstNotificationTo(Rect toBounds,
-            final IconAnimationEndListener callback) {
+    public void animateFirstNotificationTo(Rect toBounds, final IconAnimationEndListener callback) {
         AnimatorSet animation = LauncherAnimUtils.createAnimatorSet();
         final View firstNotification = mIconRow.getChildAt(mIconRow.getChildCount() - 1);
 
         Rect fromBounds = sTempRect;
         firstNotification.getGlobalVisibleRect(fromBounds);
         float scale = (float) toBounds.height() / fromBounds.height();
-        Animator moveAndScaleIcon = LauncherAnimUtils.ofPropertyValuesHolder(firstNotification,
-                new PropertyListBuilder().scale(scale).translationY(toBounds.top - fromBounds.top
-                        + (fromBounds.height() * scale - fromBounds.height()) / 2).build());
+        Animator moveAndScaleIcon = LauncherAnimUtils.ofPropertyValuesHolder(firstNotification, new PropertyListBuilder().scale(scale).translationY(toBounds.top - fromBounds.top + (fromBounds.height() * scale - fromBounds.height()) / 2).build());
         moveAndScaleIcon.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
@@ -180,8 +176,7 @@ public class NotificationFooterLayout extends FrameLayout {
         int numIcons = mIconRow.getChildCount() - 1; // All children besides the one leaving.
         // We have to reset the translation X to 0 when the new main notification
         // is removed from the footer.
-        PropertyResetListener<View, Float> propertyResetListener
-                = new PropertyResetListener<>(TRANSLATION_X, 0f);
+        PropertyResetListener<View, Float> propertyResetListener = new PropertyResetListener<>(TRANSLATION_X, 0f);
         for (int i = 0; i < numIcons; i++) {
             final View child = mIconRow.getChildAt(i);
             Animator shiftChild = ObjectAnimator.ofFloat(child, TRANSLATION_X, gapWidth);
@@ -197,11 +192,9 @@ public class NotificationFooterLayout extends FrameLayout {
         updateOverflowEllipsisVisibility();
         if (mIconRow.getChildCount() == 0) {
             // There are no more icons in the footer, so hide it.
-            PopupContainerWithArrow popup = PopupContainerWithArrow.getOpen(
-                    Launcher.getLauncher(getContext()));
+            PopupContainerWithArrow popup = PopupContainerWithArrow.getOpen(Launcher.getLauncher(getContext()));
             if (popup != null) {
-                Animator collapseFooter = popup.reduceNotificationViewHeight(getHeight(),
-                        getResources().getInteger(R.integer.config_removeNotificationViewDuration));
+                Animator collapseFooter = popup.reduceNotificationViewHeight(getHeight(), getResources().getInteger(R.integer.config_removeNotificationViewDuration));
                 collapseFooter.addListener(new AnimatorListenerAdapter() {
                     @Override
                     public void onAnimationEnd(Animator animation) {

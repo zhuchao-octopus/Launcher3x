@@ -50,8 +50,7 @@ class PinShortcutRequestActivityInfo extends ShortcutConfigActivityInfo {
     private final Context mContext;
 
     public PinShortcutRequestActivityInfo(PinItemRequestCompat request, Context context) {
-        super(new ComponentName(request.getShortcutInfo().getPackage(), DUMMY_COMPONENT_CLASS),
-                request.getShortcutInfo().getUserHandle());
+        super(new ComponentName(request.getShortcutInfo().getPackage(), DUMMY_COMPONENT_CLASS), request.getShortcutInfo().getUserHandle());
         mRequest = request;
         mInfo = request.getShortcutInfo();
         mContext = context;
@@ -69,19 +68,15 @@ class PinShortcutRequestActivityInfo extends ShortcutConfigActivityInfo {
 
     @Override
     public Drawable getFullResIcon(IconCache cache) {
-        return mContext.getSystemService(LauncherApps.class)
-                .getShortcutIconDrawable(mInfo, LauncherAppState.getIDP(mContext).fillResIconDpi);
+        return mContext.getSystemService(LauncherApps.class).getShortcutIconDrawable(mInfo, LauncherAppState.getIDP(mContext).fillResIconDpi);
     }
 
     @Override
     public com.android.launcher3.ShortcutInfo createShortcutInfo() {
         // Total duration for the drop animation to complete.
-        long duration = mContext.getResources().getInteger(R.integer.config_dropAnimMaxDuration) +
-                Launcher.EXIT_SPRINGLOADED_MODE_SHORT_TIMEOUT +
-                mContext.getResources().getInteger(R.integer.config_overlayTransitionTime) / 2;
+        long duration = mContext.getResources().getInteger(R.integer.config_dropAnimMaxDuration) + Launcher.EXIT_SPRINGLOADED_MODE_SHORT_TIMEOUT + mContext.getResources().getInteger(R.integer.config_overlayTransitionTime) / 2;
         // Delay the actual accept() call until the drop animation is complete.
-        return LauncherAppsCompat.createShortcutInfoFromPinItemRequest(
-                mContext, mRequest, duration);
+        return LauncherAppsCompat.createShortcutInfoFromPinItemRequest(mContext, mRequest, duration);
     }
 
     @Override

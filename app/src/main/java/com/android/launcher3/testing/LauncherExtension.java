@@ -2,7 +2,6 @@ package com.android.launcher3.testing;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
@@ -12,7 +11,6 @@ import com.android.launcher3.AppInfo;
 import com.android.launcher3.Launcher;
 import com.android.launcher3.LauncherCallbacks;
 import com.android.launcher3.allapps.AllAppsSearchBarController;
-import com.android.launcher3.logging.UserEventDispatcher;
 import com.android.launcher3.util.ComponentKey;
 
 import java.io.FileDescriptor;
@@ -84,8 +82,7 @@ public class LauncherExtension extends Launcher {
         }
 
         @Override
-        public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                int[] grantResults) {
+        public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         }
 
         @Override
@@ -139,8 +136,7 @@ public class LauncherExtension extends Launcher {
         }
 
         @Override
-        public boolean startSearch(String initialQuery, boolean selectInitialQuery,
-                Bundle appSearchData) {
+        public boolean startSearch(String initialQuery, boolean selectInitialQuery, Bundle appSearchData) {
             return false;
         }
 

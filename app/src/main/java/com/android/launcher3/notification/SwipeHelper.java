@@ -57,7 +57,7 @@ public class SwipeHelper {
     private static final int SNAP_ANIM_LEN = SLOW_ANIMATIONS ? 1000 : 150; // ms
 
     static final float SWIPE_PROGRESS_FADE_END = 0.5f; // fraction of thumbnail width
-                                                // beyond which swipe progress->0
+    // beyond which swipe progress->0
     private float mMinSwipeProgress = 0f;
     private float mMaxSwipeProgress = 1f;
 
@@ -94,12 +94,11 @@ public class SwipeHelper {
         mHandler = new Handler();
         mSwipeDirection = swipeDirection;
         mVelocityTracker = VelocityTracker.obtain();
-        mDensityScale =  context.getResources().getDisplayMetrics().density;
+        mDensityScale = context.getResources().getDisplayMetrics().density;
         mPagingTouchSlop = ViewConfiguration.get(context).getScaledPagingTouchSlop();
 
         mLongPressTimeout = (long) (ViewConfiguration.getLongPressTimeout() * 1.5f); // extra long-press!
-        mFalsingThreshold = context.getResources().getDimensionPixelSize(
-                R.dimen.swipe_helper_falsing_threshold);
+        mFalsingThreshold = context.getResources().getDimensionPixelSize(R.dimen.swipe_helper_falsing_threshold);
         mFlingAnimationUtils = new FlingAnimationUtils(context, getMaxEscapeAnimDuration() / 1000f);
     }
 
@@ -132,23 +131,19 @@ public class SwipeHelper {
     }
 
     private float getVelocity(VelocityTracker vt) {
-        return mSwipeDirection == X ? vt.getXVelocity() :
-                vt.getYVelocity();
+        return mSwipeDirection == X ? vt.getXVelocity() : vt.getYVelocity();
     }
 
     protected ObjectAnimator createTranslationAnimation(View v, float newPos) {
-        ObjectAnimator anim = ObjectAnimator.ofFloat(v,
-                mSwipeDirection == X ? View.TRANSLATION_X : View.TRANSLATION_Y, newPos);
+        ObjectAnimator anim = ObjectAnimator.ofFloat(v, mSwipeDirection == X ? View.TRANSLATION_X : View.TRANSLATION_Y, newPos);
         return anim;
     }
 
     private float getPerpendicularVelocity(VelocityTracker vt) {
-        return mSwipeDirection == X ? vt.getYVelocity() :
-                vt.getXVelocity();
+        return mSwipeDirection == X ? vt.getYVelocity() : vt.getXVelocity();
     }
 
-    protected Animator getViewTranslationAnimator(View v, float target,
-            AnimatorUpdateListener listener) {
+    protected Animator getViewTranslationAnimator(View v, float target, AnimatorUpdateListener listener) {
         ObjectAnimator anim = createTranslationAnimation(v, target);
         if (listener != null) {
             anim.addUpdateListener(listener);
@@ -168,8 +163,7 @@ public class SwipeHelper {
     }
 
     protected float getSize(View v) {
-        return mSwipeDirection == X ? v.getMeasuredWidth() :
-                v.getMeasuredHeight();
+        return mSwipeDirection == X ? v.getMeasuredWidth() : v.getMeasuredHeight();
     }
 
     public void setMinSwipeProgress(float minSwipeProgress) {
@@ -194,8 +188,7 @@ public class SwipeHelper {
         updateSwipeProgressFromOffset(animView, dismissable, getTranslation(animView));
     }
 
-    private void updateSwipeProgressFromOffset(View animView, boolean dismissable,
-            float translation) {
+    private void updateSwipeProgressFromOffset(View animView, boolean dismissable, float translation) {
         float swipeProgress = getSwipeProgressForOffset(animView, translation);
         if (!mCallback.updateSwipeProgress(animView, dismissable, swipeProgress)) {
             if (FADE_OUT_DURING_SWIPE && dismissable) {
@@ -215,29 +208,20 @@ public class SwipeHelper {
 
     // invalidate the view's own bounds all the way up the view hierarchy
     public static void invalidateGlobalRegion(View view) {
-        invalidateGlobalRegion(
-                view,
-                new RectF(view.getLeft(), view.getTop(), view.getRight(), view.getBottom()));
+        invalidateGlobalRegion(view, new RectF(view.getLeft(), view.getTop(), view.getRight(), view.getBottom()));
     }
 
     // invalidate a rectangle relative to the view's coordinate system all the way up the view
     // hierarchy
     public static void invalidateGlobalRegion(View view, RectF childBounds) {
         //childBounds.offset(view.getTranslationX(), view.getTranslationY());
-        if (DEBUG_INVALIDATE)
-            Log.v(TAG, "-------------");
+        if (DEBUG_INVALIDATE) Log.v(TAG, "-------------");
         while (view.getParent() != null && view.getParent() instanceof View) {
             view = (View) view.getParent();
             view.getMatrix().mapRect(childBounds);
-            view.invalidate((int) Math.floor(childBounds.left),
-                    (int) Math.floor(childBounds.top),
-                    (int) Math.ceil(childBounds.right),
-                    (int) Math.ceil(childBounds.bottom));
+            view.invalidate((int) Math.floor(childBounds.left), (int) Math.floor(childBounds.top), (int) Math.ceil(childBounds.right), (int) Math.ceil(childBounds.bottom));
             if (DEBUG_INVALIDATE) {
-                Log.v(TAG, "INVALIDATE(" + (int) Math.floor(childBounds.left)
-                        + "," + (int) Math.floor(childBounds.top)
-                        + "," + (int) Math.ceil(childBounds.right)
-                        + "," + (int) Math.ceil(childBounds.bottom));
+                Log.v(TAG, "INVALIDATE(" + (int) Math.floor(childBounds.left) + "," + (int) Math.floor(childBounds.top) + "," + (int) Math.ceil(childBounds.right) + "," + (int) Math.ceil(childBounds.bottom));
             }
         }
     }
@@ -275,8 +259,7 @@ public class SwipeHelper {
                                 public void run() {
                                     if (mCurrView != null && !mLongPressSent) {
                                         mLongPressSent = true;
-                                        mCurrView.sendAccessibilityEvent(
-                                                AccessibilityEvent.TYPE_VIEW_LONG_CLICKED);
+                                        mCurrView.sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_LONG_CLICKED);
                                         mCurrView.getLocationOnScreen(mTmpPos);
                                         final int x = (int) ev.getRawX() - mTmpPos[0];
                                         final int y = (int) ev.getRawY() - mTmpPos[1];
@@ -297,8 +280,7 @@ public class SwipeHelper {
                     float perpendicularPos = getPerpendicularPos(ev);
                     float delta = pos - mInitialTouchPos;
                     float deltaPerpendicular = perpendicularPos - mPerpendicularInitialTouchPos;
-                    if (Math.abs(delta) > mPagingTouchSlop
-                            && Math.abs(delta) > Math.abs(deltaPerpendicular)) {
+                    if (Math.abs(delta) > mPagingTouchSlop && Math.abs(delta) > Math.abs(deltaPerpendicular)) {
                         mCallback.onBeginDrag(mCurrView);
                         mDragging = true;
                         mInitialTouchPos = getPos(ev);
@@ -322,38 +304,32 @@ public class SwipeHelper {
     }
 
     /**
-     * @param view The view to be dismissed
-     * @param velocity The desired pixels/second speed at which the view should move
+     * @param view                      The view to be dismissed
+     * @param velocity                  The desired pixels/second speed at which the view should move
      * @param useAccelerateInterpolator Should an accelerating Interpolator be used
      */
     public void dismissChild(final View view, float velocity, boolean useAccelerateInterpolator) {
-        dismissChild(view, velocity, null /* endAction */, 0 /* delay */,
-                useAccelerateInterpolator, 0 /* fixedDuration */, false /* isDismissAll */);
+        dismissChild(view, velocity, null /* endAction */, 0 /* delay */, useAccelerateInterpolator, 0 /* fixedDuration */, false /* isDismissAll */);
     }
 
     /**
-     * @param animView The view to be dismissed
-     * @param velocity The desired pixels/second speed at which the view should move
-     * @param endAction The action to perform at the end
-     * @param delay The delay after which we should start
+     * @param animView                  The view to be dismissed
+     * @param velocity                  The desired pixels/second speed at which the view should move
+     * @param endAction                 The action to perform at the end
+     * @param delay                     The delay after which we should start
      * @param useAccelerateInterpolator Should an accelerating Interpolator be used
-     * @param fixedDuration If not 0, this exact duration will be taken
+     * @param fixedDuration             If not 0, this exact duration will be taken
      */
-    public void dismissChild(final View animView, float velocity, final Runnable endAction,
-            long delay, boolean useAccelerateInterpolator, long fixedDuration,
-            boolean isDismissAll) {
+    public void dismissChild(final View animView, float velocity, final Runnable endAction, long delay, boolean useAccelerateInterpolator, long fixedDuration, boolean isDismissAll) {
         final boolean canBeDismissed = mCallback.canChildBeDismissed(animView);
         float newPos;
         boolean isLayoutRtl = animView.getLayoutDirection() == View.LAYOUT_DIRECTION_RTL;
 
         // if we use the Menu to dismiss an item in landscape, animate up
-        boolean animateUpForMenu = velocity == 0 && (getTranslation(animView) == 0 || isDismissAll)
-                && mSwipeDirection == Y;
+        boolean animateUpForMenu = velocity == 0 && (getTranslation(animView) == 0 || isDismissAll) && mSwipeDirection == Y;
         // if the language is rtl we prefer swiping to the left
-        boolean animateLeftForRtl = velocity == 0 && (getTranslation(animView) == 0 || isDismissAll)
-                && isLayoutRtl;
-        boolean animateLeft = velocity < 0
-                || (velocity == 0 && getTranslation(animView) < 0 && !isDismissAll);
+        boolean animateLeftForRtl = velocity == 0 && (getTranslation(animView) == 0 || isDismissAll) && isLayoutRtl;
+        boolean animateLeft = velocity < 0 || (velocity == 0 && getTranslation(animView) < 0 && !isDismissAll);
 
         if (animateLeft || animateLeftForRtl || animateUpForMenu) {
             newPos = -getSize(animView);
@@ -364,10 +340,7 @@ public class SwipeHelper {
         if (fixedDuration == 0) {
             duration = MAX_ESCAPE_ANIMATION_DURATION;
             if (velocity != 0) {
-                duration = Math.min(duration,
-                        (int) (Math.abs(newPos - getTranslation(animView)) * 1000f / Math
-                                .abs(velocity))
-                );
+                duration = Math.min(duration, (int) (Math.abs(newPos - getTranslation(animView)) * 1000f / Math.abs(velocity)));
             } else {
                 duration = DEFAULT_ESCAPE_ANIMATION_DURATION;
             }
@@ -392,8 +365,7 @@ public class SwipeHelper {
             anim.setInterpolator(Interpolators.FAST_OUT_LINEAR_IN);
             anim.setDuration(duration);
         } else {
-            mFlingAnimationUtils.applyDismissing(anim, getTranslation(animView),
-                    newPos, velocity, getSize(animView));
+            mFlingAnimationUtils.applyDismissing(anim, getTranslation(animView), newPos, velocity, getSize(animView));
         }
         if (delay > 0) {
             anim.setStartDelay(delay);
@@ -497,8 +469,8 @@ public class SwipeHelper {
      * Called when a view is updated to be non-dismissable, if the view was being dismissed before
      * the update this will handle snapping it back into place.
      *
-     * @param view the view to snap if necessary.
-     * @param animate whether to animate the snap or not.
+     * @param view       the view to snap if necessary.
+     * @param animate    whether to animate the snap or not.
      * @param targetLeft the target to snap to.
      */
     public void snapChildIfNeeded(final View view, boolean animate, float targetLeft) {
@@ -533,7 +505,7 @@ public class SwipeHelper {
                 // We are dragging directly over a card, make sure that we also catch the gesture
                 // even if nobody else wants the touch event.
                 onInterceptTouchEvent(ev);
-                 return true;
+                return true;
             } else {
 
                 // We are not doing anything, make sure the long press callback
@@ -562,7 +534,7 @@ public class SwipeHelper {
                         if (absDelta >= size) {
                             delta = delta > 0 ? maxScrollDistance : -maxScrollDistance;
                         } else {
-                            delta = maxScrollDistance * (float) Math.sin((delta/size)*(Math.PI/2));
+                            delta = maxScrollDistance * (float) Math.sin((delta / size) * (Math.PI / 2));
                         }
                     }
 
@@ -582,8 +554,7 @@ public class SwipeHelper {
                 if (!handleUpEvent(ev, mCurrView, velocity, getTranslation(mCurrView))) {
                     if (isDismissGesture(ev)) {
                         // flingadingy
-                        dismissChild(mCurrView, velocity,
-                                !swipedFastEnough() /* useAccelerateInterpolator */);
+                        dismissChild(mCurrView, velocity, !swipedFastEnough() /* useAccelerateInterpolator */);
                     } else {
                         // snappity
                         mCallback.onDragCancelled(mCurrView);
@@ -625,21 +596,17 @@ public class SwipeHelper {
 
     protected boolean isDismissGesture(MotionEvent ev) {
         boolean falsingDetected = mCallback.isAntiFalsingNeeded() && !mTouchAboveFalsingThreshold;
-        return !falsingDetected && (swipedFastEnough() || swipedFarEnough())
-                && ev.getActionMasked() == MotionEvent.ACTION_UP
-                && mCallback.canChildBeDismissed(mCurrView);
+        return !falsingDetected && (swipedFastEnough() || swipedFarEnough()) && ev.getActionMasked() == MotionEvent.ACTION_UP && mCallback.canChildBeDismissed(mCurrView);
     }
 
     protected boolean swipedFastEnough() {
         float velocity = getVelocity(mVelocityTracker);
         float translation = getTranslation(mCurrView);
-        boolean ret = (Math.abs(velocity) > getEscapeVelocity())
-                && (velocity > 0) == (translation > 0);
+        boolean ret = (Math.abs(velocity) > getEscapeVelocity()) && (velocity > 0) == (translation > 0);
         return ret;
     }
 
-    protected boolean handleUpEvent(MotionEvent ev, View animView, float velocity,
-            float translation) {
+    protected boolean handleUpEvent(MotionEvent ev, View animView, float velocity, float translation) {
         return false;
     }
 
@@ -659,7 +626,7 @@ public class SwipeHelper {
         /**
          * Called when the child is snapped to a position.
          *
-         * @param animView the view that was snapped.
+         * @param animView   the view that was snapped.
          * @param targetLeft the left position the view was snapped to.
          */
         void onChildSnappedBack(View animView, float targetLeft);
@@ -683,6 +650,7 @@ public class SwipeHelper {
     public interface LongPressListener {
         /**
          * Equivalent to {@link View.OnLongClickListener#onLongClick(View)} with coordinates
+         *
          * @return whether the longpress was handled
          */
         boolean onLongPress(View v, int x, int y);

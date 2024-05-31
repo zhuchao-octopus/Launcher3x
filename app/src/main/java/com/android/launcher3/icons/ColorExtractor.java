@@ -18,6 +18,7 @@ package com.android.launcher3.icons;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.util.SparseArray;
+
 import java.util.Arrays;
 
 /**
@@ -33,6 +34,7 @@ public class ColorExtractor {
 
     /**
      * This picks a dominant color, looking for high-saturation, high-value, repeated hues.
+     *
      * @param bitmap The bitmap to scan
      */
     public int findDominantColorByHue(Bitmap bitmap) {
@@ -41,6 +43,7 @@ public class ColorExtractor {
 
     /**
      * This picks a dominant color, looking for high-saturation, high-value, repeated hues.
+     *
      * @param bitmap The bitmap to scan
      */
     public int findDominantColorByHue(Bitmap bitmap, int samples) {

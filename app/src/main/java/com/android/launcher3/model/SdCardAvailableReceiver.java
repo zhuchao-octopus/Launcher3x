@@ -19,7 +19,6 @@ package com.android.launcher3.model;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.UserHandle;
 
 import com.android.launcher3.LauncherModel;
@@ -33,7 +32,7 @@ import java.util.Map.Entry;
 
 /**
  * Helper class to re-query app status when SD-card becomes available.
- *
+ * <p>
  * During first load, just after reboot, some apps on sdcard might not be available immediately due
  * to some race conditions in the system. We wait for ACTION_BOOT_COMPLETED and process such
  * apps again.
@@ -44,8 +43,7 @@ public class SdCardAvailableReceiver extends BroadcastReceiver {
     private final Context mContext;
     private final MultiHashMap<UserHandle, String> mPackages;
 
-    public SdCardAvailableReceiver(LauncherModel model, Context context,
-            MultiHashMap<UserHandle, String> packages) {
+    public SdCardAvailableReceiver(LauncherModel model, Context context, MultiHashMap<UserHandle, String> packages) {
         mModel = model;
         mContext = context;
         mPackages = packages;
@@ -71,13 +69,10 @@ public class SdCardAvailableReceiver extends BroadcastReceiver {
                 }
             }
             if (!packagesRemoved.isEmpty()) {
-                mModel.onPackagesRemoved(user,
-                        packagesRemoved.toArray(new String[packagesRemoved.size()]));
+                mModel.onPackagesRemoved(user, packagesRemoved.toArray(new String[packagesRemoved.size()]));
             }
             if (!packagesUnavailable.isEmpty()) {
-                mModel.onPackagesUnavailable(
-                        packagesUnavailable.toArray(new String[packagesUnavailable.size()]),
-                        user, false);
+                mModel.onPackagesUnavailable(packagesUnavailable.toArray(new String[packagesUnavailable.size()]), user, false);
             }
         }
 

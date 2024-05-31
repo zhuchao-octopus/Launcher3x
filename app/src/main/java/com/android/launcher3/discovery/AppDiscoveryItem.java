@@ -16,7 +16,6 @@
 
 package com.android.launcher3.discovery;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 
@@ -38,17 +37,7 @@ public class AppDiscoveryItem {
     public final String price;
     public final Bitmap bitmap;
 
-    public AppDiscoveryItem(String packageName,
-                            boolean isInstantApp,
-                            boolean isRecent,
-                            float starRating,
-                            long reviewCount,
-                            CharSequence title,
-                            String publisher,
-                            Bitmap bitmap,
-                            String price,
-                            Intent launchIntent,
-                            Intent installIntent) {
+    public AppDiscoveryItem(String packageName, boolean isInstantApp, boolean isRecent, float starRating, long reviewCount, CharSequence title, String publisher, Bitmap bitmap, String price, Intent launchIntent, Intent installIntent) {
         this.packageName = packageName;
         this.isInstantApp = isInstantApp;
         this.isRecent = isRecent;

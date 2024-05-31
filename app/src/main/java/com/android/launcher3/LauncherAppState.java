@@ -63,7 +63,7 @@ public class LauncherAppState {
                             return LauncherAppState.getInstance(context);
                         }
                     }).get();
-                } catch (InterruptedException|ExecutionException e) {
+                } catch (InterruptedException | ExecutionException e) {
                     throw new RuntimeException(e);
                 }
             }
@@ -82,8 +82,7 @@ public class LauncherAppState {
     @SuppressLint("UnspecifiedRegisterReceiverFlag")
     private LauncherAppState(Context context) {
         if (getLocalProvider(context) == null) {
-            throw new RuntimeException(
-                    "Initializing LauncherAppState in the absence of LauncherProvider");
+            throw new RuntimeException("Initializing LauncherAppState in the absence of LauncherProvider");
         }
         Log.v(Launcher.TAG, "LauncherAppState initiated");
         Preconditions.assertUIThread();
@@ -97,8 +96,7 @@ public class LauncherAppState {
         mIconCache = new IconCache(mContext, mInvariantDeviceProfile);
         mWidgetCache = new WidgetPreviewLoader(mContext, mIconCache);
 
-        mModel = new LauncherModel(this, mIconCache,
-                Utilities.getOverrideObject(AppFilter.class, mContext, R.string.app_filter_class));
+        mModel = new LauncherModel(this, mIconCache, Utilities.getOverrideObject(AppFilter.class, mContext, R.string.app_filter_class));
 
         LauncherAppsCompat.getInstance(mContext).addOnAppsChangedCallback(mModel);
 
@@ -165,8 +163,7 @@ public class LauncherAppState {
     }
 
     private static LauncherProvider getLocalProvider(Context context) {
-        try (ContentProviderClient cl = context.getContentResolver()
-                .acquireContentProviderClient(LauncherProvider.AUTHORITY)) {
+        try (ContentProviderClient cl = context.getContentResolver().acquireContentProviderClient(LauncherProvider.AUTHORITY)) {
             return (LauncherProvider) cl.getLocalContentProvider();
         }
     }

@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (C) 2015 Google Inc.
+<?xml version="1.0" encoding="utf-8"?><!-- Copyright (C) 2015 Google Inc.
 
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
@@ -21,8 +20,7 @@
         android:title="@string/auto_add_shortcuts_label"
         android:summary="@string/auto_add_shortcuts_description"
         android:defaultValue="true"
-        android:persistent="true"
-        />
+        android:persistent="true" />
 
     <ListPreference
         android:key="pref_override_icon_shape"
@@ -43,13 +41,13 @@
                 android:name=":settings:fragment_args_key"
                 android:value="notification_badging" />
         </intent>
-    </Preference>/>
+    </Preference>
+    />
 
     <SwitchPreference
         android:key="pref_allowRotation"
         android:title="@string/allow_rotation_title"
         android:defaultValue="@bool/allow_rotation"
-        android:persistent="true"
-        />
+        android:persistent="true" />
 
 </PreferenceScreen>

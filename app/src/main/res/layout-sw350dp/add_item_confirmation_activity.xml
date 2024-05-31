@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
 /*
 ** Copyright 2017, The Android Open Source Project
 **
@@ -45,9 +44,9 @@
             android:background="?android:attr/colorPrimaryDark"
             android:gravity="center_horizontal"
             android:id="@+id/widget_cell"
-            android:layout_gravity="center_horizontal" >
+            android:layout_gravity="center_horizontal">
 
-            <include layout="@layout/widget_cell_content"  />
+            <include layout="@layout/widget_cell_content" />
 
         </com.android.launcher3.dragndrop.LivePreviewWidgetCell>
     </FrameLayout>
@@ -56,13 +55,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         style="?android:attr/buttonBarStyle"
-        android:gravity="end" >
+        android:gravity="end">
+
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@android:string/cancel"
             android:onClick="onCancelClick"
             style="?android:attr/buttonBarButtonStyle" />
+
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

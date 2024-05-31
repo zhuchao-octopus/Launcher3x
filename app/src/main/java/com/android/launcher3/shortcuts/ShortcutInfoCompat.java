@@ -18,18 +18,14 @@ package com.android.launcher3.shortcuts;
 
 import android.annotation.TargetApi;
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ShortcutInfo;
 import android.os.Build;
 import android.os.UserHandle;
 
-import com.android.launcher3.ItemInfo;
-import com.android.launcher3.compat.UserManagerCompat;
-
 /**
  * Wrapper class for {@link android.content.pm.ShortcutInfo}, representing deep shortcuts into apps.
- *
+ * <p>
  * Not to be confused with {@link com.android.launcher3.ShortcutInfo}.
  */
 @TargetApi(Build.VERSION_CODES.N)
@@ -45,12 +41,7 @@ public class ShortcutInfoCompat {
 
     @TargetApi(Build.VERSION_CODES.N)
     public Intent makeIntent() {
-        return new Intent(Intent.ACTION_MAIN)
-                .addCategory(INTENT_CATEGORY)
-                .setComponent(getActivity())
-                .setPackage(getPackage())
-                .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED)
-                .putExtra(EXTRA_SHORTCUT_ID, getId());
+        return new Intent(Intent.ACTION_MAIN).addCategory(INTENT_CATEGORY).setComponent(getActivity()).setPackage(getPackage()).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED).putExtra(EXTRA_SHORTCUT_ID, getId());
     }
 
     public ShortcutInfo getShortcutInfo() {

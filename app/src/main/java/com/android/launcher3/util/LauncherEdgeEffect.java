@@ -25,8 +25,8 @@ import android.view.animation.Interpolator;
 
 /**
  * This class differs from the framework {@link android.widget.EdgeEffect}:
- *   1) It does not use PorterDuffXfermode
- *   2) The width to radius factor is smaller (0.5 instead of 0.75)
+ * 1) It does not use PorterDuffXfermode
+ * 2) The width to radius factor is smaller (0.5 instead of 0.75)
  */
 public class LauncherEdgeEffect {
 
@@ -102,7 +102,7 @@ public class LauncherEdgeEffect {
     /**
      * Set the size of this edge effect in pixels.
      *
-     * @param width Effect width in pixels
+     * @param width  Effect width in pixels
      * @param height Effect height in pixels
      */
     public void setSize(int width, int height) {
@@ -164,9 +164,9 @@ public class LauncherEdgeEffect {
      * @param deltaDistance Change in distance since the last call. Values may be 0 (no change) to
      *                      1.f (full length of the view) or negative values to express change
      *                      back toward the edge reached to initiate the effect.
-     * @param displacement The displacement from the starting side of the effect of the point
-     *                     initiating the pull. In the case of touch this is the finger position.
-     *                     Values may be from 0-1.
+     * @param displacement  The displacement from the starting side of the effect of the point
+     *                      initiating the pull. In the case of touch this is the finger position.
+     *                      Values may be from 0-1.
      */
     public void onPull(float deltaDistance, float displacement) {
         final long now = AnimationUtils.currentAnimationTimeMillis();
@@ -185,14 +185,12 @@ public class LauncherEdgeEffect {
         mPullDistance += deltaDistance;
 
         final float absdd = Math.abs(deltaDistance);
-        mGlowAlpha = mGlowAlphaStart = Math.min(MAX_ALPHA,
-                mGlowAlpha + (absdd * PULL_DISTANCE_ALPHA_GLOW_FACTOR));
+        mGlowAlpha = mGlowAlphaStart = Math.min(MAX_ALPHA, mGlowAlpha + (absdd * PULL_DISTANCE_ALPHA_GLOW_FACTOR));
 
         if (mPullDistance == 0) {
             mGlowScaleY = mGlowScaleYStart = 0;
         } else {
-            final float scale = (float) (Math.max(0, 1 - 1 /
-                    Math.sqrt(Math.abs(mPullDistance) * mBounds.height()) - 0.3d) / 0.7d);
+            final float scale = (float) (Math.max(0, 1 - 1 / Math.sqrt(Math.abs(mPullDistance) * mBounds.height()) - 0.3d) / 0.7d);
 
             mGlowScaleY = mGlowScaleYStart = scale;
         }
@@ -254,8 +252,7 @@ public class LauncherEdgeEffect {
         // intense the effect should be for both the size and the saturation.
         mGlowScaleYFinish = Math.min(0.025f + (velocity * (velocity / 100) * 0.00015f) / 2, 1.f);
         // Alpha should change for the glow as well as size.
-        mGlowAlphaFinish = Math.max(
-                mGlowAlphaStart, Math.min(velocity * VELOCITY_GLOW_FACTOR * .00001f, MAX_ALPHA));
+        mGlowAlphaFinish = Math.max(mGlowAlphaStart, Math.min(velocity * VELOCITY_GLOW_FACTOR * .00001f, MAX_ALPHA));
         mTargetDisplacement = 0.5f;
     }
 
@@ -270,6 +267,7 @@ public class LauncherEdgeEffect {
 
     /**
      * Return the color of this edge effect in argb.
+     *
      * @return The color of this edge effect in argb
      */
     public int getColor() {
@@ -284,7 +282,7 @@ public class LauncherEdgeEffect {
      *
      * @param canvas Canvas to draw into
      * @return true if drawing should continue beyond this frame to continue the
-     *         animation
+     * animation
      */
     public boolean draw(Canvas canvas) {
         update();
@@ -311,6 +309,7 @@ public class LauncherEdgeEffect {
     /**
      * Return the maximum height that the edge effect will be drawn at given the original
      * {@link #setSize(int, int) input size}.
+     *
      * @return The maximum height of the edge effect
      */
     public int getMaxHeight() {

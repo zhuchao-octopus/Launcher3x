@@ -64,14 +64,13 @@ public class PendingItemDragHelper extends DragPreviewProvider {
     /**
      * Starts the drag for the pending item associated with the view.
      *
-     * @param previewBounds The bounds where the image was displayed,
-     *                      {@link WidgetImageView#getBitmapBounds()}
+     * @param previewBounds      The bounds where the image was displayed,
+     *                           {@link WidgetImageView#getBitmapBounds()}
      * @param previewBitmapWidth The actual width of the bitmap displayed in the view.
-     * @param previewViewWidth The width of {@link WidgetImageView} displaying the preview
-     * @param screenPos Position of {@link WidgetImageView} on the screen
+     * @param previewViewWidth   The width of {@link WidgetImageView} displaying the preview
+     * @param screenPos          Position of {@link WidgetImageView} on the screen
      */
-    public void startDrag(Rect previewBounds, int previewBitmapWidth, int previewViewWidth,
-            Point screenPos, DragSource source, DragOptions options) {
+    public void startDrag(Rect previewBounds, int previewBitmapWidth, int previewViewWidth, Point screenPos, DragSource source, DragOptions options) {
         final Launcher launcher = Launcher.getLauncher(mView.getContext());
         LauncherAppState app = LauncherAppState.getInstance(launcher);
 
@@ -90,12 +89,10 @@ public class PendingItemDragHelper extends DragPreviewProvider {
             int[] previewSizeBeforeScale = new int[1];
 
             if (mPreview != null) {
-                preview = LivePreviewWidgetCell.generateFromRemoteViews(launcher, mPreview,
-                        createWidgetInfo.info, maxWidth, previewSizeBeforeScale);
+                preview = LivePreviewWidgetCell.generateFromRemoteViews(launcher, mPreview, createWidgetInfo.info, maxWidth, previewSizeBeforeScale);
             }
             if (preview == null) {
-                preview = app.getWidgetCache().generateWidgetPreview(
-                        launcher, createWidgetInfo.info, maxWidth, null, previewSizeBeforeScale);
+                preview = app.getWidgetCache().generateWidgetPreview(launcher, createWidgetInfo.info, maxWidth, null, previewSizeBeforeScale);
             }
 
             if (previewSizeBeforeScale[0] < previewBitmapWidth) {
@@ -128,8 +125,7 @@ public class PendingItemDragHelper extends DragPreviewProvider {
             DeviceProfile dp = launcher.getDeviceProfile();
             int iconSize = dp.iconSizePx;
 
-            int padding = launcher.getResources()
-                    .getDimensionPixelSize(R.dimen.widget_preview_shortcut_padding);
+            int padding = launcher.getResources().getDimensionPixelSize(R.dimen.widget_preview_shortcut_padding);
             previewBounds.left += padding;
             previewBounds.top += padding;
 
@@ -144,15 +140,12 @@ public class PendingItemDragHelper extends DragPreviewProvider {
         // information on the workspace before starting the drag.
         launcher.getWorkspace().prepareDragWithProvider(this);
 
-        int dragLayerX = screenPos.x + previewBounds.left
-                + (int) ((scale * preview.getWidth() - preview.getWidth()) / 2);
-        int dragLayerY = screenPos.y + previewBounds.top
-                + (int) ((scale * preview.getHeight() - preview.getHeight()) / 2);
+        int dragLayerX = screenPos.x + previewBounds.left + (int) ((scale * preview.getWidth() - preview.getWidth()) / 2);
+        int dragLayerY = screenPos.y + previewBounds.top + (int) ((scale * preview.getHeight() - preview.getHeight()) / 2);
 
         mPreviewBitmap = preview;
         // Start the drag
-        launcher.getDragController().startDrag(preview, dragLayerX, dragLayerY, source, mAddInfo,
-                dragOffset, dragRegion, scale, options);
+        launcher.getDragController().startDrag(preview, dragLayerX, dragLayerY, source, mAddInfo, dragOffset, dragRegion, scale, options);
     }
 
 
@@ -161,8 +154,7 @@ public class PendingItemDragHelper extends DragPreviewProvider {
         if (mAddInfo instanceof PendingAddShortcutInfo) {
             int width = mPreviewBitmap.getWidth();
             int height = mPreviewBitmap.getHeight();
-            Bitmap b = Bitmap.createBitmap(width + blurSizeOutline, height + blurSizeOutline,
-                    Bitmap.Config.ALPHA_8);
+            Bitmap b = Bitmap.createBitmap(width + blurSizeOutline, height + blurSizeOutline, Bitmap.Config.ALPHA_8);
             canvas.setBitmap(b);
 
             Launcher launcher = Launcher.getLauncher(mView.getContext());
@@ -173,8 +165,7 @@ public class PendingItemDragHelper extends DragPreviewProvider {
             dst.offset(blurSizeOutline / 2, blurSizeOutline / 2);
             canvas.drawBitmap(mPreviewBitmap, src, dst, new Paint(Paint.FILTER_BITMAP_FLAG));
 
-            HolographicOutlineHelper.getInstance(mView.getContext())
-                    .applyExpensiveOutlineWithBlur(b, canvas);
+            HolographicOutlineHelper.getInstance(mView.getContext()).applyExpensiveOutlineWithBlur(b, canvas);
 
             canvas.setBitmap(null);
             return b;
@@ -189,8 +180,7 @@ public class PendingItemDragHelper extends DragPreviewProvider {
         canvas.setBitmap(b);
 
         Rect src = new Rect(0, 0, mPreviewBitmap.getWidth(), mPreviewBitmap.getHeight());
-        float scaleFactor = Math.min((w - blurSizeOutline) / (float) mPreviewBitmap.getWidth(),
-                (h - blurSizeOutline) / (float) mPreviewBitmap.getHeight());
+        float scaleFactor = Math.min((w - blurSizeOutline) / (float) mPreviewBitmap.getWidth(), (h - blurSizeOutline) / (float) mPreviewBitmap.getHeight());
         int scaledWidth = (int) (scaleFactor * mPreviewBitmap.getWidth());
         int scaledHeight = (int) (scaleFactor * mPreviewBitmap.getHeight());
         Rect dst = new Rect(0, 0, scaledWidth, scaledHeight);
@@ -199,8 +189,7 @@ public class PendingItemDragHelper extends DragPreviewProvider {
         dst.offset((w - scaledWidth) / 2, (h - scaledHeight) / 2);
 
         canvas.drawBitmap(mPreviewBitmap, src, dst, null);
-        HolographicOutlineHelper.getInstance(mView.getContext())
-                .applyExpensiveOutlineWithBlur(b, canvas);
+        HolographicOutlineHelper.getInstance(mView.getContext()).applyExpensiveOutlineWithBlur(b, canvas);
         canvas.setBitmap(null);
 
         return b;

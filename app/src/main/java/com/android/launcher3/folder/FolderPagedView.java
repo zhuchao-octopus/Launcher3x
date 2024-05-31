@@ -1,12 +1,12 @@
 /**
  * Copyright (C) 2015 The Android Open Source Project
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -35,14 +35,12 @@ import com.android.launcher3.InvariantDeviceProfile;
 import com.android.launcher3.ItemInfo;
 import com.android.launcher3.Launcher;
 import com.android.launcher3.LauncherAppState;
-import com.android.launcher3.LauncherModel;
 import com.android.launcher3.PagedView;
 import com.android.launcher3.R;
 import com.android.launcher3.ShortcutAndWidgetContainer;
 import com.android.launcher3.ShortcutInfo;
 import com.android.launcher3.Utilities;
 import com.android.launcher3.Workspace.ItemOperator;
-import com.android.launcher3.dragndrop.DragController;
 import com.android.launcher3.keyboard.ViewGroupFocusHelper;
 import com.android.launcher3.pageindicators.PageIndicator;
 import com.android.launcher3.util.Themes;
@@ -75,7 +73,8 @@ public class FolderPagedView extends PagedView {
     private final LayoutInflater mInflater;
     private final ViewGroupFocusHelper mFocusIndicatorHelper;
 
-    @Thunk final HashMap<View, Runnable> mPendingAnimations = new HashMap<>();
+    @Thunk
+    final HashMap<View, Runnable> mPendingAnimations = new HashMap<>();
 
     @ViewDebug.ExportedProperty(category = "launcher")
     private final int mMaxCountX;
@@ -219,22 +218,19 @@ public class FolderPagedView extends PagedView {
         CellLayout.LayoutParams lp = (CellLayout.LayoutParams) view.getLayoutParams();
         lp.cellX = item.cellX;
         lp.cellY = item.cellY;
-        getPageAt(pageNo).addViewToCellLayout(
-                view, -1, mFolder.mLauncher.getViewIdForItem(item), lp, true);
+        getPageAt(pageNo).addViewToCellLayout(view, -1, mFolder.mLauncher.getViewIdForItem(item), lp, true);
     }
 
     @SuppressLint("InflateParams")
     public View createNewView(ShortcutInfo item) {
-        final BubbleTextView textView = (BubbleTextView) mInflater.inflate(
-                R.layout.folder_application, null, false);
+        final BubbleTextView textView = (BubbleTextView) mInflater.inflate(R.layout.folder_application, null, false);
         textView.applyFromShortcutInfo(item);
         textView.setOnClickListener(mFolder);
         textView.setOnLongClickListener(mFolder);
         textView.setOnFocusChangeListener(mFocusIndicatorHelper);
         textView.setOnKeyListener(mKeyListener);
 
-        textView.setLayoutParams(new CellLayout.LayoutParams(
-                item.cellX, item.cellY, item.spanX, item.spanY));
+        textView.setLayoutParams(new CellLayout.LayoutParams(item.cellX, item.cellY, item.spanX, item.spanY));
         return textView;
     }
 
@@ -251,10 +247,10 @@ public class FolderPagedView extends PagedView {
         DeviceProfile grid = Launcher.getLauncher(getContext()).getDeviceProfile();
         CellLayout page = (CellLayout) mInflater.inflate(R.layout.folder_page, this, false);
 
-        Log.d("dddd", grid.folderCellWidthPx+":createAndAddNewPage:"+grid.folderCellHeightPx);
-        
+        Log.d("dddd", grid.folderCellWidthPx + ":createAndAddNewPage:" + grid.folderCellHeightPx);
+
         page.setCellDimensions(grid.folderCellWidthPx, grid.folderCellHeightPx);
-      
+
         page.getShortcutsAndWidgets().setMotionEventSplittingEnabled(false);
         page.setInvertIfRtl(true);
         page.setGridSize(mGridCountX, mGridCountY);
@@ -271,13 +267,13 @@ public class FolderPagedView extends PagedView {
     public void setFixedSize(int width, int height) {
         width -= (getPaddingLeft() + getPaddingRight());
         height -= (getPaddingTop() + getPaddingBottom());
-        for (int i = getChildCount() - 1; i >= 0; i --) {
+        for (int i = getChildCount() - 1; i >= 0; i--) {
             ((CellLayout) getChildAt(i)).setFixedSize(width, height);
         }
     }
 
     public void removeItem(View v) {
-        for (int i = getChildCount() - 1; i >= 0; i --) {
+        for (int i = getChildCount() - 1; i >= 0; i--) {
             getPageAt(i).removeView(v);
         }
     }
@@ -341,21 +337,19 @@ public class FolderPagedView extends PagedView {
                     info.cellY = newY;
                     info.rank = rank;
                     if (saveChanges) {
-                        mFolder.mLauncher.getModelWriter().addOrMoveItemInDatabase(info,
-                                mFolder.mInfo.id, 0, info.cellX, info.cellY);
+                        mFolder.mLauncher.getModelWriter().addOrMoveItemInDatabase(info, mFolder.mInfo.id, 0, info.cellX, info.cellY);
                     }
                 }
                 lp.cellX = info.cellX;
                 lp.cellY = info.cellY;
-                currentPage.addViewToCellLayout(
-                        v, -1, mFolder.mLauncher.getViewIdForItem(info), lp, true);
+                currentPage.addViewToCellLayout(v, -1, mFolder.mLauncher.getViewIdForItem(info), lp, true);
 
                 if (rank < FolderIcon.NUM_ITEMS_IN_PREVIEW && v instanceof BubbleTextView) {
                     ((BubbleTextView) v).verifyHighRes();
                 }
             }
 
-            rank ++;
+            rank++;
             position++;
         }
 
@@ -374,18 +368,15 @@ public class FolderPagedView extends PagedView {
         // Update footer
         mPageIndicator.setVisibility(getPageCount() > 1 ? View.VISIBLE : View.GONE);
         // Set the gravity as LEFT or RIGHT instead of START, as START depends on the actual text.
-        mFolder.mFolderName.setGravity(getPageCount() > 1 ?
-                (mIsRtl ? Gravity.RIGHT : Gravity.LEFT) : Gravity.CENTER_HORIZONTAL);
+        mFolder.mFolderName.setGravity(getPageCount() > 1 ? (mIsRtl ? Gravity.RIGHT : Gravity.LEFT) : Gravity.CENTER_HORIZONTAL);
     }
 
     public int getDesiredWidth() {
-        return getPageCount() > 0 ?
-                (getPageAt(0).getDesiredWidth() + getPaddingLeft() + getPaddingRight()) : 0;
+        return getPageCount() > 0 ? (getPageAt(0).getDesiredWidth() + getPaddingLeft() + getPaddingRight()) : 0;
     }
 
-    public int getDesiredHeight()  {
-        return  getPageCount() > 0 ?
-                (getPageAt(0).getDesiredHeight() + getPaddingTop() + getPaddingBottom()) : 0;
+    public int getDesiredHeight() {
+        return getPageCount() > 0 ? (getPageAt(0).getDesiredHeight() + getPaddingTop() + getPaddingBottom()) : 0;
     }
 
     public int getItemCount() {
@@ -394,8 +385,7 @@ public class FolderPagedView extends PagedView {
             // If there are no pages, nothing has yet been added to the folder.
             return 0;
         }
-        return getPageAt(lastPageIndex).getShortcutsAndWidgets().getChildCount()
-                + lastPageIndex * mMaxItemsPerPage;
+        return getPageAt(lastPageIndex).getShortcutsAndWidgets().getChildCount() + lastPageIndex * mMaxItemsPerPage;
     }
 
     /**
@@ -408,8 +398,7 @@ public class FolderPagedView extends PagedView {
         if (mFolder.isLayoutRtl()) {
             sTempPosArray[0] = page.getCountX() - sTempPosArray[0] - 1;
         }
-        return Math.min(mAllocatedContentSize - 1,
-                pageIndex * mMaxItemsPerPage + sTempPosArray[1] * mGridCountX + sTempPosArray[0]);
+        return Math.min(mAllocatedContentSize - 1, pageIndex * mMaxItemsPerPage + sTempPosArray[1] * mGridCountX + sTempPosArray[0]);
     }
 
     public boolean isFull() {
@@ -446,7 +435,7 @@ public class FolderPagedView extends PagedView {
      * @return the view for which the operator returned true.
      */
     public View iterateOverItems(ItemOperator op) {
-        for (int k = 0 ; k < getChildCount(); k++) {
+        for (int k = 0; k < getChildCount(); k++) {
             CellLayout page = getPageAt(k);
             for (int j = 0; j < page.getCountY(); j++) {
                 for (int i = 0; i < page.getCountX(); i++) {
@@ -486,8 +475,7 @@ public class FolderPagedView extends PagedView {
      * Scrolls the current view by a fraction
      */
     public void showScrollHint(int direction) {
-        float fraction = (direction == Folder.SCROLL_LEFT) ^ mIsRtl
-                ? -SCROLL_HINT_FRACTION : SCROLL_HINT_FRACTION;
+        float fraction = (direction == Folder.SCROLL_LEFT) ^ mIsRtl ? -SCROLL_HINT_FRACTION : SCROLL_HINT_FRACTION;
         int hint = (int) (fraction * getWidth());
         int scroll = getScrollForPage(getNextPage()) + hint;
         int delta = scroll - getScrollX();
@@ -641,11 +629,7 @@ public class FolderPagedView extends PagedView {
                             addViewForRank(v, (ShortcutInfo) v.getTag(), newRank);
                         }
                     };
-                    v.animate()
-                        .translationXBy((direction > 0 ^ mIsRtl) ? -v.getWidth() : v.getWidth())
-                        .setDuration(REORDER_ANIMATION_DURATION)
-                        .setStartDelay(0)
-                        .withEndAction(endAction);
+                    v.animate().translationXBy((direction > 0 ^ mIsRtl) ? -v.getWidth() : v.getWidth()).setDuration(REORDER_ANIMATION_DURATION).setStartDelay(0).withEndAction(endAction);
                     mPendingAnimations.put(v, endAction);
                 }
             }
@@ -664,8 +648,7 @@ public class FolderPagedView extends PagedView {
             if (v != null) {
                 ((ItemInfo) v.getTag()).rank -= direction;
             }
-            if (page.animateChildToPosition(v, i % mGridCountX, i / mGridCountX,
-                    REORDER_ANIMATION_DURATION, delay, true, true)) {
+            if (page.animateChildToPosition(v, i % mGridCountX, i / mGridCountX, REORDER_ANIMATION_DURATION, delay, true, true)) {
                 delay += delayAmount;
                 delayAmount *= VIEW_REORDER_DELAY_FACTOR;
             }

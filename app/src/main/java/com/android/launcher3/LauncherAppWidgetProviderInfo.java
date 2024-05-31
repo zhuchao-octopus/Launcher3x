@@ -27,8 +27,7 @@ public class LauncherAppWidgetProviderInfo extends AppWidgetProviderInfo {
     public int minSpanX;
     public int minSpanY;
 
-    public static LauncherAppWidgetProviderInfo fromProviderInfo(Context context,
-            AppWidgetProviderInfo info) {
+    public static LauncherAppWidgetProviderInfo fromProviderInfo(Context context, AppWidgetProviderInfo info) {
         final LauncherAppWidgetProviderInfo launcherInfo;
         if (info instanceof LauncherAppWidgetProviderInfo) {
             launcherInfo = (LauncherAppWidgetProviderInfo) info;
@@ -72,28 +71,17 @@ public class LauncherAppWidgetProviderInfo extends AppWidgetProviderInfo {
 
         // Always assume we're working with the smallest span to make sure we
         // reserve enough space in both orientations.
-        float smallestCellWidth = DeviceProfile.calculateCellWidth(Math.min(
-                idp.landscapeProfile.widthPx - paddingLand.x,
-                idp.portraitProfile.widthPx - paddingPort.x),
-                idp.numColumns);
-        float smallestCellHeight = DeviceProfile.calculateCellWidth(Math.min(
-                idp.landscapeProfile.heightPx - paddingLand.y,
-                idp.portraitProfile.heightPx - paddingPort.y),
-                idp.numRows);
+        float smallestCellWidth = DeviceProfile.calculateCellWidth(Math.min(idp.landscapeProfile.widthPx - paddingLand.x, idp.portraitProfile.widthPx - paddingPort.x), idp.numColumns);
+        float smallestCellHeight = DeviceProfile.calculateCellWidth(Math.min(idp.landscapeProfile.heightPx - paddingLand.y, idp.portraitProfile.heightPx - paddingPort.y), idp.numRows);
 
         // We want to account for the extra amount of padding that we are adding to the widget
         // to ensure that it gets the full amount of space that it has requested.
-        Rect widgetPadding = AppWidgetHostView.getDefaultPaddingForWidget(
-                context, provider, null);
-        spanX = Math.max(1, (int) Math.ceil(
-                        (minWidth + widgetPadding.left + widgetPadding.right) / smallestCellWidth));
-        spanY = Math.max(1, (int) Math.ceil(
-                (minHeight + widgetPadding.top + widgetPadding.bottom) / smallestCellHeight));
+        Rect widgetPadding = AppWidgetHostView.getDefaultPaddingForWidget(context, provider, null);
+        spanX = Math.max(1, (int) Math.ceil((minWidth + widgetPadding.left + widgetPadding.right) / smallestCellWidth));
+        spanY = Math.max(1, (int) Math.ceil((minHeight + widgetPadding.top + widgetPadding.bottom) / smallestCellHeight));
 
-        minSpanX = Math.max(1, (int) Math.ceil(
-                (minResizeWidth + widgetPadding.left + widgetPadding.right) / smallestCellWidth));
-        minSpanY = Math.max(1, (int) Math.ceil(
-                (minResizeHeight + widgetPadding.top + widgetPadding.bottom) / smallestCellHeight));
+        minSpanX = Math.max(1, (int) Math.ceil((minResizeWidth + widgetPadding.left + widgetPadding.right) / smallestCellWidth));
+        minSpanY = Math.max(1, (int) Math.ceil((minResizeHeight + widgetPadding.top + widgetPadding.bottom) / smallestCellHeight));
     }
 
     public String getLabel(PackageManager packageManager) {
@@ -114,17 +102,14 @@ public class LauncherAppWidgetProviderInfo extends AppWidgetProviderInfo {
         if (isCustomWidget) {
             return "WidgetProviderInfo(" + provider + ")";
         }
-        return String.format("WidgetProviderInfo provider:%s package:%s short:%s label:%s",
-                provider.toString(), provider.getPackageName(), provider.getShortClassName(), getLabel(pm));
+        return String.format("WidgetProviderInfo provider:%s package:%s short:%s label:%s", provider.toString(), provider.getPackageName(), provider.getShortClassName(), getLabel(pm));
     }
 
     public Point getMinSpans(InvariantDeviceProfile idp, Context context) {
-        return new Point(
-                (resizeMode & RESIZE_HORIZONTAL) != 0 ? minSpanX : -1,
-                        (resizeMode & RESIZE_VERTICAL) != 0 ? minSpanY : -1);
+        return new Point((resizeMode & RESIZE_HORIZONTAL) != 0 ? minSpanX : -1, (resizeMode & RESIZE_VERTICAL) != 0 ? minSpanY : -1);
     }
 
     public UserHandle getUser() {
         return isCustomWidget ? Process.myUserHandle() : getProfile();
     }
- }
+}

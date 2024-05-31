@@ -42,8 +42,7 @@ public class DropTargetBar extends LinearLayout implements DragController.DragLi
 
         @Override
         public void run() {
-            AccessibilityManager am = (AccessibilityManager)
-                    getContext().getSystemService(Context.ACCESSIBILITY_SERVICE);
+            AccessibilityManager am = (AccessibilityManager) getContext().getSystemService(Context.ACCESSIBILITY_SERVICE);
             boolean accessibilityEnabled = am.isEnabled();
             AlphaUpdateListener.updateVisibility(DropTargetBar.this, accessibilityEnabled);
         }
@@ -105,10 +104,7 @@ public class DropTargetBar extends LinearLayout implements DragController.DragLi
             float finalAlpha = mVisible ? 1 : 0;
             if (Float.compare(getAlpha(), finalAlpha) != 0) {
                 setVisibility(View.VISIBLE);
-                mCurrentAnimation = animate().alpha(finalAlpha)
-                        .setInterpolator(DEFAULT_INTERPOLATOR)
-                        .setDuration(DEFAULT_DRAG_FADE_DURATION)
-                        .withEndAction(mFadeAnimationEndRunnable);
+                mCurrentAnimation = animate().alpha(finalAlpha).setInterpolator(DEFAULT_INTERPOLATOR).setDuration(DEFAULT_DRAG_FADE_DURATION).withEndAction(mFadeAnimationEndRunnable);
             }
 
         }

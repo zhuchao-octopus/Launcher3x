@@ -41,7 +41,7 @@ import com.android.launcher3.model.WidgetItem;
 /**
  * Represents the individual cell of the widget inside the widget tray. The preview is drawn
  * horizontally centered, and scaled down if needed.
- *
+ * <p>
  * This view does not support padding. Since the image is scaled down to fit the view, padding will
  * further decrease the scaling factor. Drag-n-drop uses the view bounds for showing a smooth
  * transition from the view to drag view, so when adding padding support, DnD would need to
@@ -54,10 +54,14 @@ public class WidgetCell extends LinearLayout implements OnLayoutChangeListener {
 
     private static final int FADE_IN_DURATION_MS = 90;
 
-    /** Widget cell width is calculated by multiplying this factor to grid cell width. */
+    /**
+     * Widget cell width is calculated by multiplying this factor to grid cell width.
+     */
     private static final float WIDTH_SCALE = 2.6f;
 
-    /** Widget preview width is calculated by multiplying this factor to the widget cell width. */
+    /**
+     * Widget preview width is calculated by multiplying this factor to the widget cell width.
+     */
     private static final float PREVIEW_SCALE = 0.8f;
 
     protected int mPresetPreviewSize;
@@ -133,10 +137,8 @@ public class WidgetCell extends LinearLayout implements OnLayoutChangeListener {
     public void applyFromCellItem(WidgetItem item, WidgetPreviewLoader loader) {
         mItem = item;
         mWidgetName.setText(mItem.label);
-        mWidgetDims.setText(getContext().getString(R.string.widget_dims_format,
-                mItem.spanX, mItem.spanY));
-        mWidgetDims.setContentDescription(getContext().getString(
-                R.string.widget_accessible_dims_format, mItem.spanX, mItem.spanY));
+        mWidgetDims.setText(getContext().getString(R.string.widget_dims_format, mItem.spanX, mItem.spanY));
+        mWidgetDims.setContentDescription(getContext().getString(R.string.widget_accessible_dims_format, mItem.spanX, mItem.spanY));
         mWidgetPreviewLoader = loader;
 
         if (item.activityInfo != null) {
@@ -160,8 +162,7 @@ public class WidgetCell extends LinearLayout implements OnLayoutChangeListener {
 
     public void applyPreview(Bitmap bitmap, boolean animate) {
         if (bitmap != null) {
-            mWidgetImage.setBitmap(bitmap,
-                    DrawableFactory.get(getContext()).getBadgeForUser(mItem.user, getContext()));
+            mWidgetImage.setBitmap(bitmap, DrawableFactory.get(getContext()).getBadgeForUser(mItem.user, getContext()));
             if (mAnimatePreview) {
                 mWidgetImage.setAlpha(0f);
                 ViewPropertyAnimator anim = mWidgetImage.animate();
@@ -180,13 +181,11 @@ public class WidgetCell extends LinearLayout implements OnLayoutChangeListener {
         if (mActiveRequest != null) {
             return;
         }
-        mActiveRequest = mWidgetPreviewLoader.getPreview(
-                mItem, mPresetPreviewSize, mPresetPreviewSize, this, animate);
+        mActiveRequest = mWidgetPreviewLoader.getPreview(mItem, mPresetPreviewSize, mPresetPreviewSize, this, animate);
     }
 
     @Override
-    public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft,
-            int oldTop, int oldRight, int oldBottom) {
+    public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
         removeOnLayoutChangeListener(this);
         ensurePreview();
     }
@@ -204,8 +203,7 @@ public class WidgetCell extends LinearLayout implements OnLayoutChangeListener {
      * Helper method to get the string info of the tag.
      */
     private String getTagToString() {
-        if (getTag() instanceof PendingAddWidgetInfo ||
-                getTag() instanceof PendingAddShortcutInfo) {
+        if (getTag() instanceof PendingAddWidgetInfo || getTag() instanceof PendingAddShortcutInfo) {
             return getTag().toString();
         }
         return "";

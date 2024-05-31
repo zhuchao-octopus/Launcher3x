@@ -36,8 +36,7 @@ public class ClippedFolderIconLayoutRule implements FolderIcon.PreviewLayoutRule
     }
 
     @Override
-    public FolderIcon.PreviewItemDrawingParams computePreviewItemDrawingParams(int index,
-            int curNumItems, FolderIcon.PreviewItemDrawingParams params) {
+    public FolderIcon.PreviewItemDrawingParams computePreviewItemDrawingParams(int index, int curNumItems, FolderIcon.PreviewItemDrawingParams params) {
 
         float totalScale = scaleForItem(index, curNumItems);
         float transX;
@@ -91,8 +90,7 @@ public class ClippedFolderIconLayoutRule implements FolderIcon.PreviewLayoutRule
         }
 
         // We bump the radius up between 0 and MAX_RADIUS_DILATION % as the number of items increase
-        float radius = mRadius * (1 + MAX_RADIUS_DILATION * (curNumItems -
-                MIN_NUM_ITEMS_IN_PREVIEW) / (MAX_NUM_ITEMS_IN_PREVIEW - MIN_NUM_ITEMS_IN_PREVIEW));
+        float radius = mRadius * (1 + MAX_RADIUS_DILATION * (curNumItems - MIN_NUM_ITEMS_IN_PREVIEW) / (MAX_NUM_ITEMS_IN_PREVIEW - MIN_NUM_ITEMS_IN_PREVIEW));
         double theta = theta0 + index * (2 * Math.PI / curNumItems) * direction;
 
         float halfIconSize = (mIconSize * scaleForItem(index, curNumItems)) / 2;
@@ -101,7 +99,7 @@ public class ClippedFolderIconLayoutRule implements FolderIcon.PreviewLayoutRule
         // of the icon, and to be based from the top / left of the preview area. The y component
         // is inverted to match the coordinate system.
         result[0] = mAvailableSpace / 2 + (float) (radius * Math.cos(theta) / 2) - halfIconSize;
-        result[1] = mAvailableSpace / 2 + (float) (- radius * Math.sin(theta) / 2) - halfIconSize;
+        result[1] = mAvailableSpace / 2 + (float) (-radius * Math.sin(theta) / 2) - halfIconSize;
 
     }
 

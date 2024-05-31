@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!-- 
+<?xml version="1.0" encoding="UTF-8"?><!--
 /*
 * Copyright (C) 2008 The Android Open Source Project
 *
@@ -17,8 +16,7 @@
 */
  -->
 
-<resources xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_name" msgid="649227358658669779">"Launcher3"</string>
     <string name="folder_name" msgid="7371454440695724752"></string>
     <string name="work_folder_name" msgid="3753320833950115786">"Pracovné"</string>
@@ -124,24 +122,24 @@
     <string name="action_dismiss_notification" msgid="5909461085055959187">"Zavrieť"</string>
     <string name="notification_dismissed" msgid="6002233469409822874">"Upozornenie bolo zavreté"</string>
 
-	<string name="menu_save_driver">"Jazdite bezpečne"</string>
-	<string name="widget_app_setting">"Nastavenia"</string>
-	<string name="widget_app_video">"Video"</string>
-	<string name="widget_app_gallery">"Galéria"</string>
-	<string name="toolbar_text_gps">"Navigácia"</string>
-	<string name="toolbar_text_bluetooth">"Bluetooth"</string>
-	<string name="toolbar_text_radio">"Rádio"</string>
-	<string name="toolbar_text_music">"Hudba"</string>
-	<string name="toolbar_text_dvd">"DVD"</string>
-	<string name="toolbar_text_video">"Video"</string>
-	<string name="week1">"Nedeľa"</string>
-	<string name="week2">"Pondelok"</string>
-	<string name="week3">"Utorok"</string>
-	<string name="week4">"Streda"</string>
-	<string name="week5">"Štvrtok"</string>
-	<string name="week6">"Piatok"</string>
-	<string name="week7">"Sobota"</string>
-	<string name="screen0_DVR">"DVR"</string>
-	<string name="f_camera_alternative_7451">"CAM"</string>
-	<string name="f_camera_alternative_1050">"F-Cam"</string>
+    <string name="menu_save_driver">"Jazdite bezpečne"</string>
+    <string name="widget_app_setting">"Nastavenia"</string>
+    <string name="widget_app_video">"Video"</string>
+    <string name="widget_app_gallery">"Galéria"</string>
+    <string name="toolbar_text_gps">"Navigácia"</string>
+    <string name="toolbar_text_bluetooth">"Bluetooth"</string>
+    <string name="toolbar_text_radio">"Rádio"</string>
+    <string name="toolbar_text_music">"Hudba"</string>
+    <string name="toolbar_text_dvd">"DVD"</string>
+    <string name="toolbar_text_video">"Video"</string>
+    <string name="week1">"Nedeľa"</string>
+    <string name="week2">"Pondelok"</string>
+    <string name="week3">"Utorok"</string>
+    <string name="week4">"Streda"</string>
+    <string name="week5">"Štvrtok"</string>
+    <string name="week6">"Piatok"</string>
+    <string name="week7">"Sobota"</string>
+    <string name="screen0_DVR">"DVR"</string>
+    <string name="f_camera_alternative_7451">"CAM"</string>
+    <string name="f_camera_alternative_1050">"F-Cam"</string>
 </resources>

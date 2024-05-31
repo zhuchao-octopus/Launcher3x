@@ -1,12 +1,11 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:launcher="http://schemas.android.com/apk/res-auto"
     android:id="@+id/radio_music_widget"
     android:layout_width="match_parent"
     android:layout_height="400px"
     android:background="#ffff0000"
     android:gravity="center_horizontal"
     android:orientation="horizontal"
-    android:paddingTop="10px" >
+    android:paddingTop="10px">
 
     <FrameLayout
         android:id="@+id/entry_radio"
@@ -16,7 +15,7 @@
         android:layout_marginTop="0.0px"
         android:onClick="onLauncherButtonClick"
         android:orientation="horizontal"
-        android:visibility="visible" >
+        android:visibility="visible">
 
         <ImageView
             android:layout_width="152px"
@@ -33,7 +32,7 @@
             android:layout_marginLeft="260.0px"
             android:layout_marginTop="155.0px"
             android:gravity="bottom"
-            android:orientation="horizontal" >
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/radio_music_baud"
@@ -68,7 +67,7 @@
             android:layout_marginLeft="238px"
             android:layout_marginTop="58px"
             android:gravity="center"
-            android:orientation="horizontal" >
+            android:orientation="horizontal">
 
             <ImageView
                 android:id="@+id/radionum1"
@@ -162,14 +161,14 @@
         android:layout_marginTop="0.0px"
         android:onClick="onLauncherButtonClick"
         android:orientation="horizontal"
-        android:visibility="gone" >
+        android:visibility="gone">
 
         <View
             android:id="@+id/music_icon"
             android:layout_width="28px"
             android:layout_height="45px"
-        android:layout_marginLeft="315.0px"
-        android:layout_marginTop="60.0px"
+            android:layout_marginLeft="315.0px"
+            android:layout_marginTop="60.0px"
             android:background="@drawable/music_icon" />
 
         <ImageView
@@ -262,7 +261,7 @@
         android:layout_marginTop="12px"
         android:gravity="center"
         android:onClick="onLauncherButtonClick"
-        android:orientation="vertical" >
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -270,7 +269,7 @@
             android:layout_marginLeft="20px"
             android:layout_marginTop="22px"
             android:gravity="center"
-            android:orientation="horizontal" >
+            android:orientation="horizontal">
 
             <ImageView
                 android:id="@+id/timehour_h"
@@ -323,7 +322,7 @@
             android:layout_marginTop="100px"
             android:gravity="center"
             android:textColor="#ffffff"
-            android:textSize="24px"/>
+            android:textSize="24px" />
 
         <TextView
             android:id="@+id/radio_music_date"

@@ -1,19 +1,18 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:launcher="http://schemas.android.com/apk/res-auto"
     android:id="@+id/radio_music_widget"
     android:layout_width="match_parent"
     android:layout_height="400px"
     android:focusable="false"
     android:gravity="center_horizontal"
     android:orientation="horizontal"
-    android:paddingTop="0px" >
+    android:paddingTop="0px">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center_horizontal"
         android:orientation="horizontal"
-        android:paddingTop="2px" >
+        android:paddingTop="2px">
 
         <AbsoluteLayout
             android:layout_width="match_parent"
@@ -21,7 +20,7 @@
             android:layout_marginLeft="0px"
             android:layout_marginTop="10px"
             android:background="#00000000"
-            android:orientation="horizontal" >
+            android:orientation="horizontal">
 
             <AbsoluteLayout
                 android:id="@+id/entry_music"
@@ -33,7 +32,7 @@
                 android:background="@drawable/music_back"
                 android:onClick="onLauncherButtonClick"
                 android:orientation="horizontal"
-                android:visibility="gone" >
+                android:visibility="gone">
 
                 <ImageView
                     android:id="@+id/album_art"
@@ -57,7 +56,7 @@
                     android:layout_width="500px"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    android:orientation="horizontal" >
+                    android:orientation="horizontal">
 
                     <ImageButton
                         android:id="@+id/music_button_prev"
@@ -70,7 +69,7 @@
                         android:layout_width="320px"
                         android:layout_height="match_parent"
                         android:gravity="center"
-                        android:orientation="vertical" >
+                        android:orientation="vertical">
 
                         <TextView
                             android:id="@+id/music_name"
@@ -154,21 +153,20 @@
                 android:background="@drawable/music_back"
                 android:onClick="onLauncherButtonClick"
                 android:orientation="horizontal"
-                android:visibility="visible" >
+                android:visibility="visible">
 
                 <View
                     android:id="@+id/radio_info_layout"
                     android:layout_width="0px"
                     android:layout_height="0px"
                     android:gravity="center_vertical"
-                    android:orientation="horizontal" >
-                </View>
+                    android:orientation="horizontal"></View>
 
                 <LinearLayout
                     android:layout_width="500px"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    android:orientation="horizontal" >
+                    android:orientation="horizontal">
 
                     <ImageButton
                         android:id="@+id/radio_button_prev"
@@ -180,7 +178,7 @@
                         android:layout_width="320px"
                         android:layout_height="match_parent"
                         android:gravity="center"
-                        android:orientation="horizontal" >
+                        android:orientation="horizontal">
 
                         <TextView
                             android:id="@+id/radio_music_baud"
@@ -233,7 +231,7 @@
                     android:layout_x="130px"
                     android:layout_y="100px"
                     android:gravity="center"
-                    android:orientation="horizontal" >
+                    android:orientation="horizontal">
 
                     <ImageButton
                         android:id="@+id/radio_button_play"
@@ -252,20 +250,20 @@
                 android:layout_y="41px"
                 android:background="@drawable/time_back"
                 android:onClick="onLauncherButtonClick"
-                android:orientation="horizontal" >
+                android:orientation="horizontal">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="70px"
                     android:layout_marginLeft="5px"
                     android:layout_marginTop="0px"
-                    android:orientation="horizontal" >
+                    android:orientation="horizontal">
 
                     <AbsoluteLayout
                         android:layout_width="290px"
                         android:layout_height="70px"
                         android:gravity="center_vertical"
-                        android:orientation="horizontal" >
+                        android:orientation="horizontal">
 
                         <ImageView
                             android:id="@+id/timehour_h"

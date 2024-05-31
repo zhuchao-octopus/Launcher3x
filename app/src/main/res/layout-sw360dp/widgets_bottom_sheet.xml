@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (C) 2017 The Android Open Source Project
+<?xml version="1.0" encoding="utf-8"?><!-- Copyright (C) 2017 The Android Open Source Project
 
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
@@ -14,8 +13,7 @@
      limitations under the License.
 -->
 
-<com.android.launcher3.widget.WidgetsBottomSheet
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<com.android.launcher3.widget.WidgetsBottomSheet xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -31,7 +29,7 @@
         android:gravity="center_horizontal"
         android:fontFamily="sans-serif"
         android:textColor="?android:attr/textColorPrimary"
-        android:textSize="24sp"/>
+        android:textSize="24sp" />
 
     <TextView
         android:layout_width="match_parent"
@@ -41,13 +39,14 @@
         android:fontFamily="sans-serif"
         android:textColor="?android:attr/textColorTertiary"
         android:textSize="14sp"
-        android:text="@string/long_press_widget_to_add"/>
+        android:text="@string/long_press_widget_to_add" />
 
-    <include layout="@layout/widgets_scroll_container"
-         android:id="@+id/widgets"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:layout_marginTop="45dp"
-         android:layout_marginBottom="40dp"/>
+    <include
+        layout="@layout/widgets_scroll_container"
+        android:id="@+id/widgets"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="45dp"
+        android:layout_marginBottom="40dp" />
 
 </com.android.launcher3.widget.WidgetsBottomSheet>

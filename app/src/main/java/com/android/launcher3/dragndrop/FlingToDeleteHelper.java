@@ -44,8 +44,7 @@ public class FlingToDeleteHelper {
 
     public FlingToDeleteHelper(Launcher launcher) {
         mLauncher = launcher;
-        mFlingToDeleteThresholdVelocity = launcher.getResources()
-                .getDimensionPixelSize(R.dimen.drag_flingToDeleteMinVelocity);
+        mFlingToDeleteThresholdVelocity = launcher.getResources().getDimensionPixelSize(R.dimen.drag_flingToDeleteMinVelocity);
     }
 
     public void recordMotionEvent(MotionEvent ev) {
@@ -74,8 +73,7 @@ public class FlingToDeleteHelper {
             default:
                 return;
         }
-        MotionEvent emulatedEvent = MotionEvent.obtain(dragStartTime, SystemClock.uptimeMillis(),
-                motionAction, event.getX(), event.getY(), 0);
+        MotionEvent emulatedEvent = MotionEvent.obtain(dragStartTime, SystemClock.uptimeMillis(), motionAction, event.getX(), event.getY(), 0);
         recordMotionEvent(emulatedEvent);
         emulatedEvent.recycle();
     }
@@ -117,8 +115,7 @@ public class FlingToDeleteHelper {
             // Do a quick dot product test to ensure that we are flinging upwards
             PointF upVec = new PointF(0f, -1f);
             theta = getAngleBetweenVectors(vel, upVec);
-        } else if (mLauncher.getDeviceProfile().isVerticalBarLayout() &&
-                mVelocityTracker.getXVelocity() < mFlingToDeleteThresholdVelocity) {
+        } else if (mLauncher.getDeviceProfile().isVerticalBarLayout() && mVelocityTracker.getXVelocity() < mFlingToDeleteThresholdVelocity) {
             // Remove icon is on left side instead of top, so check if we are flinging to the left.
             PointF leftVec = new PointF(-1f, 0f);
             theta = getAngleBetweenVectors(vel, leftVec);
@@ -130,7 +127,6 @@ public class FlingToDeleteHelper {
     }
 
     private float getAngleBetweenVectors(PointF vec1, PointF vec2) {
-        return (float) Math.acos(((vec1.x * vec2.x) + (vec1.y * vec2.y)) /
-                (vec1.length() * vec2.length()));
+        return (float) Math.acos(((vec1.x * vec2.x) + (vec1.y * vec2.y)) / (vec1.length() * vec2.length()));
     }
 }

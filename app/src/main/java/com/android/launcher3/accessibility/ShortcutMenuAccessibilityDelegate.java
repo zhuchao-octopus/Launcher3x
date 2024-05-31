@@ -41,8 +41,7 @@ public class ShortcutMenuAccessibilityDelegate extends LauncherAccessibilityDele
 
     public ShortcutMenuAccessibilityDelegate(Launcher launcher) {
         super(launcher);
-        mActions.put(DISMISS_NOTIFICATION, new AccessibilityAction(DISMISS_NOTIFICATION,
-                launcher.getText(R.string.action_dismiss_notification)));
+        mActions.put(DISMISS_NOTIFICATION, new AccessibilityAction(DISMISS_NOTIFICATION, launcher.getText(R.string.action_dismiss_notification)));
     }
 
     @Override
@@ -69,9 +68,7 @@ public class ShortcutMenuAccessibilityDelegate extends LauncherAccessibilityDele
             Runnable onComplete = new Runnable() {
                 @Override
                 public void run() {
-                    mLauncher.getModelWriter().addItemToDatabase(info,
-                            LauncherSettings.Favorites.CONTAINER_DESKTOP,
-                            screenId, coordinates[0], coordinates[1]);
+                    mLauncher.getModelWriter().addItemToDatabase(info, LauncherSettings.Favorites.CONTAINER_DESKTOP, screenId, coordinates[0], coordinates[1]);
                     ArrayList<ItemInfo> itemList = new ArrayList<>();
                     itemList.add(info);
                     mLauncher.bindItems(itemList, 0, itemList.size(), true);

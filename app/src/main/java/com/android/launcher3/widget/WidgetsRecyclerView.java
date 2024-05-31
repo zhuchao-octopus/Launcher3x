@@ -18,15 +18,12 @@ package com.android.launcher3.widget;
 
 import android.content.Context;
 import android.graphics.Color;
-///import android.support.v7.widget.LinearLayoutManager;
 import android.util.AttributeSet;
 import android.view.View;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.android.launcher3.BaseRecyclerView;
-import com.android.launcher3.model.PackageItemInfo;
-import com.android.launcher3.model.WidgetsModel;
 
 /**
  * The widgets recycler view.
@@ -49,8 +46,7 @@ public class WidgetsRecyclerView extends BaseRecyclerView {
         super(context, attrs, defStyleAttr);
     }
 
-    public WidgetsRecyclerView(Context context, AttributeSet attrs, int defStyleAttr,
-            int defStyleRes) {
+    public WidgetsRecyclerView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         this(context, attrs, defStyleAttr);
     }
 
@@ -92,7 +88,7 @@ public class WidgetsRecyclerView extends BaseRecyclerView {
         LinearLayoutManager layoutManager = ((LinearLayoutManager) getLayoutManager());
         layoutManager.scrollToPositionWithOffset(0, (int) -(availableScrollHeight * touchFraction));
 
-        int posInt = (int) ((touchFraction == 1)? pos -1 : pos);
+        int posInt = (int) ((touchFraction == 1) ? pos - 1 : pos);
         return mAdapter.getSectionName(posInt);
     }
 
@@ -133,7 +129,7 @@ public class WidgetsRecyclerView extends BaseRecyclerView {
 
     /**
      * Returns the available scroll height:
-     *   AvailableScrollHeight = Total height of the all items - last page height
+     * AvailableScrollHeight = Total height of the all items - last page height
      */
     @Override
     protected int getAvailableScrollHeight() {

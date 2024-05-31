@@ -56,9 +56,7 @@ import java.util.List;
 /**
  * Bottom sheet for the "Widgets" system shortcut in the long-press popup.
  */
-public class WidgetsBottomSheet extends AbstractFloatingView implements Insettable, TouchController,
-        VerticalPullDetector.Listener, View.OnClickListener, View.OnLongClickListener,
-        DragController.DragListener {
+public class WidgetsBottomSheet extends AbstractFloatingView implements Insettable, TouchController, VerticalPullDetector.Listener, View.OnClickListener, View.OnLongClickListener, DragController.DragListener {
 
     private int mTranslationYOpen;
     private int mTranslationYClosed;
@@ -99,13 +97,11 @@ public class WidgetsBottomSheet extends AbstractFloatingView implements Insettab
 
     public void populateAndShow(ItemInfo itemInfo) {
         mOriginalItemInfo = itemInfo;
-        ((TextView) findViewById(R.id.title)).setText(getContext().getString(
-                R.string.widgets_bottom_sheet_title, mOriginalItemInfo.title));
+        ((TextView) findViewById(R.id.title)).setText(getContext().getString(R.string.widgets_bottom_sheet_title, mOriginalItemInfo.title));
 
         onWidgetsBound();
 
-        mWasNavBarLight = (mLauncher.getWindow().getDecorView().getSystemUiVisibility()
-                & View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR) != 0;
+        mWasNavBarLight = (mLauncher.getWindow().getDecorView().getSystemUiVisibility() & View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR) != 0;
         mLauncher.getDragLayer().addView(this);
         measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
         setTranslationY(mTranslationYClosed);
@@ -115,8 +111,7 @@ public class WidgetsBottomSheet extends AbstractFloatingView implements Insettab
 
     @Override
     protected void onWidgetsBound() {
-        List<WidgetItem> widgets = mLauncher.getWidgetsForPackageUser(new PackageUserKey(
-                mOriginalItemInfo.getTargetComponent().getPackageName(), mOriginalItemInfo.user));
+        List<WidgetItem> widgets = mLauncher.getWidgetsForPackageUser(new PackageUserKey(mOriginalItemInfo.getTargetComponent().getPackageName(), mOriginalItemInfo.user));
 
         ViewGroup widgetRow = (ViewGroup) findViewById(R.id.widgets);
         ViewGroup widgetCells = (ViewGroup) widgetRow.findViewById(R.id.widgets_cell_list);
@@ -125,8 +120,7 @@ public class WidgetsBottomSheet extends AbstractFloatingView implements Insettab
 
         for (int i = 0; i < widgets.size(); i++) {
             WidgetCell widget = addItemCell(widgetCells);
-            widget.applyFromCellItem(widgets.get(i), LauncherAppState.getInstance(mLauncher)
-                    .getWidgetCache());
+            widget.applyFromCellItem(widgets.get(i), LauncherAppState.getInstance(mLauncher).getWidgetCache());
             widget.ensurePreview();
             widget.setVisibility(View.VISIBLE);
             if (i < widgets.size() - 1) {
@@ -136,15 +130,12 @@ public class WidgetsBottomSheet extends AbstractFloatingView implements Insettab
 
         if (widgets.size() == 1) {
             // If there is only one widget, we want to center it instead of left-align.
-            WidgetsBottomSheet.LayoutParams params = (WidgetsBottomSheet.LayoutParams)
-                    widgetRow.getLayoutParams();
+            WidgetsBottomSheet.LayoutParams params = (WidgetsBottomSheet.LayoutParams) widgetRow.getLayoutParams();
             params.gravity = Gravity.CENTER_HORIZONTAL;
         } else {
             // Otherwise, add an empty view to the start as padding (but still scroll edge to edge).
-            View leftPaddingView = LayoutInflater.from(getContext()).inflate(
-                    R.layout.widget_list_divider, widgetRow, false);
-            leftPaddingView.getLayoutParams().width = Utilities.pxFromDp(
-                    16, getResources().getDisplayMetrics());
+            View leftPaddingView = LayoutInflater.from(getContext()).inflate(R.layout.widget_list_divider, widgetRow, false);
+            leftPaddingView.getLayoutParams().width = Utilities.pxFromDp(16, getResources().getDisplayMetrics());
             widgetCells.addView(leftPaddingView, 0);
         }
     }
@@ -154,8 +145,7 @@ public class WidgetsBottomSheet extends AbstractFloatingView implements Insettab
     }
 
     private WidgetCell addItemCell(ViewGroup parent) {
-        WidgetCell widget = (WidgetCell) LayoutInflater.from(getContext()).inflate(
-                R.layout.widget_cell, parent, false);
+        WidgetCell widget = (WidgetCell) LayoutInflater.from(getContext()).inflate(R.layout.widget_cell, parent, false);
 
         widget.setOnClickListener(this);
         widget.setOnLongClickListener(this);
@@ -183,8 +173,7 @@ public class WidgetsBottomSheet extends AbstractFloatingView implements Insettab
         mIsOpen = true;
         setLightNavBar(true);
         if (animate) {
-            mOpenCloseAnimator.setValues(new PropertyListBuilder()
-                    .translationY(mTranslationYOpen).build());
+            mOpenCloseAnimator.setValues(new PropertyListBuilder().translationY(mTranslationYOpen).build());
             mOpenCloseAnimator.addListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
@@ -204,8 +193,7 @@ public class WidgetsBottomSheet extends AbstractFloatingView implements Insettab
             return;
         }
         if (animate) {
-            mOpenCloseAnimator.setValues(new PropertyListBuilder()
-                    .translationY(mTranslationYClosed).build());
+            mOpenCloseAnimator.setValues(new PropertyListBuilder().translationY(mTranslationYClosed).build());
             mOpenCloseAnimator.addListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
@@ -215,8 +203,7 @@ public class WidgetsBottomSheet extends AbstractFloatingView implements Insettab
                     setLightNavBar(mWasNavBarLight);
                 }
             });
-            mOpenCloseAnimator.setInterpolator(mVerticalPullDetector.isIdleState()
-                    ? mFastOutSlowInInterpolator : mScrollInterpolator);
+            mOpenCloseAnimator.setInterpolator(mVerticalPullDetector.isIdleState() ? mFastOutSlowInInterpolator : mScrollInterpolator);
             mOpenCloseAnimator.start();
         } else {
             setTranslationY(mTranslationYClosed);
@@ -253,8 +240,7 @@ public class WidgetsBottomSheet extends AbstractFloatingView implements Insettab
         int rightInset = insets.right - mInsets.right;
         int bottomInset = insets.bottom - mInsets.bottom;
         mInsets.set(insets);
-        setPadding(getPaddingLeft() + leftInset, getPaddingTop(),
-                getPaddingRight() + rightInset, getPaddingBottom() + bottomInset);
+        setPadding(getPaddingLeft() + leftInset, getPaddingTop(), getPaddingRight() + rightInset, getPaddingBottom() + bottomInset);
     }
 
     /* VerticalPullDetector.Listener */
@@ -265,8 +251,7 @@ public class WidgetsBottomSheet extends AbstractFloatingView implements Insettab
 
     @Override
     public boolean onDrag(float displacement, float velocity) {
-        setTranslationY(Utilities.boundToRange(displacement, mTranslationYOpen,
-                mTranslationYClosed));
+        setTranslationY(Utilities.boundToRange(displacement, mTranslationYOpen, mTranslationYClosed));
         return true;
     }
 
@@ -274,13 +259,11 @@ public class WidgetsBottomSheet extends AbstractFloatingView implements Insettab
     public void onDragEnd(float velocity, boolean fling) {
         if ((fling && velocity > 0) || getTranslationY() > (mTranslationYRange) / 2) {
             mScrollInterpolator.setVelocityAtZero(velocity);
-            mOpenCloseAnimator.setDuration(mVerticalPullDetector.calculateDuration(velocity,
-                    (mTranslationYClosed - getTranslationY()) / mTranslationYRange));
+            mOpenCloseAnimator.setDuration(mVerticalPullDetector.calculateDuration(velocity, (mTranslationYClosed - getTranslationY()) / mTranslationYRange));
             close(true);
         } else {
             mIsOpen = false;
-            mOpenCloseAnimator.setDuration(mVerticalPullDetector.calculateDuration(velocity,
-                    (getTranslationY() - mTranslationYOpen) / mTranslationYRange));
+            mOpenCloseAnimator.setDuration(mVerticalPullDetector.calculateDuration(velocity, (getTranslationY() - mTranslationYOpen) / mTranslationYRange));
             open(true);
         }
     }
@@ -292,10 +275,8 @@ public class WidgetsBottomSheet extends AbstractFloatingView implements Insettab
 
     @Override
     public boolean onControllerInterceptTouchEvent(MotionEvent ev) {
-        int directionsToDetectScroll = mVerticalPullDetector.isIdleState() ?
-                VerticalPullDetector.DIRECTION_DOWN : 0;
-        mVerticalPullDetector.setDetectableScrollConditions(
-                directionsToDetectScroll, false);
+        int directionsToDetectScroll = mVerticalPullDetector.isIdleState() ? VerticalPullDetector.DIRECTION_DOWN : 0;
+        mVerticalPullDetector.setDetectableScrollConditions(directionsToDetectScroll, false);
         mVerticalPullDetector.onTouchEvent(ev);
         return mVerticalPullDetector.isDraggingOrSettling();
     }

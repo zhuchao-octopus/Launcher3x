@@ -45,9 +45,7 @@ public class LauncherRootView extends InsettableFrameLayout {
     @Override
     protected boolean fitSystemWindows(Rect insets) {
         boolean rawInsetsChanged = !mInsets.equals(insets);
-        mDrawSideInsetBar = (insets.right > 0 || insets.left > 0) &&
-                (!Utilities.ATLEAST_MARSHMALLOW ||
-                getContext().getSystemService(ActivityManager.class).isLowRamDevice());
+        mDrawSideInsetBar = (insets.right > 0 || insets.left > 0) && (!Utilities.ATLEAST_MARSHMALLOW || getContext().getSystemService(ActivityManager.class).isLowRamDevice());
         mRightInsetBarWidth = insets.right;
         mLeftInsetBarWidth = insets.left;
         setInsets(mDrawSideInsetBar ? new Rect(0, insets.top, 0, insets.bottom) : insets);

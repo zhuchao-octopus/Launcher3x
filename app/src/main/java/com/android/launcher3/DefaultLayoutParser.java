@@ -46,11 +46,9 @@ public class DefaultLayoutParser extends AutoInstallsLayout {
     private static final String ATTR_FOLDER_ITEMS = "folderItems";
 
     // TODO: Remove support for this broadcast, instead use widget options to send bind time options
-    private static final String ACTION_APPWIDGET_DEFAULT_WORKSPACE_CONFIGURE =
-            "com.android.launcher.action.APPWIDGET_DEFAULT_WORKSPACE_CONFIGURE";
+    private static final String ACTION_APPWIDGET_DEFAULT_WORKSPACE_CONFIGURE = "com.android.launcher.action.APPWIDGET_DEFAULT_WORKSPACE_CONFIGURE";
 
-    public DefaultLayoutParser(Context context, AppWidgetHost appWidgetHost,
-            LayoutParserCallback callback, Resources sourceRes, int layoutId) {
+    public DefaultLayoutParser(Context context, AppWidgetHost appWidgetHost, LayoutParserCallback callback, Resources sourceRes, int layoutId) {
         super(context, appWidgetHost, callback, sourceRes, layoutId, TAG_FAVORITES);
     }
 
@@ -59,7 +57,8 @@ public class DefaultLayoutParser extends AutoInstallsLayout {
         return getFolderElementsMap(mSourceRes);
     }
 
-    @Thunk HashMap<String, TagParser> getFolderElementsMap(Resources res) {
+    @Thunk
+    HashMap<String, TagParser> getFolderElementsMap(Resources res) {
         HashMap<String, TagParser> parsers = new HashMap<String, TagParser>();
         parsers.put(TAG_FAVORITE, new AppShortcutWithUriParser());
         parsers.put(TAG_SHORTCUT, new UriShortcutParser(res));
@@ -109,10 +108,8 @@ public class DefaultLayoutParser extends AutoInstallsLayout {
                 return -1;
             }
 
-            ResolveInfo resolved = mPackageManager.resolveActivity(metaIntent,
-                    PackageManager.MATCH_DEFAULT_ONLY);
-            final List<ResolveInfo> appList = mPackageManager.queryIntentActivities(
-                    metaIntent, PackageManager.MATCH_DEFAULT_ONLY);
+            ResolveInfo resolved = mPackageManager.resolveActivity(metaIntent, PackageManager.MATCH_DEFAULT_ONLY);
+            final List<ResolveInfo> appList = mPackageManager.queryIntentActivities(metaIntent, PackageManager.MATCH_DEFAULT_ONLY);
 
             // Verify that the result is an app and not just the resolver dialog asking which
             // app to use.
@@ -122,8 +119,7 @@ public class DefaultLayoutParser extends AutoInstallsLayout {
                 if (systemApp == null) {
                     // There is no logical choice for this meta-favorite, so rather than making
                     // a bad choice just add nothing.
-                    Log.w(TAG, "No preference or single system activity found for "
-                            + metaIntent.toString());
+                    Log.w(TAG, "No preference or single system activity found for " + metaIntent.toString());
                     return -1;
                 }
                 resolved = systemApp;
@@ -133,11 +129,9 @@ public class DefaultLayoutParser extends AutoInstallsLayout {
             if (intent == null) {
                 return -1;
             }
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
-                    Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
 
-            return addShortcut(info.loadLabel(mPackageManager).toString(), intent,
-                    Favorites.ITEM_TYPE_APPLICATION);
+            return addShortcut(info.loadLabel(mPackageManager).toString(), intent, Favorites.ITEM_TYPE_APPLICATION);
         }
 
         private ResolveInfo getSingleSystemActivity(List<ResolveInfo> appList) {
@@ -145,8 +139,7 @@ public class DefaultLayoutParser extends AutoInstallsLayout {
             final int N = appList.size();
             for (int i = 0; i < N; ++i) {
                 try {
-                    ApplicationInfo info = mPackageManager.getApplicationInfo(
-                            appList.get(i).activityInfo.packageName, 0);
+                    ApplicationInfo info = mPackageManager.getApplicationInfo(appList.get(i).activityInfo.packageName, 0);
                     if ((info.flags & ApplicationInfo.FLAG_SYSTEM) != 0) {
                         if (systemResolve != null) {
                             return null;
@@ -162,14 +155,12 @@ public class DefaultLayoutParser extends AutoInstallsLayout {
             return systemResolve;
         }
 
-        private boolean wouldLaunchResolverActivity(ResolveInfo resolved,
-                List<ResolveInfo> appList) {
+        private boolean wouldLaunchResolverActivity(ResolveInfo resolved, List<ResolveInfo> appList) {
             // If the list contains the above resolved activity, then it can't be
             // ResolverActivity itself.
             for (int i = 0; i < appList.size(); ++i) {
                 ResolveInfo tmp = appList.get(i);
-                if (tmp.activityInfo.name.equals(resolved.activityInfo.name)
-                        && tmp.activityInfo.packageName.equals(resolved.activityInfo.packageName)) {
+                if (tmp.activityInfo.name.equals(resolved.activityInfo.name) && tmp.activityInfo.packageName.equals(resolved.activityInfo.packageName)) {
                     return false;
                 }
             }
@@ -208,13 +199,11 @@ public class DefaultLayoutParser extends AutoInstallsLayout {
         private final AppShortcutWithUriParser mChildParser = new AppShortcutWithUriParser();
 
         @Override
-        public long parseAndAdd(XmlResourceParser parser) throws XmlPullParserException,
-                IOException {
+        public long parseAndAdd(XmlResourceParser parser) throws XmlPullParserException, IOException {
             final int groupDepth = parser.getDepth();
             int type;
             long addedId = -1;
-            while ((type = parser.next()) != XmlPullParser.END_TAG ||
-                    parser.getDepth() > groupDepth) {
+            while ((type = parser.next()) != XmlPullParser.END_TAG || parser.getDepth() > groupDepth) {
                 if (type != XmlPullParser.START_TAG || addedId > -1) {
                     continue;
                 }
@@ -222,8 +211,7 @@ public class DefaultLayoutParser extends AutoInstallsLayout {
                 if (TAG_FAVORITE.equals(fallback_item_name)) {
                     addedId = mChildParser.parseAndAdd(parser);
                 } else {
-                    Log.e(TAG, "Fallback groups can contain only favorites, found "
-                            + fallback_item_name);
+                    Log.e(TAG, "Fallback groups can contain only favorites, found " + fallback_item_name);
                 }
             }
             return addedId;
@@ -233,17 +221,16 @@ public class DefaultLayoutParser extends AutoInstallsLayout {
     /**
      * A parser which adds a folder whose contents come from partner apk.
      */
-    @Thunk class PartnerFolderParser implements TagParser {
+    @Thunk
+    class PartnerFolderParser implements TagParser {
 
         @Override
-        public long parseAndAdd(XmlResourceParser parser) throws XmlPullParserException,
-                IOException {
+        public long parseAndAdd(XmlResourceParser parser) throws XmlPullParserException, IOException {
             // Folder contents come from an external XML resource
             final Partner partner = Partner.get(mPackageManager);
             if (partner != null) {
                 final Resources partnerRes = partner.getResources();
-                final int resId = partnerRes.getIdentifier(Partner.RES_FOLDER,
-                        "xml", partner.getPackageName());
+                final int resId = partnerRes.getIdentifier(Partner.RES_FOLDER, "xml", partner.getPackageName());
                 if (resId != 0) {
                     final XmlResourceParser partnerParser = partnerRes.getXml(resId);
                     beginDocument(partnerParser, TAG_FOLDER);
@@ -259,11 +246,11 @@ public class DefaultLayoutParser extends AutoInstallsLayout {
     /**
      * An extension of FolderParser which allows adding items from a different xml.
      */
-    @Thunk class MyFolderParser extends FolderParser {
+    @Thunk
+    class MyFolderParser extends FolderParser {
 
         @Override
-        public long parseAndAdd(XmlResourceParser parser) throws XmlPullParserException,
-                IOException {
+        public long parseAndAdd(XmlResourceParser parser) throws XmlPullParserException, IOException {
             final int resId = getAttributeResourceValue(parser, ATTR_FOLDER_ITEMS, 0);
             if (resId != 0) {
                 parser = mSourceRes.getXml(resId);
@@ -284,8 +271,7 @@ public class DefaultLayoutParser extends AutoInstallsLayout {
             try {
                 mPackageManager.getReceiverInfo(cn, 0);
             } catch (Exception e) {
-                String[] packages = mPackageManager.currentToCanonicalPackageNames(
-                        new String[] { cn.getPackageName() });
+                String[] packages = mPackageManager.currentToCanonicalPackageNames(new String[]{cn.getPackageName()});
                 cn = new ComponentName(packages[0], cn.getClassName());
                 try {
                     mPackageManager.getReceiverInfo(cn, 0);

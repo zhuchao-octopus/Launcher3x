@@ -65,9 +65,7 @@ public class AppDiscoveryItemView extends RelativeLayout {
         this.mReviewCount = (TextView) findViewById(R.id.review_count);
     }
 
-    public void init(OnClickListener clickListener,
-                     AccessibilityDelegate accessibilityDelegate,
-                     OnLongClickListener onLongClickListener) {
+    public void init(OnClickListener clickListener, AccessibilityDelegate accessibilityDelegate, OnLongClickListener onLongClickListener) {
         setOnClickListener(clickListener);
         mImage.setOnClickListener(clickListener);
         setAccessibilityDelegate(accessibilityDelegate);

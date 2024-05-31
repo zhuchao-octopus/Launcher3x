@@ -3,7 +3,6 @@ package com.android.launcher3.util;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -11,7 +10,6 @@ import android.widget.FrameLayout;
 
 import com.android.launcher3.CustomAppWidget;
 import com.android.launcher3.Launcher;
-import com.android.launcher3.LauncherAppState;
 import com.android.launcher3.R;
 import com.android.launcher3.Utilities;
 
@@ -30,11 +28,7 @@ public class TestingUtils {
 
     public static void startTrackingMemory(Context context) {
         if (MEMORY_DUMP_ENABLED) {
-            context.startService(new Intent()
-                .setComponent(new ComponentName(context.getPackageName(), MEMORY_TRACKER))
-                .setAction(ACTION_START_TRACKING)
-                .putExtra("pid", android.os.Process.myPid())
-                .putExtra("name", "L"));
+            context.startService(new Intent().setComponent(new ComponentName(context.getPackageName(), MEMORY_TRACKER)).setAction(ACTION_START_TRACKING).putExtra("pid", android.os.Process.myPid()).putExtra("name", "L"));
         }
     }
 
@@ -42,16 +36,10 @@ public class TestingUtils {
         if (MEMORY_DUMP_ENABLED) {
             boolean show = Utilities.getPrefs(launcher).getBoolean(SHOW_WEIGHT_WATCHER, true);
 
-            int id = launcher.getResources().getIdentifier("zzz_weight_watcher", "layout",
-                    launcher.getPackageName());
+            int id = launcher.getResources().getIdentifier("zzz_weight_watcher", "layout", launcher.getPackageName());
             View watcher = launcher.getLayoutInflater().inflate(id, null);
             watcher.setAlpha(0.5f);
-            ((FrameLayout) launcher.findViewById(R.id.launcher)).addView(watcher,
-                    new FrameLayout.LayoutParams(
-                            FrameLayout.LayoutParams.MATCH_PARENT,
-                            FrameLayout.LayoutParams.WRAP_CONTENT,
-                            Gravity.BOTTOM)
-            );
+            ((FrameLayout) launcher.findViewById(R.id.launcher)).addView(watcher, new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT, Gravity.BOTTOM));
 
             watcher.setVisibility(show ? View.VISIBLE : View.GONE);
             launcher.mWeightWatcher = watcher;

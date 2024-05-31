@@ -21,7 +21,7 @@ import android.view.animation.PathInterpolator;
 
 /**
  * Utility class to receive interpolators from.
- *
+ * <p>
  * This class was copied from com.android.systemui.
  */
 public class Interpolators {
@@ -32,6 +32,5 @@ public class Interpolators {
     /**
      * Interpolator to be used when animating a move based on a click. Pair with enough duration.
      */
-    public static final Interpolator TOUCH_RESPONSE =
-            new PathInterpolator(0.3f, 0f, 0.1f, 1f);
+    public static final Interpolator TOUCH_RESPONSE = new PathInterpolator(0.3f, 0f, 0.1f, 1f);
 }

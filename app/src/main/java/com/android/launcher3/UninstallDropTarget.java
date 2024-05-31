@@ -42,8 +42,7 @@ public class UninstallDropTarget extends ButtonDropTarget {
     public static boolean supportsDrop(Context context, Object info) {
         UserManager userManager = (UserManager) context.getSystemService(Context.USER_SERVICE);
         Bundle restrictions = userManager.getUserRestrictions();
-        if (restrictions.getBoolean(UserManager.DISALLOW_APPS_CONTROL, false)
-                || restrictions.getBoolean(UserManager.DISALLOW_UNINSTALL_APPS, false)) {
+        if (restrictions.getBoolean(UserManager.DISALLOW_APPS_CONTROL, false) || restrictions.getBoolean(UserManager.DISALLOW_UNINSTALL_APPS, false)) {
             return false;
         }
 
@@ -70,10 +69,8 @@ public class UninstallDropTarget extends ButtonDropTarget {
             }
         }
         if (intent != null) {
-            LauncherActivityInfo info = LauncherAppsCompat.getInstance(context)
-                    .resolveActivity(intent, user);
-            if (info != null
-                    && (info.getApplicationInfo().flags & ApplicationInfo.FLAG_SYSTEM) == 0) {
+            LauncherActivityInfo info = LauncherAppsCompat.getInstance(context).resolveActivity(intent, user);
+            if (info != null && (info.getApplicationInfo().flags & ApplicationInfo.FLAG_SYSTEM) == 0) {
                 return info.getComponentName();
             }
         }
@@ -91,8 +88,7 @@ public class UninstallDropTarget extends ButtonDropTarget {
 
     @Override
     public void completeDrop(final DragObject d) {
-        DropTargetResultCallback callback = d.dragSource instanceof DropTargetResultCallback
-                ? (DropTargetResultCallback) d.dragSource : null;
+        DropTargetResultCallback callback = d.dragSource instanceof DropTargetResultCallback ? (DropTargetResultCallback) d.dragSource : null;
         startUninstallActivity(mLauncher, d.dragInfo, callback);
     }
 
@@ -100,8 +96,7 @@ public class UninstallDropTarget extends ButtonDropTarget {
         return startUninstallActivity(launcher, info, null);
     }
 
-    public static boolean startUninstallActivity(
-            final Launcher launcher, ItemInfo info, DropTargetResultCallback callback) {
+    public static boolean startUninstallActivity(final Launcher launcher, ItemInfo info, DropTargetResultCallback callback) {
         final ComponentName cn = getUninstallTarget(launcher, info);
 
         final boolean isUninstallable;
@@ -111,10 +106,7 @@ public class UninstallDropTarget extends ButtonDropTarget {
             Toast.makeText(launcher, R.string.uninstall_system_app_text, Toast.LENGTH_SHORT).show();
             isUninstallable = false;
         } else {
-            Intent intent = new Intent(Intent.ACTION_DELETE,
-                    Uri.fromParts("package", cn.getPackageName(), cn.getClassName()))
-                    .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-                            | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+            Intent intent = new Intent(Intent.ACTION_DELETE, Uri.fromParts("package", cn.getPackageName(), cn.getClassName())).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
             intent.putExtra(Intent.EXTRA_USER, info.user);
             launcher.startActivity(intent);
             isUninstallable = true;
@@ -127,23 +119,18 @@ public class UninstallDropTarget extends ButtonDropTarget {
 
     /**
      * Notifies the {@param callback} whether the uninstall was successful or not.
-     *
+     * <p>
      * Since there is no direct callback for an uninstall request, we check the package existence
      * when the launch resumes next time. This assumes that the uninstall activity will finish only
      * after the task is completed
      */
-    protected static void sendUninstallResult(
-            final Launcher launcher, boolean activityStarted,
-            final ComponentName cn, final UserHandle user,
-            final DropTargetResultCallback callback) {
-        if (activityStarted)  {
+    protected static void sendUninstallResult(final Launcher launcher, boolean activityStarted, final ComponentName cn, final UserHandle user, final DropTargetResultCallback callback) {
+        if (activityStarted) {
             final Runnable checkIfUninstallWasSuccess = new Runnable() {
                 @Override
                 public void run() {
                     // We use MATCH_UNINSTALLED_PACKAGES as the app can be on SD card as well.
-                    boolean uninstallSuccessful = LauncherAppsCompat.getInstance(launcher)
-                            .getApplicationInfo(cn.getPackageName(),
-                                    PackageManager.MATCH_UNINSTALLED_PACKAGES, user) == null;
+                    boolean uninstallSuccessful = LauncherAppsCompat.getInstance(launcher).getApplicationInfo(cn.getPackageName(), PackageManager.MATCH_UNINSTALLED_PACKAGES, user) == null;
                     callback.onDragObjectRemoved(uninstallSuccessful);
                 }
             };
@@ -156,6 +143,7 @@ public class UninstallDropTarget extends ButtonDropTarget {
     public interface DropTargetResultCallback {
         /**
          * A drag operation was complete.
+         *
          * @param isRemoved true if the drag object should be removed, false otherwise.
          */
         void onDragObjectRemoved(boolean isRemoved);

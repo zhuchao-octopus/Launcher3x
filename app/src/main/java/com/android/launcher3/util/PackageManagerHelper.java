@@ -55,8 +55,7 @@ public class PackageManagerHelper {
      * guarantee that the app is on SD card.
      */
     public boolean isAppOnSdcard(String packageName, UserHandle user) {
-        ApplicationInfo info = mLauncherApps.getApplicationInfo(
-                packageName, PackageManager.MATCH_UNINSTALLED_PACKAGES, user);
+        ApplicationInfo info = mLauncherApps.getApplicationInfo(packageName, PackageManager.MATCH_UNINSTALLED_PACKAGES, user);
         return info != null && (info.flags & ApplicationInfo.FLAG_EXTERNAL_STORAGE) != 0;
     }
 
@@ -75,8 +74,7 @@ public class PackageManagerHelper {
 
     public Intent getAppLaunchIntent(String pkg, UserHandle user) {
         List<LauncherActivityInfo> activities = mLauncherApps.getActivityList(pkg, user);
-        return activities.isEmpty() ? null :
-                AppInfo.makeLaunchIntent(activities.get(0));
+        return activities.isEmpty() ? null : AppInfo.makeLaunchIntent(activities.get(0));
     }
 
     /**
@@ -115,8 +113,7 @@ public class PackageManagerHelper {
         }
 
         // Source does not have sufficient permissions.
-        if(mPm.checkPermission(target.activityInfo.permission, srcPackage) !=
-                PackageManager.PERMISSION_GRANTED) {
+        if (mPm.checkPermission(target.activityInfo.permission, srcPackage) != PackageManager.PERMISSION_GRANTED) {
             return false;
         }
 
@@ -136,17 +133,13 @@ public class PackageManagerHelper {
 
         try {
             return mPm.getApplicationInfo(srcPackage, 0).targetSdkVersion >= Build.VERSION_CODES.M;
-        } catch (NameNotFoundException e) { }
+        } catch (NameNotFoundException e) {
+        }
 
         return false;
     }
 
     public static Intent getMarketIntent(String packageName) {
-        return new Intent(Intent.ACTION_VIEW)
-                .setData(new Uri.Builder()
-                        .scheme("market")
-                        .authority("details")
-                        .appendQueryParameter("id", packageName)
-                        .build());
+        return new Intent(Intent.ACTION_VIEW).setData(new Uri.Builder().scheme("market").authority("details").appendQueryParameter("id", packageName).build());
     }
 }

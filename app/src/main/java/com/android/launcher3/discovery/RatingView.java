@@ -83,8 +83,7 @@ public class RatingView extends View {
         }
         if (partialStarFactor > 0f) {
             int x = fullStars * cellWidth + padding;
-            ClipDrawable star = new ClipDrawable(mStarDrawable,
-                    Gravity.LEFT, ClipDrawable.HORIZONTAL);
+            ClipDrawable star = new ClipDrawable(mStarDrawable, Gravity.LEFT, ClipDrawable.HORIZONTAL);
             star.setTint(color);
             star.setLevel((int) (MAX_LEVEL * partialStarFactor));
             star.setBounds(x, padding, x + starWidth, padding + starWidth);

@@ -115,7 +115,7 @@ message Action {
     FLING = 4;
     PINCH = 5;
   }
- enum Direction {
+  enum Direction {
     NONE = 0;
     UP = 1;
     DOWN = 2;
@@ -126,7 +126,7 @@ message Action {
     HOME_INTENT = 0;
     BACK = 1;
     ENTRY = 2;    // Indicates entry to one of Launcher container type target
-                  // not using the HOME_INTENT
+    // not using the HOME_INTENT
     CANCEL = 3;   // Indicates that a confirmation screen was cancelled
     CONFIRM = 4;  // Indicates thata confirmation screen was accepted
   }

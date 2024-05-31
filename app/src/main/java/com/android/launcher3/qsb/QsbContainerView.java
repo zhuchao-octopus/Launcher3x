@@ -86,8 +86,7 @@ public class QsbContainerView extends FrameLayout {
         private FrameLayout mWrapper;
 
         @Override
-        public View onCreateView(
-                LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
             mWrapper = new FrameLayout(getActivity());
 
@@ -118,8 +117,7 @@ public class QsbContainerView extends FrameLayout {
 
             int widgetId = Utilities.getPrefs(activity).getInt(QSB_WIDGET_ID, -1);
             AppWidgetProviderInfo widgetInfo = widgetManager.getAppWidgetInfo(widgetId);
-            boolean isWidgetBound = (widgetInfo != null) &&
-                    widgetInfo.provider.equals(mWidgetInfo.provider);
+            boolean isWidgetBound = (widgetInfo != null) && widgetInfo.provider.equals(mWidgetInfo.provider);
 
             int oldWidgetId = widgetId;
             if (!isWidgetBound) {
@@ -144,8 +142,7 @@ public class QsbContainerView extends FrameLayout {
                 mQsb = (QsbWidgetHostView) mQsbWidgetHost.createView(activity, widgetId, mWidgetInfo);
                 mQsb.setId(R.id.qsb_widget);
 
-                if (!Utilities.containsAll(AppWidgetManager.getInstance(activity)
-                        .getAppWidgetOptions(widgetId), opts)) {
+                if (!Utilities.containsAll(AppWidgetManager.getInstance(activity).getAppWidgetOptions(widgetId), opts)) {
                     mQsb.updateAppWidgetOptions(opts);
                 }
                 mQsb.setPadding(0, 0, 0, 0);
@@ -221,8 +218,7 @@ public class QsbContainerView extends FrameLayout {
      * provided by the package.
      */
     public static AppWidgetProviderInfo getSearchWidgetProvider(Context context) {
-        SearchManager searchManager =
-                (SearchManager) context.getSystemService(Context.SEARCH_SERVICE);
+        SearchManager searchManager = (SearchManager) context.getSystemService(Context.SEARCH_SERVICE);
         ComponentName searchComponent = searchManager.getGlobalSearchActivity();
         if (searchComponent == null) return null;
         String providerPkg = searchComponent.getPackageName();
@@ -251,8 +247,7 @@ public class QsbContainerView extends FrameLayout {
         }
 
         @Override
-        protected AppWidgetHostView onCreateView(
-                Context context, int appWidgetId, AppWidgetProviderInfo appWidget) {
+        protected AppWidgetHostView onCreateView(Context context, int appWidgetId, AppWidgetProviderInfo appWidget) {
             return new QsbWidgetHostView(context);
         }
     }

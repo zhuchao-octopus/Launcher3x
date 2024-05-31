@@ -19,7 +19,6 @@ package com.android.launcher3.widget;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Point;
-
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -52,13 +51,13 @@ import java.util.List;
 /**
  * The widgets list view container.
  */
-public class WidgetsContainerView extends BaseContainerView
-        implements View.OnLongClickListener, View.OnClickListener, DragSource {
+public class WidgetsContainerView extends BaseContainerView implements View.OnLongClickListener, View.OnClickListener, DragSource {
     private static final String TAG = "WidgetsContainerView";
     private static final boolean LOGD = false;
 
     /* Global instances that are used inside this container. */
-    @Thunk Launcher mLauncher;
+    @Thunk
+    Launcher mLauncher;
 
     /* Recycler view related member variables */
     private WidgetsRecyclerView mRecyclerView;
@@ -112,9 +111,7 @@ public class WidgetsContainerView extends BaseContainerView
     @Override
     public void onClick(View v) {
         // When we have exited widget tray or are in transition, disregard clicks
-        if (!mLauncher.isWidgetsViewVisible()
-                || mLauncher.getWorkspace().isSwitchingState()
-                || !(v instanceof WidgetCell)) return;
+        if (!mLauncher.isWidgetsViewVisible() || mLauncher.getWorkspace().isSwitchingState() || !(v instanceof WidgetCell)) return;
 
         handleClick();
     }
@@ -125,9 +122,7 @@ public class WidgetsContainerView extends BaseContainerView
             mWidgetInstructionToast.cancel();
         }
 
-        CharSequence msg = Utilities.wrapForTts(
-                getContext().getText(R.string.long_press_widget_to_add),
-                getContext().getString(R.string.long_accessible_way_to_add));
+        CharSequence msg = Utilities.wrapForTts(getContext().getText(R.string.long_press_widget_to_add), getContext().getString(R.string.long_accessible_way_to_add));
         mWidgetInstructionToast = Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT);
         mWidgetInstructionToast.show();
     }
@@ -184,9 +179,7 @@ public class WidgetsContainerView extends BaseContainerView
         int[] loc = new int[2];
         mLauncher.getDragLayer().getLocationInDragLayer(image, loc);
 
-        new PendingItemDragHelper(v).startDrag(
-                image.getBitmapBounds(), image.getBitmap().getWidth(), image.getWidth(),
-                new Point(loc[0], loc[1]), this, new DragOptions());
+        new PendingItemDragHelper(v).startDrag(image.getBitmapBounds(), image.getBitmap().getWidth(), image.getWidth(), new Point(loc[0], loc[1]), this, new DragOptions());
         return true;
     }
 
@@ -214,17 +207,14 @@ public class WidgetsContainerView extends BaseContainerView
     }
 
     @Override
-    public void onDropCompleted(View target, DragObject d, boolean isFlingToDelete,
-            boolean success) {
+    public void onDropCompleted(View target, DragObject d, boolean isFlingToDelete, boolean success) {
         if (LOGD) {
             Log.d(TAG, "onDropCompleted");
         }
-        if (isFlingToDelete || !success || (target != mLauncher.getWorkspace() &&
-                !(target instanceof DeleteDropTarget) && !(target instanceof Folder))) {
+        if (isFlingToDelete || !success || (target != mLauncher.getWorkspace() && !(target instanceof DeleteDropTarget) && !(target instanceof Folder))) {
             // Exit spring loaded mode if we have not successfully dropped or have not handled the
             // drop in Workspace
-            mLauncher.exitSpringLoadedDragModeDelayed(true,
-                    Launcher.EXIT_SPRINGLOADED_MODE_SHORT_TIMEOUT, null);
+            mLauncher.exitSpringLoadedDragModeDelayed(true, Launcher.EXIT_SPRINGLOADED_MODE_SHORT_TIMEOUT, null);
         }
         mLauncher.unlockScreenOrientation(false);
 

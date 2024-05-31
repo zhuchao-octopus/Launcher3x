@@ -137,8 +137,7 @@ public class LoaderCursor extends CursorWrapper {
     public Intent parseIntent() {
         String intentDescription = getString(intentIndex);
         try {
-            return TextUtils.isEmpty(intentDescription) ?
-                    null : Intent.parseUri(intentDescription, 0);
+            return TextUtils.isEmpty(intentDescription) ? null : Intent.parseUri(intentDescription, 0);
         } catch (URISyntaxException e) {
             Log.e(TAG, "Error parsing Intent");
             return null;
@@ -181,8 +180,7 @@ public class LoaderCursor extends CursorWrapper {
             // Failed to load from resource, try loading from DB.
             byte[] data = getBlob(iconIndex);
             try {
-                icon = LauncherIcons.createIconBitmap(
-                        BitmapFactory.decodeByteArray(data, 0, data.length), mContext);
+                icon = LauncherIcons.createIconBitmap(BitmapFactory.decodeByteArray(data, 0, data.length), mContext);
             } catch (Exception e) {
                 return null;
             }
@@ -219,7 +217,7 @@ public class LoaderCursor extends CursorWrapper {
             if (!TextUtils.isEmpty(title)) {
                 info.title = Utilities.trim(title);
             }
-        } else if  (hasRestoreFlag(ShortcutInfo.FLAG_AUTOINTALL_ICON)) {
+        } else if (hasRestoreFlag(ShortcutInfo.FLAG_AUTOINTALL_ICON)) {
             if (TextUtils.isEmpty(info.title)) {
                 info.title = getTitle();
             }
@@ -236,8 +234,7 @@ public class LoaderCursor extends CursorWrapper {
     /**
      * Make an ShortcutInfo object for a shortcut that is an application.
      */
-    public ShortcutInfo getAppShortcutInfo(
-            Intent intent, boolean allowMissingTarget, boolean useLowResIcon) {
+    public ShortcutInfo getAppShortcutInfo(Intent intent, boolean allowMissingTarget, boolean useLowResIcon) {
         if (user == null) {
             Log.d(TAG, "Null user found in getShortcutInfo");
             return null;
@@ -252,8 +249,7 @@ public class LoaderCursor extends CursorWrapper {
         Intent newIntent = new Intent(Intent.ACTION_MAIN, null);
         newIntent.addCategory(Intent.CATEGORY_LAUNCHER);
         newIntent.setComponent(componentName);
-        LauncherActivityInfo lai = LauncherAppsCompat.getInstance(mContext)
-                .resolveActivity(newIntent, user);
+        LauncherActivityInfo lai = LauncherAppsCompat.getInstance(mContext).resolveActivity(newIntent, user);
         if ((lai == null) && !allowMissingTarget) {
             Log.d(TAG, "Missing activity found in getShortcutInfo: " + componentName);
             return null;
@@ -292,8 +288,7 @@ public class LoaderCursor extends CursorWrapper {
      * Returns a {@link ContentWriter} which can be used to update the current item.
      */
     public ContentWriter updater() {
-       return new ContentWriter(mContext, new ContentWriter.CommitParams(
-               BaseColumns._ID + "= ?", new String[]{Long.toString(id)}));
+        return new ContentWriter(mContext, new ContentWriter.CommitParams(BaseColumns._ID + "= ?", new String[]{Long.toString(id)}));
     }
 
     /**
@@ -306,14 +301,13 @@ public class LoaderCursor extends CursorWrapper {
 
     /**
      * Removes any items marked for removal.
+     *
      * @return true is any item was removed.
      */
     public boolean commitDeleted() {
         if (itemsToRemove.size() > 0) {
             // Remove dead items
-            mContext.getContentResolver().delete(LauncherSettings.Favorites.CONTENT_URI,
-                    Utilities.createDbSelectionQuery(
-                            LauncherSettings.Favorites._ID, itemsToRemove), null);
+            mContext.getContentResolver().delete(LauncherSettings.Favorites.CONTENT_URI, Utilities.createDbSelectionQuery(LauncherSettings.Favorites._ID, itemsToRemove), null);
             return true;
         }
         return false;
@@ -338,9 +332,7 @@ public class LoaderCursor extends CursorWrapper {
             // Update restored items that no longer require special handling
             ContentValues values = new ContentValues();
             values.put(LauncherSettings.Favorites.RESTORED, 0);
-            mContext.getContentResolver().update(LauncherSettings.Favorites.CONTENT_URI, values,
-                    Utilities.createDbSelectionQuery(
-                            LauncherSettings.Favorites._ID, restoredRows), null);
+            mContext.getContentResolver().update(LauncherSettings.Favorites.CONTENT_URI, values, Utilities.createDbSelectionQuery(LauncherSettings.Favorites._ID, restoredRows), null);
         }
     }
 
@@ -348,8 +340,7 @@ public class LoaderCursor extends CursorWrapper {
      * Returns true is the item is on workspace or hotseat
      */
     public boolean isOnWorkspaceOrHotseat() {
-        return container == LauncherSettings.Favorites.CONTAINER_DESKTOP ||
-                container == LauncherSettings.Favorites.CONTAINER_HOTSEAT;
+        return container == LauncherSettings.Favorites.CONTAINER_DESKTOP || container == LauncherSettings.Favorites.CONTAINER_HOTSEAT;
     }
 
     /**
@@ -387,30 +378,21 @@ public class LoaderCursor extends CursorWrapper {
         long containerIndex = item.screenId;
         if (item.container == LauncherSettings.Favorites.CONTAINER_HOTSEAT) {
             // Return early if we detect that an item is under the hotseat button
-            if (!FeatureFlags.NO_ALL_APPS_ICON &&
-                    mIDP.isAllAppsButtonRank((int) item.screenId)) {
-                Log.e(TAG, "Error loading shortcut into hotseat " + item
-                        + " into position (" + item.screenId + ":" + item.cellX + ","
-                        + item.cellY + ") occupied by all apps");
+            if (!FeatureFlags.NO_ALL_APPS_ICON && mIDP.isAllAppsButtonRank((int) item.screenId)) {
+                Log.e(TAG, "Error loading shortcut into hotseat " + item + " into position (" + item.screenId + ":" + item.cellX + "," + item.cellY + ") occupied by all apps");
                 return false;
             }
 
-            final GridOccupancy hotseatOccupancy =
-                    occupied.get((long) LauncherSettings.Favorites.CONTAINER_HOTSEAT);
+            final GridOccupancy hotseatOccupancy = occupied.get((long) LauncherSettings.Favorites.CONTAINER_HOTSEAT);
 
             if (item.screenId >= mIDP.numHotseatIcons) {
-                Log.e(TAG, "Error loading shortcut " + item
-                        + " into hotseat position " + item.screenId
-                        + ", position out of bounds: (0 to " + (mIDP.numHotseatIcons - 1)
-                        + ")");
+                Log.e(TAG, "Error loading shortcut " + item + " into hotseat position " + item.screenId + ", position out of bounds: (0 to " + (mIDP.numHotseatIcons - 1) + ")");
                 return false;
             }
 
             if (hotseatOccupancy != null) {
                 if (hotseatOccupancy.cells[(int) item.screenId][0]) {
-                    Log.e(TAG, "Error loading shortcut into hotseat " + item
-                            + " into position (" + item.screenId + ":" + item.cellX + ","
-                            + item.cellY + ") already occupied");
+                    Log.e(TAG, "Error loading shortcut into hotseat " + item + " into position (" + item.screenId + ":" + item.cellX + "," + item.cellY + ") already occupied");
                     return false;
                 } else {
                     hotseatOccupancy.cells[(int) item.screenId][0] = true;
@@ -434,13 +416,8 @@ public class LoaderCursor extends CursorWrapper {
 
         final int countX = mIDP.numColumns;
         final int countY = mIDP.numRows;
-        if (item.container == LauncherSettings.Favorites.CONTAINER_DESKTOP &&
-                item.cellX < 0 || item.cellY < 0 ||
-                item.cellX + item.spanX > countX || item.cellY + item.spanY > countY) {
-            Log.e(TAG, "Error loading shortcut " + item
-                    + " into cell (" + containerIndex + "-" + item.screenId + ":"
-                    + item.cellX + "," + item.cellY
-                    + ") out of screen bounds ( " + countX + "x" + countY + ")");
+        if (item.container == LauncherSettings.Favorites.CONTAINER_DESKTOP && item.cellX < 0 || item.cellY < 0 || item.cellX + item.spanX > countX || item.cellY + item.spanY > countY) {
+            Log.e(TAG, "Error loading shortcut " + item + " into cell (" + containerIndex + "-" + item.screenId + ":" + item.cellX + "," + item.cellY + ") out of screen bounds ( " + countX + "x" + countY + ")");
             return false;
         }
 
@@ -460,10 +437,7 @@ public class LoaderCursor extends CursorWrapper {
             occupancy.markCells(item, true);
             return true;
         } else {
-            Log.e(TAG, "Error loading shortcut " + item
-                    + " into cell (" + containerIndex + "-" + item.screenId + ":"
-                    + item.cellX + "," + item.cellX + "," + item.spanX + "," + item.spanY
-                    + ") already occupied");
+            Log.e(TAG, "Error loading shortcut " + item + " into cell (" + containerIndex + "-" + item.screenId + ":" + item.cellX + "," + item.cellX + "," + item.spanX + "," + item.spanY + ") already occupied");
             return false;
         }
     }

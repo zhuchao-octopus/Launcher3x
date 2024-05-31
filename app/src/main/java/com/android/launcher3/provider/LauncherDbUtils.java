@@ -47,8 +47,7 @@ public class LauncherDbUtils {
         db.beginTransaction();
         try {
             // Get the existing screens
-            ArrayList<Long> screenIds = getScreenIdsFromCursor(db.query(WorkspaceScreens.TABLE_NAME,
-                    null, null, null, null, null, WorkspaceScreens.SCREEN_RANK));
+            ArrayList<Long> screenIds = getScreenIdsFromCursor(db.query(WorkspaceScreens.TABLE_NAME, null, null, null, null, null, WorkspaceScreens.SCREEN_RANK));
 
             if (screenIds.isEmpty()) {
                 // No update needed
@@ -68,16 +67,14 @@ public class LauncherDbUtils {
             }
 
             // Check if the first row is empty
-            try (Cursor c = db.query(Favorites.TABLE_NAME, null,
-                    "container = -100 and screen = 0 and cellY = 0", null, null, null, null)) {
+            try (Cursor c = db.query(Favorites.TABLE_NAME, null, "container = -100 and screen = 0 and cellY = 0", null, null, null, null)) {
                 if (c.getCount() == 0) {
                     // First row is empty, no need to migrate.
                     return true;
                 }
             }
 
-            new LossyScreenMigrationTask(context, LauncherAppState.getIDP(context), db)
-                    .migrateScreen0();
+            new LossyScreenMigrationTask(context, LauncherAppState.getIDP(context), db).migrateScreen0();
             db.setTransactionSuccessful();
             return true;
         } catch (Exception e) {
@@ -89,7 +86,7 @@ public class LauncherDbUtils {
     }
 
     private static void renameScreen(SQLiteDatabase db, long oldScreen, long newScreen) {
-        String[] whereParams = new String[] { Long.toString(oldScreen) };
+        String[] whereParams = new String[]{Long.toString(oldScreen)};
 
         ContentValues values = new ContentValues();
         values.put(WorkspaceScreens._ID, newScreen);

@@ -1,7 +1,7 @@
 <!-- ?xml version="1.0" encoding="utf-8"? -->
 <resources>
-    
-    
+
+
     <integer name="start_freq_px">25</integer>
     <integer name="end_freq_px">300</integer>
 

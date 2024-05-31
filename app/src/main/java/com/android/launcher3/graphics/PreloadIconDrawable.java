@@ -41,18 +41,17 @@ import java.lang.ref.WeakReference;
  */
 public class PreloadIconDrawable extends FastBitmapDrawable {
 
-    private static final Property<PreloadIconDrawable, Float> INTERNAL_STATE =
-            new Property<PreloadIconDrawable, Float>(Float.TYPE, "internalStateProgress") {
-                @Override
-                public Float get(PreloadIconDrawable object) {
-                    return object.mInternalStateProgress;
-                }
+    private static final Property<PreloadIconDrawable, Float> INTERNAL_STATE = new Property<PreloadIconDrawable, Float>(Float.TYPE, "internalStateProgress") {
+        @Override
+        public Float get(PreloadIconDrawable object) {
+            return object.mInternalStateProgress;
+        }
 
-                @Override
-                public void set(PreloadIconDrawable object, Float value) {
-                    object.setInternalProgress(value);
-                }
-            };
+        @Override
+        public void set(PreloadIconDrawable object, Float value) {
+            object.setInternalProgress(value);
+        }
+    };
 
     public static final int PATH_SIZE = 100;
 
@@ -120,19 +119,14 @@ public class PreloadIconDrawable extends FastBitmapDrawable {
     @Override
     protected void onBoundsChange(Rect bounds) {
         super.onBoundsChange(bounds);
-        mTmpMatrix.setScale(
-                (bounds.width() - PROGRESS_WIDTH - 2 * PROGRESS_GAP) / PATH_SIZE,
-                (bounds.height() - PROGRESS_WIDTH - 2 * PROGRESS_GAP) / PATH_SIZE);
-        mTmpMatrix.postTranslate(
-                bounds.left + PROGRESS_WIDTH / 2 + PROGRESS_GAP,
-                bounds.top + PROGRESS_WIDTH / 2 + PROGRESS_GAP);
+        mTmpMatrix.setScale((bounds.width() - PROGRESS_WIDTH - 2 * PROGRESS_GAP) / PATH_SIZE, (bounds.height() - PROGRESS_WIDTH - 2 * PROGRESS_GAP) / PATH_SIZE);
+        mTmpMatrix.postTranslate(bounds.left + PROGRESS_WIDTH / 2 + PROGRESS_GAP, bounds.top + PROGRESS_WIDTH / 2 + PROGRESS_GAP);
 
         mProgressPath.transform(mTmpMatrix, mScaledTrackPath);
         float scale = bounds.width() / PATH_SIZE;
         mProgressPaint.setStrokeWidth(PROGRESS_WIDTH * scale);
 
-        mShadowBitmap = getShadowBitmap(bounds.width(), bounds.height(),
-                (PROGRESS_GAP ) * scale);
+        mShadowBitmap = getShadowBitmap(bounds.width(), bounds.height(), (PROGRESS_GAP) * scale);
         mPathMeasure.setPath(mScaledTrackPath, true);
         mTrackLength = mPathMeasure.getLength();
 
@@ -188,7 +182,7 @@ public class PreloadIconDrawable extends FastBitmapDrawable {
     @Override
     protected boolean onLevelChange(int level) {
         // Run the animation if we have already been bound.
-        updateInternalState(level * 0.01f,  getBounds().width() > 0, false);
+        updateInternalState(level * 0.01f, getBounds().width() > 0, false);
         return true;
     }
 
@@ -224,8 +218,7 @@ public class PreloadIconDrawable extends FastBitmapDrawable {
             setInternalProgress(finalProgress);
         } else {
             mCurrentAnim = ObjectAnimator.ofFloat(this, INTERNAL_STATE, finalProgress);
-            mCurrentAnim.setDuration(
-                    (long) ((finalProgress - mInternalStateProgress) * DURATION_SCALE));
+            mCurrentAnim.setDuration((long) ((finalProgress - mInternalStateProgress) * DURATION_SCALE));
             mCurrentAnim.setInterpolator(new LinearInterpolator());
             if (isFinish) {
                 mCurrentAnim.addListener(new AnimatorListenerAdapter() {
@@ -242,23 +235,24 @@ public class PreloadIconDrawable extends FastBitmapDrawable {
 
     /**
      * Sets the internal progress and updates the UI accordingly
-     *   for progress <= 0:
-     *     - icon in the small scale and disabled state
-     *     - progress track is visible
-     *     - progress bar is not visible
-     *   for 0 < progress < 1
-     *     - icon in the small scale and disabled state
-     *     - progress track is visible
-     *     - progress bar is visible with dominant color. Progress bar is drawn as a fraction of
-     *       {@link #mScaledTrackPath}.
-     *       @see PathMeasure#getSegment(float, float, Path, boolean)
-     *   for 1 <= progress < (1 + COMPLETE_ANIM_FRACTION)
-     *     - we calculate fraction of progress in the above range
-     *     - progress track is drawn with alpha based on fraction
-     *     - progress bar is drawn at 100% with alpha based on fraction
-     *     - icon is scaled up based on fraction and is drawn in enabled state
-     *   for progress >= (1 + COMPLETE_ANIM_FRACTION)
-     *     - only icon is drawn in normal state
+     * for progress <= 0:
+     * - icon in the small scale and disabled state
+     * - progress track is visible
+     * - progress bar is not visible
+     * for 0 < progress < 1
+     * - icon in the small scale and disabled state
+     * - progress track is visible
+     * - progress bar is visible with dominant color. Progress bar is drawn as a fraction of
+     * {@link #mScaledTrackPath}.
+     *
+     * @see PathMeasure#getSegment(float, float, Path, boolean)
+     * for 1 <= progress < (1 + COMPLETE_ANIM_FRACTION)
+     * - we calculate fraction of progress in the above range
+     * - progress track is drawn with alpha based on fraction
+     * - progress bar is drawn at 100% with alpha based on fraction
+     * - icon is scaled up based on fraction and is drawn in enabled state
+     * for progress >= (1 + COMPLETE_ANIM_FRACTION)
+     * - only icon is drawn in normal state
      */
     private void setInternalProgress(float progress) {
         mInternalStateProgress = progress;

@@ -59,8 +59,7 @@ public class MultiStateAlphaController {
             finalAlpha = finalAlpha * a;
         }
         mTargetView.setAlpha(finalAlpha);
-        mTargetView.setVisibility(finalAlpha > 0 ? View.VISIBLE
-                : (mAm.isEnabled() ? View.GONE : View.INVISIBLE));
+        mTargetView.setVisibility(finalAlpha > 0 ? View.VISIBLE : (mAm.isEnabled() ? View.GONE : View.INVISIBLE));
     }
 
     /**

@@ -78,8 +78,7 @@ public class ManagedProfileHeuristic {
         mUser = user;
         mModel = LauncherAppState.getInstance(context).getModel();
         mIconCache = LauncherAppState.getInstance(context).getIconCache();
-        mAddIconsToHomescreen =
-                !BuildCompat.isAtLeastO() || SessionCommitReceiver.isEnabled(context);
+        mAddIconsToHomescreen = !BuildCompat.isAtLeastO() || SessionCommitReceiver.isEnabled(context);
     }
 
     public void processPackageRemoved(String[] packages) {
@@ -109,17 +108,14 @@ public class ManagedProfileHeuristic {
             super(mContext, LauncherFiles.MANAGED_USER_PREFERENCES_KEY);
         }
 
-        protected void onLauncherAppsAdded(
-                List<LauncherActivityInstallInfo> apps, UserHandle user, boolean userAppsExisted) {
+        protected void onLauncherAppsAdded(List<LauncherActivityInstallInfo> apps, UserHandle user, boolean userAppsExisted) {
             ArrayList<ShortcutInfo> workFolderApps = new ArrayList<>();
             ArrayList<ShortcutInfo> homescreenApps = new ArrayList<>();
 
             int count = apps.size();
-            long folderCreationTime =
-                    mUserManager.getUserCreationTime(user) + AUTO_ADD_TO_FOLDER_DURATION;
+            long folderCreationTime = mUserManager.getUserCreationTime(user) + AUTO_ADD_TO_FOLDER_DURATION;
 
-            boolean quietModeEnabled = UserManagerCompat.getInstance(mContext)
-                    .isQuietModeEnabled(user);
+            boolean quietModeEnabled = UserManagerCompat.getInstance(mContext).isQuietModeEnabled(user);
             for (int i = 0; i < count; i++) {
                 LauncherActivityInstallInfo info = apps.get(i);
                 AppInfo appInfo = new AppInfo(info.info, user, quietModeEnabled);
@@ -145,9 +141,7 @@ public class ManagedProfileHeuristic {
         /**
          * Adds and binds shortcuts marked to be added to the work folder.
          */
-        private void finalizeWorkFolder(
-                UserHandle user, final ArrayList<ShortcutInfo> workFolderApps,
-                ArrayList<ShortcutInfo> homescreenApps) {
+        private void finalizeWorkFolder(UserHandle user, final ArrayList<ShortcutInfo> workFolderApps, ArrayList<ShortcutInfo> homescreenApps) {
             if (workFolderApps.isEmpty()) {
                 return;
             }
@@ -204,8 +198,7 @@ public class ManagedProfileHeuristic {
         }
 
         @Override
-        public void onShortcutsChanged(String packageName, List<ShortcutInfoCompat> shortcuts,
-                UserHandle user) {
+        public void onShortcutsChanged(String packageName, List<ShortcutInfoCompat> shortcuts, UserHandle user) {
             // Do nothing
         }
     }
@@ -213,8 +206,7 @@ public class ManagedProfileHeuristic {
     /**
      * Add work folder shortcuts to the DB.
      */
-    private void saveWorkFolderShortcuts(
-            long workFolderId, int startingRank, ArrayList<ShortcutInfo> workFolderApps) {
+    private void saveWorkFolderShortcuts(long workFolderId, int startingRank, ArrayList<ShortcutInfo> workFolderApps) {
         for (ItemInfo info : workFolderApps) {
             info.rank = startingRank++;
             mModel.getWriter(false).addItemToDatabase(info, workFolderId, 0, 0, 0);
@@ -231,9 +223,7 @@ public class ManagedProfileHeuristic {
             addAllUserKeys(userManager.getSerialNumberForUser(user), validKeys);
         }
 
-        SharedPreferences prefs = context.getSharedPreferences(
-                LauncherFiles.MANAGED_USER_PREFERENCES_KEY,
-                Context.MODE_PRIVATE);
+        SharedPreferences prefs = context.getSharedPreferences(LauncherFiles.MANAGED_USER_PREFERENCES_KEY, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         for (String key : prefs.getAll().keySet()) {
             if (!validKeys.contains(key)) {
@@ -263,9 +253,7 @@ public class ManagedProfileHeuristic {
             }
 
             if (prefs == null) {
-                prefs = context.getSharedPreferences(
-                        LauncherFiles.MANAGED_USER_PREFERENCES_KEY,
-                        Context.MODE_PRIVATE);
+                prefs = context.getSharedPreferences(LauncherFiles.MANAGED_USER_PREFERENCES_KEY, Context.MODE_PRIVATE);
             }
             String folderIdKey = USER_FOLDER_ID_PREFIX + userManager.getSerialNumberForUser(user);
             if (!prefs.contains(folderIdKey)) {

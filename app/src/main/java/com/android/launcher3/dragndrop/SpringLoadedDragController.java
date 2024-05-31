@@ -46,8 +46,7 @@ public class SpringLoadedDragController implements OnAlarmListener {
     // Set a new alarm to expire for the screen that we are hovering over now
     public void setAlarm(CellLayout cl) {
         mAlarm.cancelAlarm();
-        mAlarm.setAlarm((cl == null) ? ENTER_SPRING_LOAD_CANCEL_HOVER_TIME :
-            ENTER_SPRING_LOAD_HOVER_TIME);
+        mAlarm.setAlarm((cl == null) ? ENTER_SPRING_LOAD_CANCEL_HOVER_TIME : ENTER_SPRING_LOAD_HOVER_TIME);
         mScreen = cl;
     }
 

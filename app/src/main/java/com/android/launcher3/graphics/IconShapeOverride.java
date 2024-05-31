@@ -64,8 +64,7 @@ public class IconShapeOverride {
             return false;
         }
         // Only supported when developer settings is enabled
-        if (Settings.Global.getInt(context.getContentResolver(),
-                Settings.Global.DEVELOPMENT_SETTINGS_ENABLED, 0) != 1) {
+        if (Settings.Global.getInt(context.getContentResolver(), Settings.Global.DEVELOPMENT_SETTINGS_ENABLED, 0) != 1) {
             return false;
         }
 
@@ -96,8 +95,7 @@ public class IconShapeOverride {
 
         // magic
         try {
-            Resources override =
-                    new ResourcesOverride(Resources.getSystem(), getConfigResId(), path);
+            Resources override = new ResourcesOverride(Resources.getSystem(), getConfigResId(), path);
             getSystemResField().set(null, override);
         } catch (Exception e) {
             Log.e(TAG, "Unable to override icon shape", e);
@@ -165,13 +163,8 @@ public class IconShapeOverride {
             String newValue = (String) o;
             if (!getAppliedValue(mContext).equals(newValue)) {
                 // Value has changed
-                ProgressDialog.show(mContext,
-                        null /* title */,
-                        mContext.getString(R.string.icon_shape_override_progress),
-                        true /* indeterminate */,
-                        false /* cancelable */);
-                new LooperExecuter(LauncherModel.getWorkerLooper()).execute(
-                        new OverrideApplyHandler(mContext, newValue));
+                ProgressDialog.show(mContext, null /* title */, mContext.getString(R.string.icon_shape_override_progress), true /* indeterminate */, false /* cancelable */);
+                new LooperExecuter(LauncherModel.getWorkerLooper()).execute(new OverrideApplyHandler(mContext, newValue));
             }
             return false;
         }
@@ -202,14 +195,9 @@ public class IconShapeOverride {
             }
 
             // Schedule an alarm before we kill ourself.
-            Intent homeIntent = new Intent(Intent.ACTION_MAIN)
-                    .addCategory(Intent.CATEGORY_HOME)
-                    .setPackage(mContext.getPackageName())
-                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            PendingIntent pi = PendingIntent.getActivity(mContext, RESTART_REQUEST_CODE,
-                    homeIntent, PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_ONE_SHOT);
-            mContext.getSystemService(AlarmManager.class).setExact(
-                    AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime() + 50, pi);
+            Intent homeIntent = new Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_HOME).setPackage(mContext.getPackageName()).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            PendingIntent pi = PendingIntent.getActivity(mContext, RESTART_REQUEST_CODE, homeIntent, PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_ONE_SHOT);
+            mContext.getSystemService(AlarmManager.class).setExact(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime() + 50, pi);
 
             // Kill process
             android.os.Process.killProcess(android.os.Process.myPid());

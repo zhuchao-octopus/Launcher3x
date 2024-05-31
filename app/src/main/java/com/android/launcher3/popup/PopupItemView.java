@@ -41,8 +41,7 @@ import com.android.launcher3.util.PillRevealOutlineProvider;
  * An abstract {@link FrameLayout} that supports animating an item's content
  * (e.g. icon and text) separate from the item's background.
  */
-public abstract class PopupItemView extends FrameLayout
-        implements ValueAnimator.AnimatorUpdateListener {
+public abstract class PopupItemView extends FrameLayout implements ValueAnimator.AnimatorUpdateListener {
 
     protected static final Point sTempPoint = new Point();
 
@@ -73,7 +72,7 @@ public abstract class PopupItemView extends FrameLayout
         mRoundedCornerBitmap = Bitmap.createBitmap(radius, radius, Bitmap.Config.ALPHA_8);
         Canvas canvas = new Canvas();
         canvas.setBitmap(mRoundedCornerBitmap);
-        canvas.drawArc(0, 0, radius*2, radius*2, 180, 90, true, mBackgroundClipPaint);
+        canvas.drawArc(0, 0, radius * 2, radius * 2, 180, 90, true, mBackgroundClipPaint);
         mBackgroundClipPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_IN));
 
         mIsRtl = Utilities.isRtl(getResources());
@@ -122,12 +121,8 @@ public abstract class PopupItemView extends FrameLayout
      */
     public Animator createOpenAnimation(boolean isContainerAboveIcon, boolean pivotLeft) {
         Point center = getIconCenter();
-        int arrowCenter = getResources().getDimensionPixelSize(pivotLeft ^ mIsRtl ?
-                R.dimen.popup_arrow_horizontal_center_start:
-                R.dimen.popup_arrow_horizontal_center_end);
-        ValueAnimator openAnimator =  new ZoomRevealOutlineProvider(center.x, center.y,
-                mPillRect, this, mIconView, isContainerAboveIcon, pivotLeft, arrowCenter)
-                        .createRevealAnimator(this, false);
+        int arrowCenter = getResources().getDimensionPixelSize(pivotLeft ^ mIsRtl ? R.dimen.popup_arrow_horizontal_center_start : R.dimen.popup_arrow_horizontal_center_end);
+        ValueAnimator openAnimator = new ZoomRevealOutlineProvider(center.x, center.y, mPillRect, this, mIconView, isContainerAboveIcon, pivotLeft, arrowCenter).createRevealAnimator(this, false);
         mOpenAnimationProgress = 0f;
         openAnimator.addUpdateListener(this);
         return openAnimator;
@@ -145,15 +140,10 @@ public abstract class PopupItemView extends FrameLayout
     /**
      * Creates an animator to play when the shortcut container is being closed.
      */
-    public Animator createCloseAnimation(boolean isContainerAboveIcon, boolean pivotLeft,
-            long duration) {
+    public Animator createCloseAnimation(boolean isContainerAboveIcon, boolean pivotLeft, long duration) {
         Point center = getIconCenter();
-        int arrowCenter = getResources().getDimensionPixelSize(pivotLeft ^ mIsRtl ?
-                R.dimen.popup_arrow_horizontal_center_start :
-                R.dimen.popup_arrow_horizontal_center_end);
-        ValueAnimator closeAnimator = new ZoomRevealOutlineProvider(center.x, center.y,
-                mPillRect, this, mIconView, isContainerAboveIcon, pivotLeft, arrowCenter)
-                        .createRevealAnimator(this, true);
+        int arrowCenter = getResources().getDimensionPixelSize(pivotLeft ^ mIsRtl ? R.dimen.popup_arrow_horizontal_center_start : R.dimen.popup_arrow_horizontal_center_end);
+        ValueAnimator closeAnimator = new ZoomRevealOutlineProvider(center.x, center.y, mPillRect, this, mIconView, isContainerAboveIcon, pivotLeft, arrowCenter).createRevealAnimator(this, true);
         // Scale down the duration and interpolator according to the progress
         // that the open animation was at when the close started.
         closeAnimator.setDuration((long) (duration * mOpenAnimationProgress));
@@ -200,8 +190,7 @@ public abstract class PopupItemView extends FrameLayout
         private final float mTranslateX;
         private final float mArrowCenter;
 
-        public ZoomRevealOutlineProvider(int x, int y, Rect pillRect, PopupItemView translateView,
-                View zoomView, boolean isContainerAboveIcon, boolean pivotLeft, float arrowCenter) {
+        public ZoomRevealOutlineProvider(int x, int y, Rect pillRect, PopupItemView translateView, View zoomView, boolean isContainerAboveIcon, boolean pivotLeft, float arrowCenter) {
             super(x, y, pillRect, translateView.getBackgroundRadius());
             mTranslateView = translateView;
             mZoomView = zoomView;

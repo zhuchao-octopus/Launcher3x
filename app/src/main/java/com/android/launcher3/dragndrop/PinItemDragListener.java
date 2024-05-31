@@ -55,8 +55,7 @@ import java.util.UUID;
  * {@link DragSource} for handling drop from a different window. This object is initialized
  * in the source window and is passed on to the Launcher activity as an Intent extra.
  */
-public class PinItemDragListener
-        implements Parcelable, View.OnDragListener, DragSource, DragOptions.PreDragCondition {
+public class PinItemDragListener implements Parcelable, View.OnDragListener, DragSource, DragOptions.PreDragCondition {
 
     private static final String TAG = "PinItemDragListener";
 
@@ -78,8 +77,7 @@ public class PinItemDragListener
     private DragController mDragController;
     private long mDragStartTime;
 
-    public PinItemDragListener(PinItemRequestCompat request, Rect previewRect,
-            int previewBitmapWidth, int previewViewWidth) {
+    public PinItemDragListener(PinItemRequestCompat request, Rect previewRect, int previewBitmapWidth, int previewViewWidth) {
         mRequest = request;
         mPreviewRect = previewRect;
         mPreviewBitmapWidth = previewBitmapWidth;
@@ -139,7 +137,7 @@ public class PinItemDragListener
         if (!mRequest.isValid()) {
             return false;
         }
-        ClipDescription desc =  event.getClipDescription();
+        ClipDescription desc = event.getClipDescription();
         if (desc == null || !desc.hasMimeType(getMimeType())) {
             Log.e(TAG, "Someone started a dragAndDrop before us.");
             return false;
@@ -147,15 +145,11 @@ public class PinItemDragListener
 
         final PendingAddItemInfo item;
         if (mRequest.getRequestType() == PinItemRequestCompat.REQUEST_TYPE_SHORTCUT) {
-            item = new PendingAddShortcutInfo(
-                    new PinShortcutRequestActivityInfo(mRequest, mLauncher));
+            item = new PendingAddShortcutInfo(new PinShortcutRequestActivityInfo(mRequest, mLauncher));
         } else {
             // mRequest.getRequestType() == PinItemRequestCompat.REQUEST_TYPE_APPWIDGET
-            LauncherAppWidgetProviderInfo providerInfo =
-                    LauncherAppWidgetProviderInfo.fromProviderInfo(
-                            mLauncher, mRequest.getAppWidgetProviderInfo(mLauncher));
-            final PinWidgetFlowHandler flowHandler =
-                    new PinWidgetFlowHandler(providerInfo, mRequest);
+            LauncherAppWidgetProviderInfo providerInfo = LauncherAppWidgetProviderInfo.fromProviderInfo(mLauncher, mRequest.getAppWidgetProviderInfo(mLauncher));
+            final PinWidgetFlowHandler flowHandler = new PinWidgetFlowHandler(providerInfo, mRequest);
             item = new PendingAddWidgetInfo(providerInfo) {
                 @Override
                 public WidgetAddFlowHandler getHandler() {
@@ -181,8 +175,7 @@ public class PinItemDragListener
             dragHelper.setPreview(getPreview(mRequest));
         }
 
-        dragHelper.startDrag(new Rect(mPreviewRect),
-                mPreviewBitmapWidth, mPreviewViewWidth, downPos,  this, options);
+        dragHelper.startDrag(new Rect(mPreviewRect), mPreviewBitmapWidth, mPreviewViewWidth, downPos, this, options);
         mDragStartTime = SystemClock.uptimeMillis();
         return true;
     }
@@ -200,8 +193,7 @@ public class PinItemDragListener
         // dragView from being visible. Instead just skip the fade-in animation here.
         mLauncher.getDragLayer().setAlpha(1);
 
-        dragObject.dragView.setColor(
-                mLauncher.getResources().getColor(R.color.delete_target_hover_tint));
+        dragObject.dragView.setColor(mLauncher.getResources().getColor(R.color.delete_target_hover_tint));
     }
 
     @Override
@@ -227,14 +219,11 @@ public class PinItemDragListener
     }
 
     @Override
-    public void onDropCompleted(View target, DropTarget.DragObject d, boolean isFlingToDelete,
-            boolean success) {
-        if (isFlingToDelete || !success || (target != mLauncher.getWorkspace() &&
-                !(target instanceof DeleteDropTarget) && !(target instanceof Folder))) {
+    public void onDropCompleted(View target, DropTarget.DragObject d, boolean isFlingToDelete, boolean success) {
+        if (isFlingToDelete || !success || (target != mLauncher.getWorkspace() && !(target instanceof DeleteDropTarget) && !(target instanceof Folder))) {
             // Exit spring loaded mode if we have not successfully dropped or have not handled the
             // drop in Workspace
-            mLauncher.exitSpringLoadedDragModeDelayed(true,
-                    Launcher.EXIT_SPRINGLOADED_MODE_SHORT_TIMEOUT, null);
+            mLauncher.exitSpringLoadedDragModeDelayed(true, Launcher.EXIT_SPRINGLOADED_MODE_SHORT_TIMEOUT, null);
         }
 
         if (!success) {
@@ -273,8 +262,7 @@ public class PinItemDragListener
 
     public static RemoteViews getPreview(PinItemRequestCompat request) {
         Bundle extras = request.getExtras();
-        if (extras != null &&
-                extras.get(AppWidgetManager.EXTRA_APPWIDGET_PREVIEW) instanceof RemoteViews) {
+        if (extras != null && extras.get(AppWidgetManager.EXTRA_APPWIDGET_PREVIEW) instanceof RemoteViews) {
             return (RemoteViews) extras.get(AppWidgetManager.EXTRA_APPWIDGET_PREVIEW);
         }
         return null;
@@ -295,14 +283,13 @@ public class PinItemDragListener
         return false;
     }
 
-    public static final Parcelable.Creator<PinItemDragListener> CREATOR =
-            new Parcelable.Creator<PinItemDragListener>() {
-                public PinItemDragListener createFromParcel(Parcel source) {
-                    return new PinItemDragListener(source);
-                }
+    public static final Parcelable.Creator<PinItemDragListener> CREATOR = new Parcelable.Creator<PinItemDragListener>() {
+        public PinItemDragListener createFromParcel(Parcel source) {
+            return new PinItemDragListener(source);
+        }
 
-                public PinItemDragListener[] newArray(int size) {
-                    return new PinItemDragListener[size];
-                }
-            };
+        public PinItemDragListener[] newArray(int size) {
+            return new PinItemDragListener[size];
+        }
+    };
 }

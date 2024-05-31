@@ -59,13 +59,12 @@ public class ExtractionUtils {
         });
     }
 
-    /** Starts the {@link ColorExtractionService} without checking the wallpaper id */
+    /**
+     * Starts the {@link ColorExtractionService} without checking the wallpaper id
+     */
     public static void startColorExtractionService(Context context) {
-        JobScheduler jobScheduler = (JobScheduler) context.getSystemService(
-                Context.JOB_SCHEDULER_SERVICE);
-        jobScheduler.schedule(new JobInfo.Builder(Utilities.COLOR_EXTRACTION_JOB_ID,
-                new ComponentName(context, ColorExtractionService.class))
-                .setMinimumLatency(0).build());
+        JobScheduler jobScheduler = (JobScheduler) context.getSystemService(Context.JOB_SCHEDULER_SERVICE);
+        jobScheduler.schedule(new JobInfo.Builder(Utilities.COLOR_EXTRACTION_JOB_ID, new ComponentName(context, ColorExtractionService.class)).setMinimumLatency(0).build());
     }
 
     private static boolean hasWallpaperIdChanged(Context context) {
@@ -81,8 +80,7 @@ public class ExtractionUtils {
 
     @TargetApi(Build.VERSION_CODES.N)
     public static int getWallpaperId(WallpaperManager wallpaperManager) {
-        return Utilities.ATLEAST_NOUGAT ?
-                wallpaperManager.getWallpaperId(WallpaperManager.FLAG_SYSTEM) : -1;
+        return Utilities.ATLEAST_NOUGAT ? wallpaperManager.getWallpaperId(WallpaperManager.FLAG_SYSTEM) : -1;
     }
 
     public static boolean isSuperLight(Palette p) {
@@ -110,7 +108,9 @@ public class ExtractionUtils {
         return legiblePopulation > illegiblePopulation;
     }
 
-    /** @return Whether the foreground color is legible on the background color. */
+    /**
+     * @return Whether the foreground color is legible on the background color.
+     */
     private static boolean isLegible(int foreground, int background) {
         background = ColorUtils.setAlphaComponent(background, 255);
         return ColorUtils.calculateContrast(foreground, background) >= MIN_CONTRAST_RATIO;

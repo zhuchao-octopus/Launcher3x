@@ -22,8 +22,7 @@ import com.android.launcher3.dragndrop.DragLayer;
 import com.android.launcher3.util.FocusLogic;
 import com.android.launcher3.util.TouchController;
 
-public class AppWidgetResizeFrame extends FrameLayout
-        implements View.OnKeyListener, TouchController {
+public class AppWidgetResizeFrame extends FrameLayout implements View.OnKeyListener, TouchController {
     private static final int SNAP_DURATION = 150;
     private static final float DIMMED_HANDLE_ALPHA = 0f;
     private static final float RESIZE_THRESHOLD = 0.66f;
@@ -101,8 +100,7 @@ public class AppWidgetResizeFrame extends FrameLayout
         mLauncher = Launcher.getLauncher(context);
         mStateAnnouncer = DragViewStateAnnouncer.createFor(this);
 
-        mBackgroundPadding = getResources()
-                .getDimensionPixelSize(R.dimen.resize_frame_background_padding);
+        mBackgroundPadding = getResources().getDimensionPixelSize(R.dimen.resize_frame_background_padding);
         mTouchTargetWidth = 2 * mBackgroundPadding;
     }
 
@@ -110,17 +108,15 @@ public class AppWidgetResizeFrame extends FrameLayout
     protected void onFinishInflate() {
         super.onFinishInflate();
 
-        for (int i = 0; i < HANDLE_COUNT; i ++) {
+        for (int i = 0; i < HANDLE_COUNT; i++) {
             mDragHandles[i] = getChildAt(i);
         }
     }
 
-    public void setupForWidget(LauncherAppWidgetHostView widgetView, CellLayout cellLayout,
-            DragLayer dragLayer) {
+    public void setupForWidget(LauncherAppWidgetHostView widgetView, CellLayout cellLayout, DragLayer dragLayer) {
         mCellLayout = cellLayout;
         mWidgetView = widgetView;
-        LauncherAppWidgetProviderInfo info = (LauncherAppWidgetProviderInfo)
-                widgetView.getAppWidgetInfo();
+        LauncherAppWidgetProviderInfo info = (LauncherAppWidgetProviderInfo) widgetView.getAppWidgetInfo();
         mResizeMode = info.resizeMode;
         mDragLayer = dragLayer;
 
@@ -128,8 +124,7 @@ public class AppWidgetResizeFrame extends FrameLayout
         mMinVSpan = info.minSpanY;
 
         if (!info.isCustomWidget) {
-            mWidgetPadding = AppWidgetHostView.getDefaultPaddingForWidget(getContext(),
-                    widgetView.getAppWidgetInfo().provider, null);
+            mWidgetPadding = AppWidgetHostView.getDefaultPaddingForWidget(getContext(), widgetView.getAppWidgetInfo().provider, null);
         } else {
             Resources r = getContext().getResources();
             int padding = r.getDimensionPixelSize(R.dimen.default_widget_padding);
@@ -159,15 +154,13 @@ public class AppWidgetResizeFrame extends FrameLayout
         mLeftBorderActive = (x < mTouchTargetWidth) && horizontalActive;
         mRightBorderActive = (x > getWidth() - mTouchTargetWidth) && horizontalActive;
         mTopBorderActive = (y < mTouchTargetWidth + mTopTouchRegionAdjustment) && verticalActive;
-        mBottomBorderActive = (y > getHeight() - mTouchTargetWidth + mBottomTouchRegionAdjustment)
-                && verticalActive;
+        mBottomBorderActive = (y > getHeight() - mTouchTargetWidth + mBottomTouchRegionAdjustment) && verticalActive;
 
-        boolean anyBordersActive = mLeftBorderActive || mRightBorderActive
-                || mTopBorderActive || mBottomBorderActive;
+        boolean anyBordersActive = mLeftBorderActive || mRightBorderActive || mTopBorderActive || mBottomBorderActive;
 
         if (anyBordersActive) {
             mDragHandles[INDEX_LEFT].setAlpha(mLeftBorderActive ? 1.0f : DIMMED_HANDLE_ALPHA);
-            mDragHandles[INDEX_RIGHT].setAlpha(mRightBorderActive ? 1.0f :DIMMED_HANDLE_ALPHA);
+            mDragHandles[INDEX_RIGHT].setAlpha(mRightBorderActive ? 1.0f : DIMMED_HANDLE_ALPHA);
             mDragHandles[INDEX_TOP].setAlpha(mTopBorderActive ? 1.0f : DIMMED_HANDLE_ALPHA);
             mDragHandles[INDEX_BOTTOM].setAlpha(mBottomBorderActive ? 1.0f : DIMMED_HANDLE_ALPHA);
         }
@@ -194,7 +187,7 @@ public class AppWidgetResizeFrame extends FrameLayout
     }
 
     /**
-     *  Based on the deltas, we resize the frame.
+     * Based on the deltas, we resize the frame.
      */
     public void visualizeResizeForDelta(int deltaX, int deltaY) {
         mDeltaX = mDeltaXRange.clamp(deltaX);
@@ -237,7 +230,7 @@ public class AppWidgetResizeFrame extends FrameLayout
     }
 
     /**
-     *  Based on the current deltas, we determine if and how to resize the widget.
+     * Based on the current deltas, we determine if and how to resize the widget.
      */
     private void resizeWidgetIfNeeded(boolean onDismiss) {
         float xThreshold = mCellLayout.getCellWidth();
@@ -261,8 +254,7 @@ public class AppWidgetResizeFrame extends FrameLayout
         // For each border, we bound the resizing based on the minimum width, and the maximum
         // expandability.
         mTempRange1.set(cellX, spanX + cellX);
-        int hSpanDelta = mTempRange1.applyDeltaAndBound(mLeftBorderActive, mRightBorderActive,
-                hSpanInc, mMinHSpan, mCellLayout.getCountX(), mTempRange2);
+        int hSpanDelta = mTempRange1.applyDeltaAndBound(mLeftBorderActive, mRightBorderActive, hSpanInc, mMinHSpan, mCellLayout.getCountX(), mTempRange2);
         cellX = mTempRange2.start;
         spanX = mTempRange2.size();
         if (hSpanDelta != 0) {
@@ -270,8 +262,7 @@ public class AppWidgetResizeFrame extends FrameLayout
         }
 
         mTempRange1.set(cellY, spanY + cellY);
-        int vSpanDelta = mTempRange1.applyDeltaAndBound(mTopBorderActive, mBottomBorderActive,
-                vSpanInc, mMinVSpan, mCellLayout.getCountY(), mTempRange2);
+        int vSpanDelta = mTempRange1.applyDeltaAndBound(mTopBorderActive, mBottomBorderActive, vSpanInc, mMinVSpan, mCellLayout.getCountY(), mTempRange2);
         cellY = mTempRange2.start;
         spanY = mTempRange2.size();
         if (vSpanDelta != 0) {
@@ -290,11 +281,9 @@ public class AppWidgetResizeFrame extends FrameLayout
             mLastDirectionVector[1] = mDirectionVector[1];
         }
 
-        if (mCellLayout.createAreaForResize(cellX, cellY, spanX, spanY, mWidgetView,
-                mDirectionVector, onDismiss)) {
-            if (mStateAnnouncer != null && (lp.cellHSpan != spanX || lp.cellVSpan != spanY) ) {
-                mStateAnnouncer.announce(
-                        mLauncher.getString(R.string.widget_resized, spanX, spanY));
+        if (mCellLayout.createAreaForResize(cellX, cellY, spanX, spanY, mWidgetView, mDirectionVector, onDismiss)) {
+            if (mStateAnnouncer != null && (lp.cellHSpan != spanX || lp.cellVSpan != spanY)) {
+                mStateAnnouncer.announce(mLauncher.getString(R.string.widget_resized, spanX, spanY));
             }
 
             lp.tmpCellX = cellX;
@@ -311,11 +300,9 @@ public class AppWidgetResizeFrame extends FrameLayout
         mWidgetView.requestLayout();
     }
 
-    static void updateWidgetSizeRanges(AppWidgetHostView widgetView, Launcher launcher,
-            int spanX, int spanY) {
+    static void updateWidgetSizeRanges(AppWidgetHostView widgetView, Launcher launcher, int spanX, int spanY) {
         getWidgetSizeRanges(launcher, spanX, spanY, sTmpRect);
-        widgetView.updateAppWidgetSize(null, sTmpRect.left, sTmpRect.top,
-                sTmpRect.right, sTmpRect.bottom);
+        widgetView.updateAppWidgetSize(null, sTmpRect.left, sTmpRect.top, sTmpRect.right, sTmpRect.bottom);
     }
 
     public static Rect getWidgetSizeRanges(Context context, int spanX, int spanY, Rect rect) {
@@ -379,10 +366,8 @@ public class AppWidgetResizeFrame extends FrameLayout
 
         mDragLayer.getViewRectRelativeToSelf(mWidgetView, out);
 
-        int width = 2 * mBackgroundPadding
-                + (int) (scale * (out.width() - mWidgetPadding.left - mWidgetPadding.right));
-        int height = 2 * mBackgroundPadding
-                + (int) (scale * (out.height() - mWidgetPadding.top - mWidgetPadding.bottom));
+        int width = 2 * mBackgroundPadding + (int) (scale * (out.width() - mWidgetPadding.left - mWidgetPadding.right));
+        int height = 2 * mBackgroundPadding + (int) (scale * (out.height() - mWidgetPadding.top - mWidgetPadding.bottom));
 
         int x = (int) (out.left - mBackgroundPadding + scale * mWidgetPadding.left);
         int y = (int) (out.top - mBackgroundPadding + scale * mWidgetPadding.top);
@@ -428,12 +413,10 @@ public class AppWidgetResizeFrame extends FrameLayout
             requestLayout();
         } else {
             PropertyValuesHolder width = PropertyValuesHolder.ofInt("width", lp.width, newWidth);
-            PropertyValuesHolder height = PropertyValuesHolder.ofInt("height", lp.height,
-                    newHeight);
+            PropertyValuesHolder height = PropertyValuesHolder.ofInt("height", lp.height, newHeight);
             PropertyValuesHolder x = PropertyValuesHolder.ofInt("x", lp.x, newX);
             PropertyValuesHolder y = PropertyValuesHolder.ofInt("y", lp.y, newY);
-            ObjectAnimator oa =
-                    LauncherAnimUtils.ofPropertyValuesHolder(lp, this, width, height, x, y);
+            ObjectAnimator oa = LauncherAnimUtils.ofPropertyValuesHolder(lp, this, width, height, x, y);
             oa.addUpdateListener(new AnimatorUpdateListener() {
                 public void onAnimationUpdate(ValueAnimator animation) {
                     requestLayout();
@@ -542,15 +525,15 @@ public class AppWidgetResizeFrame extends FrameLayout
         /**
          * Applies delta similar to {@link #applyDelta(boolean, boolean, int, IntRange)},
          * with extra conditions.
+         *
          * @param minSize minimum size after with the moving edge should not be shifted any further.
          *                For eg, if delta = -3 when moving the endEdge brings the size to less than
          *                minSize, only delta = -2 will applied
-         * @param maxEnd The maximum value to the end edge (start edge is always restricted to 0)
+         * @param maxEnd  The maximum value to the end edge (start edge is always restricted to 0)
          * @return the amount of increase when endEdge was moves and the amount of decrease when
          * the start edge was moved.
          */
-        public int applyDeltaAndBound(boolean moveStart, boolean moveEnd, int delta,
-                int minSize, int maxEnd, IntRange out) {
+        public int applyDeltaAndBound(boolean moveStart, boolean moveEnd, int delta, int minSize, int maxEnd, IntRange out) {
             applyDelta(moveStart, moveEnd, delta, out);
             if (out.start < 0) {
                 out.start = 0;

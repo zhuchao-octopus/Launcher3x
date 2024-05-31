@@ -8,10 +8,13 @@ import com.android.launcher3.userevent.LauncherLogProto.Action;
  * A specialized listener for Overview buttons where both clicks and long clicks are logged
  * handled the same via {@link #handleViewClick(View)}.
  */
-public abstract class OverviewButtonClickListener implements View.OnClickListener,
-        View.OnLongClickListener {
+public abstract class OverviewButtonClickListener implements View.OnClickListener, View.OnLongClickListener {
 
-    private int mControlType; /** ControlType enum as defined in {@link Action.Touch} */
+    private int mControlType;
+
+    /**
+     * ControlType enum as defined in {@link Action.Touch}
+     */
 
     public OverviewButtonClickListener(int controlType) {
         mControlType = controlType;
@@ -43,8 +46,7 @@ public abstract class OverviewButtonClickListener implements View.OnClickListene
 
     private void handleViewClick(View view, int action) {
         handleViewClick(view);
-        Launcher.getLauncher(view.getContext()).getUserEventDispatcher()
-                .logActionOnControl(action, mControlType);
+        Launcher.getLauncher(view.getContext()).getUserEventDispatcher().logActionOnControl(action, mControlType);
     }
 
     public abstract void handleViewClick(View view);

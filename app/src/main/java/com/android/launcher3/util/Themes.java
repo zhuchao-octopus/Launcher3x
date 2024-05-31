@@ -58,14 +58,13 @@ public class Themes {
      * G' = g * G
      * B' = b * B
      * A' = a * A
-     *
+     * <p>
      * The matrix will, for instance, turn white into r g b a, and black will remain black.
      *
-     * @param color The color r g b a
+     * @param color  The color r g b a
      * @param target The ColorMatrix to scale
      */
     public static void setColorScaleOnMatrix(int color, ColorMatrix target) {
-        target.setScale(Color.red(color) / 255f, Color.green(color) / 255f,
-                Color.blue(color) / 255f, Color.alpha(color) / 255f);
+        target.setScale(Color.red(color) / 255f, Color.green(color) / 255f, Color.blue(color) / 255f, Color.alpha(color) / 255f);
     }
 }

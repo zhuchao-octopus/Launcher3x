@@ -44,8 +44,7 @@ public class LauncherAppWidgetHost extends AppWidgetHost {
     }
 
     @Override
-    protected LauncherAppWidgetHostView onCreateView(Context context, int appWidgetId,
-            AppWidgetProviderInfo appWidget) {
+    protected LauncherAppWidgetHostView onCreateView(Context context, int appWidgetId, AppWidgetProviderInfo appWidget) {
         LauncherAppWidgetHostView view = new LauncherAppWidgetHostView(context);
         mViews.put(appWidgetId, view);
         return view;
@@ -86,12 +85,10 @@ public class LauncherAppWidgetHost extends AppWidgetHost {
         }
     }
 
-    public AppWidgetHostView createView(Context context, int appWidgetId,
-            LauncherAppWidgetProviderInfo appWidget) {
+    public AppWidgetHostView createView(Context context, int appWidgetId, LauncherAppWidgetProviderInfo appWidget) {
         if (appWidget.isCustomWidget) {
             LauncherAppWidgetHostView lahv = new LauncherAppWidgetHostView(context);
-            LayoutInflater inflater = (LayoutInflater)
-                    context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             inflater.inflate(appWidget.initialLayout, lahv);
             lahv.setAppWidget(0, appWidget);
             lahv.updateLastInflationOrientation();
@@ -113,7 +110,7 @@ public class LauncherAppWidgetHost extends AppWidgetHost {
                 }
                 view.setAppWidget(appWidgetId, appWidget);
                 view.switchToErrorView();
-                return  view;
+                return view;
             }
         }
     }
@@ -123,8 +120,7 @@ public class LauncherAppWidgetHost extends AppWidgetHost {
      */
     @Override
     protected void onProviderChanged(int appWidgetId, AppWidgetProviderInfo appWidget) {
-        LauncherAppWidgetProviderInfo info = LauncherAppWidgetProviderInfo.fromProviderInfo(
-                mLauncher, appWidget);
+        LauncherAppWidgetProviderInfo info = LauncherAppWidgetProviderInfo.fromProviderInfo(mLauncher, appWidget);
         super.onProviderChanged(appWidgetId, info);
         // The super method updates the dimensions of the providerInfo. Update the
         // launcher spans accordingly.

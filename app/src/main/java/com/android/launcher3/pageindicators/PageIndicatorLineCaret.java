@@ -11,7 +11,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Handler;
 import android.os.Looper;
-///import android.support.v4.graphics.ColorUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.Property;
@@ -28,7 +27,7 @@ import com.android.launcher3.dynamicui.ExtractedColors;
 
 /**
  * A PageIndicator that briefly shows a fraction of a line when moving between pages.
- *
+ * <p>
  * The fraction is 1 / number of pages and the position is based on the progress of the page scroll.
  */
 public class PageIndicatorLineCaret extends PageIndicator {
@@ -64,8 +63,7 @@ public class PageIndicatorLineCaret extends PageIndicator {
     private final int mLineHeight;
     private ImageView mAllAppsHandle;
 
-    private static final Property<PageIndicatorLineCaret, Integer> PAINT_ALPHA
-            = new Property<PageIndicatorLineCaret, Integer>(Integer.class, "paint_alpha") {
+    private static final Property<PageIndicatorLineCaret, Integer> PAINT_ALPHA = new Property<PageIndicatorLineCaret, Integer>(Integer.class, "paint_alpha") {
         @Override
         public Integer get(PageIndicatorLineCaret obj) {
             return obj.mLinePaint.getAlpha();
@@ -78,8 +76,7 @@ public class PageIndicatorLineCaret extends PageIndicator {
         }
     };
 
-    private static final Property<PageIndicatorLineCaret, Float> NUM_PAGES
-            = new Property<PageIndicatorLineCaret, Float>(Float.class, "num_pages") {
+    private static final Property<PageIndicatorLineCaret, Float> NUM_PAGES = new Property<PageIndicatorLineCaret, Float>(Float.class, "num_pages") {
         @Override
         public Float get(PageIndicatorLineCaret obj) {
             return obj.mNumPagesFloat;
@@ -92,8 +89,7 @@ public class PageIndicatorLineCaret extends PageIndicator {
         }
     };
 
-    private static final Property<PageIndicatorLineCaret, Integer> TOTAL_SCROLL
-            = new Property<PageIndicatorLineCaret, Integer>(Integer.class, "total_scroll") {
+    private static final Property<PageIndicatorLineCaret, Integer> TOTAL_SCROLL = new Property<PageIndicatorLineCaret, Integer>(Integer.class, "total_scroll") {
         @Override
         public Integer get(PageIndicatorLineCaret obj) {
             return obj.mTotalScroll;
@@ -143,7 +139,7 @@ public class PageIndicatorLineCaret extends PageIndicator {
         mAllAppsHandle.setOnLongClickListener(mLauncher);
         mAllAppsHandle.setOnFocusChangeListener(mLauncher.mFocusHandler);
         mLauncher.setAllAppsButton(mAllAppsHandle);
-        
+
         mAllAppsHandle.setImageDrawable(null);
         mAllAppsHandle.setVisibility(View.GONE);
     }
@@ -165,8 +161,7 @@ public class PageIndicatorLineCaret extends PageIndicator {
         int lineWidth = (int) (availableWidth / mNumPagesFloat);
         int lineLeft = (int) (progress * (availableWidth - lineWidth));
         int lineRight = lineLeft + lineWidth;
-        canvas.drawRect(lineLeft, canvas.getHeight() - mLineHeight, lineRight, canvas.getHeight(),
-                mLinePaint);
+        canvas.drawRect(lineLeft, canvas.getHeight() - mLineHeight, lineRight, canvas.getHeight(), mLinePaint);
     }
 
     @Override
@@ -235,8 +230,7 @@ public class PageIndicatorLineCaret extends PageIndicator {
             } else if (color == Color.WHITE) {
                 mActiveAlpha = WHITE_ALPHA;
             } else {
-                Log.e(TAG, "Setting workspace page indicators to an unsupported color: #"
-                        + Integer.toHexString(color));
+                Log.e(TAG, "Setting workspace page indicators to an unsupported color: #" + Integer.toHexString(color));
             }
             mLinePaint.setColor(color);
             mLinePaint.setAlpha(originalLineAlpha);
@@ -249,24 +243,21 @@ public class PageIndicatorLineCaret extends PageIndicator {
             return;
         }
         mToAlpha = alpha;
-        setupAndRunAnimation(ObjectAnimator.ofInt(this, PAINT_ALPHA, alpha),
-                LINE_ALPHA_ANIMATOR_INDEX);
+        setupAndRunAnimation(ObjectAnimator.ofInt(this, PAINT_ALPHA, alpha), LINE_ALPHA_ANIMATOR_INDEX);
     }
 
     private void animateToNumPages(int numPages) {
-        setupAndRunAnimation(ObjectAnimator.ofFloat(this, NUM_PAGES, numPages),
-                NUM_PAGES_ANIMATOR_INDEX);
+        setupAndRunAnimation(ObjectAnimator.ofFloat(this, NUM_PAGES, numPages), NUM_PAGES_ANIMATOR_INDEX);
     }
 
     private void animateToTotalScroll(int totalScroll) {
-        setupAndRunAnimation(ObjectAnimator.ofInt(this, TOTAL_SCROLL, totalScroll),
-                TOTAL_SCROLL_ANIMATOR_INDEX);
+        setupAndRunAnimation(ObjectAnimator.ofInt(this, TOTAL_SCROLL, totalScroll), TOTAL_SCROLL_ANIMATOR_INDEX);
     }
 
     /**
      * Starts the given animator and stores it in the provided index in {@link #mAnimators} until
      * the animation ends.
-     *
+     * <p>
      * If an animator is already at the index (i.e. it is already playing), it is canceled and
      * replaced with the new animator.
      */

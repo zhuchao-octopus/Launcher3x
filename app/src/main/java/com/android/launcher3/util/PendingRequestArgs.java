@@ -93,10 +93,8 @@ public class PendingRequestArgs extends ItemInfo implements Parcelable {
         return mObjectType == TYPE_INTENT ? mArg1 : 0;
     }
 
-    public static PendingRequestArgs forWidgetInfo(
-            int appWidgetId, WidgetAddFlowHandler widgetHandler, ItemInfo info) {
-        PendingRequestArgs args =
-                new PendingRequestArgs(appWidgetId, TYPE_APP_WIDGET, widgetHandler);
+    public static PendingRequestArgs forWidgetInfo(int appWidgetId, WidgetAddFlowHandler widgetHandler, ItemInfo info) {
+        PendingRequestArgs args = new PendingRequestArgs(appWidgetId, TYPE_APP_WIDGET, widgetHandler);
         args.copyFrom(info);
         return args;
     }
@@ -107,14 +105,13 @@ public class PendingRequestArgs extends ItemInfo implements Parcelable {
         return args;
     }
 
-    public static final Parcelable.Creator<PendingRequestArgs> CREATOR =
-            new Parcelable.Creator<PendingRequestArgs>() {
-                public PendingRequestArgs createFromParcel(Parcel source) {
-                    return new PendingRequestArgs(source);
-                }
+    public static final Parcelable.Creator<PendingRequestArgs> CREATOR = new Parcelable.Creator<PendingRequestArgs>() {
+        public PendingRequestArgs createFromParcel(Parcel source) {
+            return new PendingRequestArgs(source);
+        }
 
-                public PendingRequestArgs[] newArray(int size) {
-                    return new PendingRequestArgs[size];
-                }
-            };
+        public PendingRequestArgs[] newArray(int size) {
+            return new PendingRequestArgs[size];
+        }
+    };
 }

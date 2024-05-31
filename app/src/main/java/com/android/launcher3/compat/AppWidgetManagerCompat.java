@@ -24,8 +24,6 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.UserHandle;
-///import android.support.annotation.NonNull;
-///import android.support.annotation.Nullable;
 
 import androidx.annotation.Nullable;
 
@@ -72,17 +70,13 @@ public abstract class AppWidgetManagerCompat {
         return info == null ? null : LauncherAppWidgetProviderInfo.fromProviderInfo(mContext, info);
     }
 
-    public abstract List<AppWidgetProviderInfo> getAllProviders(
-            @Nullable PackageUserKey packageUser);
+    public abstract List<AppWidgetProviderInfo> getAllProviders(@Nullable PackageUserKey packageUser);
 
-    public abstract boolean bindAppWidgetIdIfAllowed(
-            int appWidgetId, AppWidgetProviderInfo info, Bundle options);
+    public abstract boolean bindAppWidgetIdIfAllowed(int appWidgetId, AppWidgetProviderInfo info, Bundle options);
 
-    public abstract void startConfigActivity(AppWidgetProviderInfo info, int widgetId,
-            Activity activity, AppWidgetHost host, int requestCode);
+    public abstract void startConfigActivity(AppWidgetProviderInfo info, int widgetId, Activity activity, AppWidgetHost host, int requestCode);
 
-    public abstract LauncherAppWidgetProviderInfo findProvider(
-            ComponentName provider, UserHandle user);
+    public abstract LauncherAppWidgetProviderInfo findProvider(ComponentName provider, UserHandle user);
 
     public abstract HashMap<ComponentKey, AppWidgetProviderInfo> getAllProvidersMap();
 }

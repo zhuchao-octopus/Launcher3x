@@ -77,13 +77,17 @@ public class AlphabeticalAppsList {
      * Info about a particular adapter item (can be either section or app)
      */
     public static class AdapterItem {
-        /** Common properties */
+        /**
+         * Common properties
+         */
         // The index of this adapter item in the list
         public int position;
         // The type of this item
         public int viewType;
 
-        /** App-only properties */
+        /**
+         * App-only properties
+         */
         // The section name of this app.  Note that there can be multiple items with different
         // sectionNames in the same section
         public String sectionName = null;
@@ -96,15 +100,13 @@ public class AlphabeticalAppsList {
         // The index of this app not including sections
         public int appIndex = -1;
 
-        public static AdapterItem asPredictedApp(int pos, String sectionName, AppInfo appInfo,
-                int appIndex) {
+        public static AdapterItem asPredictedApp(int pos, String sectionName, AppInfo appInfo, int appIndex) {
             AdapterItem item = asApp(pos, sectionName, appInfo, appIndex);
             item.viewType = AllAppsGridAdapter.VIEW_TYPE_PREDICTION_ICON;
             return item;
         }
 
-        public static AdapterItem asApp(int pos, String sectionName, AppInfo appInfo,
-                int appIndex) {
+        public static AdapterItem asApp(int pos, String sectionName, AppInfo appInfo, int appIndex) {
             AdapterItem item = new AdapterItem();
             item.viewType = AllAppsGridAdapter.VIEW_TYPE_ICON;
             item.position = pos;
@@ -114,8 +116,7 @@ public class AlphabeticalAppsList {
             return item;
         }
 
-        public static AdapterItem asDiscoveryItem(int pos, String sectionName, AppInfo appInfo,
-                int appIndex) {
+        public static AdapterItem asDiscoveryItem(int pos, String sectionName, AppInfo appInfo, int appIndex) {
             AdapterItem item = new AdapterItem();
             item.viewType = AllAppsGridAdapter.VIEW_TYPE_DISCOVERY_ITEM;
             item.position = pos;
@@ -285,8 +286,7 @@ public class AlphabeticalAppsList {
         return false;
     }
 
-    public void onAppDiscoverySearchUpdate(@Nullable AppDiscoveryItem app,
-                @NonNull AppDiscoveryUpdateState state) {
+    public void onAppDiscoverySearchUpdate(@Nullable AppDiscoveryItem app, @NonNull AppDiscoveryUpdateState state) {
         mAppDiscoveryUpdateState = state;
         switch (state) {
             case START:
@@ -419,14 +419,10 @@ public class AlphabeticalAppsList {
 
         if (DEBUG_PREDICTIONS) {
             if (mPredictedAppComponents.isEmpty() && !mApps.isEmpty()) {
-                mPredictedAppComponents.add(new ComponentKey(mApps.get(0).componentName,
-                        Process.myUserHandle()));
-                mPredictedAppComponents.add(new ComponentKey(mApps.get(0).componentName,
-                        Process.myUserHandle()));
-                mPredictedAppComponents.add(new ComponentKey(mApps.get(0).componentName,
-                        Process.myUserHandle()));
-                mPredictedAppComponents.add(new ComponentKey(mApps.get(0).componentName,
-                        Process.myUserHandle()));
+                mPredictedAppComponents.add(new ComponentKey(mApps.get(0).componentName, Process.myUserHandle()));
+                mPredictedAppComponents.add(new ComponentKey(mApps.get(0).componentName, Process.myUserHandle()));
+                mPredictedAppComponents.add(new ComponentKey(mApps.get(0).componentName, Process.myUserHandle()));
+                mPredictedAppComponents.add(new ComponentKey(mApps.get(0).componentName, Process.myUserHandle()));
             }
         }
 
@@ -458,8 +454,7 @@ public class AlphabeticalAppsList {
 
                 // Add the predicted app items
                 for (AppInfo info : mPredictedApps) {
-                    AdapterItem appItem = AdapterItem.asPredictedApp(position++, "", info,
-                            appIndex++);
+                    AdapterItem appItem = AdapterItem.asPredictedApp(position++, "", info, appIndex++);
                     if (lastFastScrollerSectionInfo.fastScrollToItem == null) {
                         lastFastScrollerSectionInfo.fastScrollToItem = appItem;
                     }
@@ -502,8 +497,7 @@ public class AlphabeticalAppsList {
                         // already handled in getFilteredAppInfos()
                         continue;
                     }
-                    AdapterItem item = AdapterItem.asDiscoveryItem(position++,
-                            "", appDiscoveryAppInfo, appIndex++);
+                    AdapterItem item = AdapterItem.asDiscoveryItem(position++, "", appDiscoveryAppInfo, appIndex++);
                     mAdapterItems.add(item);
                 }
 
@@ -577,8 +571,7 @@ public class AlphabeticalAppsList {
     }
 
     public boolean isAppDiscoveryRunning() {
-        return mAppDiscoveryUpdateState == AppDiscoveryUpdateState.START
-                || mAppDiscoveryUpdateState == AppDiscoveryUpdateState.UPDATE;
+        return mAppDiscoveryUpdateState == AppDiscoveryUpdateState.START || mAppDiscoveryUpdateState == AppDiscoveryUpdateState.UPDATE;
     }
 
     private List<AppInfo> getFiltersAppInfos() {

@@ -9,11 +9,7 @@ import android.view.ViewDebug;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
-import com.android.launcher3.allapps.AllAppsContainerView;
-import com.android.launcher3.config.FeatureFlags;
-
-public class InsettableFrameLayout extends FrameLayout implements
-    ViewGroup.OnHierarchyChangeListener, Insettable {
+public class InsettableFrameLayout extends FrameLayout implements ViewGroup.OnHierarchyChangeListener, Insettable {
 
     @ViewDebug.ExportedProperty(category = "launcher")
     protected Rect mInsets = new Rect();
@@ -81,10 +77,8 @@ public class InsettableFrameLayout extends FrameLayout implements
 
         public LayoutParams(Context c, AttributeSet attrs) {
             super(c, attrs);
-            TypedArray a = c.obtainStyledAttributes(attrs,
-                    R.styleable.InsertableFrameLayout_Layout);
-            ignoreInsets = a.getBoolean(
-                    R.styleable.InsertableFrameLayout_Layout_layout_ignoreInsets, false);
+            TypedArray a = c.obtainStyledAttributes(attrs, R.styleable.InsertableFrameLayout_Layout);
+            ignoreInsets = a.getBoolean(R.styleable.InsertableFrameLayout_Layout_layout_ignoreInsets, false);
             a.recycle();
         }
 

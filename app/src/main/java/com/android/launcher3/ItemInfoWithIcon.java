@@ -33,7 +33,8 @@ public abstract class ItemInfoWithIcon extends ItemInfo {
      */
     public boolean usingLowResIcon;
 
-    protected ItemInfoWithIcon() { }
+    protected ItemInfoWithIcon() {
+    }
 
     protected ItemInfoWithIcon(ItemInfoWithIcon info) {
         super(info);

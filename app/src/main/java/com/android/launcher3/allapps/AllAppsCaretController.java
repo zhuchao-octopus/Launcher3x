@@ -41,10 +41,8 @@ public class AllAppsCaretController {
         mLauncher = launcher;
         mCaretDrawable = caret;
 
-        final long caretAnimationDuration = launcher.getResources().getInteger(
-                R.integer.config_caretAnimationDuration);
-        final Interpolator caretInterpolator = AnimationUtils.loadInterpolator(launcher,
-                android.R.interpolator.fast_out_slow_in);
+        final long caretAnimationDuration = launcher.getResources().getInteger(R.integer.config_caretAnimationDuration);
+        final Interpolator caretInterpolator = AnimationUtils.loadInterpolator(launcher, android.R.interpolator.fast_out_slow_in);
 
         // We will set values later
         mCaretAnimator = ObjectAnimator.ofFloat(mCaretDrawable, "caretProgress", 0);
@@ -58,13 +56,12 @@ public class AllAppsCaretController {
      * angle of caret.
      *
      * @param containerProgress The progress of the container in the range [0..1]
-     * @param velocity The velocity of the container
-     * @param dragging {@code true} if the container is being dragged
+     * @param velocity          The velocity of the container
+     * @param dragging          {@code true} if the container is being dragged
      */
     public void updateCaret(float containerProgress, float velocity, boolean dragging) {
         // If we're in portrait and the shift is not 0 or 1, adjust the caret based on velocity
-        if (getThreshold() < containerProgress && containerProgress < 1 - getThreshold() &&
-                !mLauncher.useVerticalBarLayout()) {
+        if (getThreshold() < containerProgress && containerProgress < 1 - getThreshold() && !mLauncher.useVerticalBarLayout()) {
             mThresholdCrossed = true;
 
             // How fast are we moving as a percentage of the peak velocity?

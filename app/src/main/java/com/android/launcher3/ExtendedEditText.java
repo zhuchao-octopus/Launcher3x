@@ -96,14 +96,11 @@ public class ExtendedEditText extends EditText {
     }
 
     private boolean showSoftInput() {
-        return requestFocus() &&
-                ((InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE))
-                    .showSoftInput(this, InputMethodManager.SHOW_IMPLICIT);
+        return requestFocus() && ((InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE)).showSoftInput(this, InputMethodManager.SHOW_IMPLICIT);
     }
 
     public void dispatchBackKey() {
-        ((InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE))
-                .hideSoftInputFromWindow(getWindowToken(), 0);
+        ((InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(getWindowToken(), 0);
         if (mBackKeyListener != null) {
             mBackKeyListener.onBackKey();
         }

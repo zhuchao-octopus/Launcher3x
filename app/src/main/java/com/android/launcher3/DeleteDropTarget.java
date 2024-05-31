@@ -49,22 +49,22 @@ public class DeleteDropTarget extends ButtonDropTarget {
         setTextBasedOnDragSource(dragObject.dragSource);
     }
 
-    /** @return true for items that should have a "Remove" action in accessibility. */
+    /**
+     * @return true for items that should have a "Remove" action in accessibility.
+     */
     public static boolean supportsAccessibleDrop(ItemInfo info) {
-        return (info instanceof ShortcutInfo)
-                || (info instanceof LauncherAppWidgetInfo)
-                || (info instanceof FolderInfo);
+        return (info instanceof ShortcutInfo) || (info instanceof LauncherAppWidgetInfo) || (info instanceof FolderInfo);
     }
 
     @Override
     protected boolean supportsDrop(DragSource source, ItemInfo info) {
-    	//add by allen start
-        if (info instanceof ShortcutInfo) {           
-            ShortcutInfo item = (ShortcutInfo) info;               
-            return item.itemType != LauncherSettings.BaseLauncherColumns.ITEM_TYPE_APPLICATION;                  
+        //add by allen start
+        if (info instanceof ShortcutInfo) {
+            ShortcutInfo item = (ShortcutInfo) info;
+            return item.itemType != LauncherSettings.BaseLauncherColumns.ITEM_TYPE_APPLICATION;
         }
         return info instanceof LauncherAppWidgetInfo;
-      //add by allen end
+        //add by allen end
         //return true;
     }
 
@@ -73,8 +73,7 @@ public class DeleteDropTarget extends ButtonDropTarget {
      */
     public void setTextBasedOnDragSource(DragSource dragSource) {
         if (!TextUtils.isEmpty(getText())) {
-            setText(dragSource.supportsDeleteDropTarget() ? R.string.remove_drop_target_label
-                    : android.R.string.cancel);
+            setText(dragSource.supportsDeleteDropTarget() ? R.string.remove_drop_target_label : android.R.string.cancel);
         }
     }
 

@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
 /*
 * Copyright (C) 2008 The Android Open Source Project
 *
@@ -113,7 +112,7 @@
     <string name="msg_no_phone_permission"><xliff:g id="app_name" example="Launcher3">%1$s</xliff:g> is not allowed to make phone calls</string>
 
     <!-- Widgets: -->
-    <skip />    
+    <skip />
 
     <!-- Text to show user in place of a gadget when we can't display it properly -->
     <string name="gadget_error_text">Problem loading widget</string>
@@ -214,7 +213,7 @@
     <!-- Title for a bottom sheet that shows widgets for a particular app -->
     <string name="widgets_bottom_sheet_title"><xliff:g id="name" example="Messenger">%1$s</xliff:g> widgets</string>
 
-<!-- Strings for accessibility actions -->
+    <!-- Strings for accessibility actions -->
     <!-- Accessibility action to add an app to workspace. [CHAR_LIMIT=30] -->
     <string name="action_add_to_workspace">Add to Home screen</string>
 
@@ -300,30 +299,30 @@
 
     <!-- Accessibility confirmation for notification being dismissed. -->
     <string name="notification_dismissed">Notification dismissed</string>
-    
-     <string name="week1" >Sunday</string>
-     <string name="week2" >Monday</string>
-     <string name="week3" >Tuesday</string>
-     <string name="week4" >Wednesday</string>
-     <string name="week5" >Thursday</string>
-     <string name="week6" >Friday</string>
-     <string name="week7" >Saturday</string>
-     
-     
-     <string name="month1" >January</string>
-     <string name="month2" >February</string>
-     <string name="month3" >March</string>
-     <string name="month4" >April</string>
-     <string name="month5" >May</string>
-     <string name="month6" >June</string>
-     <string name="month7" >July</string>
-     <string name="month8" >August</string>
-     <string name="month9" >September</string>
-     <string name="montha" >October</string>
-     <string name="monthb" >November</string>
-     <string name="monthc" >December</string>
-     
-     
-	 <string name="f_camera_alternative_7451">CAM</string>
-	 <string name="f_camera_type_1">Camera</string>
+
+    <string name="week1">Sunday</string>
+    <string name="week2">Monday</string>
+    <string name="week3">Tuesday</string>
+    <string name="week4">Wednesday</string>
+    <string name="week5">Thursday</string>
+    <string name="week6">Friday</string>
+    <string name="week7">Saturday</string>
+
+
+    <string name="month1">January</string>
+    <string name="month2">February</string>
+    <string name="month3">March</string>
+    <string name="month4">April</string>
+    <string name="month5">May</string>
+    <string name="month6">June</string>
+    <string name="month7">July</string>
+    <string name="month8">August</string>
+    <string name="month9">September</string>
+    <string name="montha">October</string>
+    <string name="monthb">November</string>
+    <string name="monthc">December</string>
+
+
+    <string name="f_camera_alternative_7451">CAM</string>
+    <string name="f_camera_type_1">Camera</string>
 </resources>

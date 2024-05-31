@@ -44,11 +44,13 @@ public class DragView extends View {
     public static final int COLOR_CHANGE_DURATION = 120;
     public static final int VIEW_ZOOM_DURATION = 150;
 
-    @Thunk static float sDragAlpha = 1f;
+    @Thunk
+    static float sDragAlpha = 1f;
 
     private Bitmap mBitmap;
     private Bitmap mCrossFadeBitmap;
-    @Thunk Paint mPaint;
+    @Thunk
+    Paint mPaint;
     private final int mBlurSizeOutline;
     private final int mRegistrationX;
     private final int mRegistrationY;
@@ -58,9 +60,11 @@ public class DragView extends View {
     private Point mDragVisualizeOffset = null;
     private Rect mDragRegion = null;
     private final DragLayer mDragLayer;
-    @Thunk final DragController mDragController;
+    @Thunk
+    final DragController mDragController;
     private boolean mHasDrawn = false;
-    @Thunk float mCrossFadeProgress = 0f;
+    @Thunk
+    float mCrossFadeProgress = 0f;
     private boolean mAnimationCancelled = false;
 
     ValueAnimator mAnim;
@@ -68,7 +72,8 @@ public class DragView extends View {
     // size.  This is ignored for non-icons.
     private float mIntrinsicIconScale = 1f;
 
-    @Thunk float[] mCurrentFilter;
+    @Thunk
+    float[] mCurrentFilter;
     private ValueAnimator mFilterAnimator;
 
     private int mLastTouchX;
@@ -81,13 +86,13 @@ public class DragView extends View {
      * <p>
      * The registration point is the point inside our view that the touch events should
      * be centered upon.
-     * @param launcher The Launcher instance
-     * @param bitmap The view that we're dragging around.  We scale it up when we draw it.
+     *
+     * @param launcher      The Launcher instance
+     * @param bitmap        The view that we're dragging around.  We scale it up when we draw it.
      * @param registrationX The x coordinate of the registration point.
      * @param registrationY The y coordinate of the registration point.
      */
-    public DragView(Launcher launcher, Bitmap bitmap, int registrationX, int registrationY,
-                    final float initialScale, final float finalScaleDps) {
+    public DragView(Launcher launcher, Bitmap bitmap, int registrationX, int registrationY, final float initialScale, final float finalScaleDps) {
         super(launcher);
         mDragLayer = launcher.getDragLayer();
         mDragController = launcher.getDragController();
@@ -146,7 +151,9 @@ public class DragView extends View {
         setElevation(getResources().getDimension(R.dimen.drag_elevation));
     }
 
-    /** Sets the scale of the view over the normal workspace icon size. */
+    /**
+     * Sets the scale of the view over the normal workspace icon size.
+     */
     public void setIntrinsicIconScaleFactor(float scale) {
         mIntrinsicIconScale = scale;
     }
@@ -203,13 +210,11 @@ public class DragView extends View {
 
     // Provides drag shadow metrics for system DND.
     public void provideDragShadowMetrics(Point size, Point touch) {
-        size.set((int)(mBitmap.getWidth() * getScaleX()), (int)(mBitmap.getHeight() * getScaleY()));
+        size.set((int) (mBitmap.getWidth() * getScaleX()), (int) (mBitmap.getHeight() * getScaleY()));
 
         final float xGrowth = mBitmap.getWidth() * (getScaleX() - 1);
         final float yGrowth = mBitmap.getHeight() * (getScaleY() - 1);
-        touch.set(
-                mRegistrationX + (int)Math.round(xGrowth / 2),
-                mRegistrationY + (int)Math.round(yGrowth / 2));
+        touch.set(mRegistrationX + (int) Math.round(xGrowth / 2), mRegistrationY + (int) Math.round(yGrowth / 2));
     }
 
     @Override
@@ -280,8 +285,7 @@ public class DragView extends View {
         if (mFilterAnimator != null) {
             mFilterAnimator.cancel();
         }
-        mFilterAnimator = ValueAnimator.ofObject(new FloatArrayEvaluator(mCurrentFilter),
-                oldFilter, targetFilter);
+        mFilterAnimator = ValueAnimator.ofObject(new FloatArrayEvaluator(mCurrentFilter), oldFilter, targetFilter);
         mFilterAnimator.setDuration(COLOR_CHANGE_DURATION);
         mFilterAnimator.addUpdateListener(new AnimatorUpdateListener() {
 
@@ -351,8 +355,7 @@ public class DragView extends View {
     public void animateTo(int toTouchX, int toTouchY, Runnable onCompleteRunnable, int duration) {
         mTempLoc[0] = toTouchX - mRegistrationX;
         mTempLoc[1] = toTouchY - mRegistrationY;
-        mDragLayer.animateViewIntoPosition(this, mTempLoc, 1f, mInitialScale, mInitialScale,
-                DragLayer.ANIMATION_END_DISAPPEAR, onCompleteRunnable, duration);
+        mDragLayer.animateViewIntoPosition(this, mTempLoc, 1f, mInitialScale, mInitialScale, DragLayer.ANIMATION_END_DISAPPEAR, onCompleteRunnable, duration);
     }
 
     public void animateShift(final int shiftX, final int shiftY) {

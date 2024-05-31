@@ -33,10 +33,10 @@ import android.graphics.RectF;
  * Utility class to add shadows to bitmaps.
  */
 public class ShadowGenerator {
-    public static final float BLUR_FACTOR = 0.5f/48;
+    public static final float BLUR_FACTOR = 0.5f / 48;
 
     // Percent of actual icon size
-    public static final float KEY_SHADOW_DISTANCE = 1f/48;
+    public static final float KEY_SHADOW_DISTANCE = 1f / 48;
     private static final int KEY_SHADOW_ALPHA = 61;
     // Percent of actual icon size
     private static final float HALF_DISTANCE = 0.5f;
@@ -59,8 +59,7 @@ public class ShadowGenerator {
         recreateIcon(icon, mDefaultBlurMaskFilter, AMBIENT_SHADOW_ALPHA, KEY_SHADOW_ALPHA, out);
     }
 
-    public synchronized void recreateIcon(Bitmap icon, BlurMaskFilter blurMaskFilter,
-            int ambientAlpha, int keyAlpha, Canvas out) {
+    public synchronized void recreateIcon(Bitmap icon, BlurMaskFilter blurMaskFilter, int ambientAlpha, int keyAlpha, Canvas out) {
         int[] offset = new int[2];
         mBlurPaint.setMaskFilter(blurMaskFilter);
         Bitmap shadow = icon.extractAlpha(mBlurPaint, offset);
@@ -145,13 +144,11 @@ public class ShadowGenerator {
             p.setColor(color);
 
             // Key shadow
-            p.setShadowLayer(shadowBlur, 0, keyShadowDistance,
-                    setColorAlphaBound(Color.BLACK, keyShadowAlpha));
+            p.setShadowLayer(shadowBlur, 0, keyShadowDistance, setColorAlphaBound(Color.BLACK, keyShadowAlpha));
             c.drawRoundRect(bounds, radius, radius, p);
 
             // Ambient shadow
-            p.setShadowLayer(shadowBlur, 0, 0,
-                    setColorAlphaBound(Color.BLACK, ambientShadowAlpha));
+            p.setShadowLayer(shadowBlur, 0, 0, setColorAlphaBound(Color.BLACK, ambientShadowAlpha));
             c.drawRoundRect(bounds, radius, radius, p);
 
             if (Color.alpha(color) < 255) {

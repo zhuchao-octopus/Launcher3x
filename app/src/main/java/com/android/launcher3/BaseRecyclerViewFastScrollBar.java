@@ -36,19 +36,18 @@ import com.android.launcher3.util.Themes;
  */
 public class BaseRecyclerViewFastScrollBar {
 
-    private static final Property<BaseRecyclerViewFastScrollBar, Integer> TRACK_WIDTH =
-            new Property<BaseRecyclerViewFastScrollBar, Integer>(Integer.class, "width") {
+    private static final Property<BaseRecyclerViewFastScrollBar, Integer> TRACK_WIDTH = new Property<BaseRecyclerViewFastScrollBar, Integer>(Integer.class, "width") {
 
-                @Override
-                public Integer get(BaseRecyclerViewFastScrollBar scrollBar) {
-                    return scrollBar.mWidth;
-                }
+        @Override
+        public Integer get(BaseRecyclerViewFastScrollBar scrollBar) {
+            return scrollBar.mWidth;
+        }
 
-                @Override
-                public void set(BaseRecyclerViewFastScrollBar scrollBar, Integer value) {
-                    scrollBar.setTrackWidth(value);
-                }
-            };
+        @Override
+        public void set(BaseRecyclerViewFastScrollBar scrollBar, Integer value) {
+            scrollBar.setTrackWidth(value);
+        }
+    };
 
     private final static int MAX_TRACK_ALPHA = 30;
     private final static int SCROLL_BAR_VIS_DURATION = 150;
@@ -167,8 +166,7 @@ public class BaseRecyclerViewFastScrollBar {
         mThumbPath.lineTo(0, mThumbHeight);             // Left edge
         mThumbPath.lineTo(smallWidth, mThumbHeight);    // bottom edge
         mThumbPath.cubicTo(smallWidth, mThumbHeight,    // right edge
-                largeWidth, mThumbHeight / 2,
-                smallWidth, 0);
+                largeWidth, mThumbHeight / 2, smallWidth, 0);
         mThumbPath.close();
     }
 
@@ -197,9 +195,7 @@ public class BaseRecyclerViewFastScrollBar {
             case MotionEvent.ACTION_DOWN:
                 if (isNearThumb(downX, downY)) {
                     mTouchOffsetY = downY - mThumbOffsetY;
-                } else if (FeatureFlags.LAUNCHER3_DIRECT_SCROLL
-                        && mRv.supportsFastScrolling()
-                        && isNearScrollBar(downX)) {
+                } else if (FeatureFlags.LAUNCHER3_DIRECT_SCROLL && mRv.supportsFastScrolling() && isNearScrollBar(downX)) {
                     calcTouchOffsetAndPrepToFastScroll(downY, lastY);
                     updateFastScrollSectionNameAndThumbOffset(lastY, y);
                 }
@@ -208,9 +204,7 @@ public class BaseRecyclerViewFastScrollBar {
                 // Check if we should start scrolling, but ignore this fastscroll gesture if we have
                 // exceeded some fixed movement
                 mIgnoreDragGesture |= Math.abs(y - downY) > config.getScaledPagingTouchSlop();
-                if (!mIsDragging && !mIgnoreDragGesture && mRv.supportsFastScrolling() &&
-                        isNearThumb(downX, lastY) &&
-                        Math.abs(y - downY) > config.getScaledTouchSlop()) {
+                if (!mIsDragging && !mIgnoreDragGesture && mRv.supportsFastScrolling() && isNearThumb(downX, lastY) && Math.abs(y - downY) > config.getScaledTouchSlop()) {
                     calcTouchOffsetAndPrepToFastScroll(downY, lastY);
                 }
                 if (mIsDragging) {
@@ -282,8 +276,7 @@ public class BaseRecyclerViewFastScrollBar {
             mWidthAnimator.cancel();
         }
 
-        mWidthAnimator = ObjectAnimator.ofInt(this, TRACK_WIDTH,
-                isScrolling ? mMaxWidth : mMinWidth);
+        mWidthAnimator = ObjectAnimator.ofInt(this, TRACK_WIDTH, isScrolling ? mMaxWidth : mMinWidth);
         mWidthAnimator.setDuration(SCROLL_BAR_VIS_DURATION);
         mWidthAnimator.start();
     }

@@ -18,7 +18,6 @@ package com.android.launcher3;
 
 import android.content.Context;
 import android.graphics.Canvas;
-///import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.ViewGroup;
@@ -35,13 +34,15 @@ import com.android.launcher3.util.Thunk;
  *   <li> Enable fast scroller.
  * </ul>
  */
-public abstract class BaseRecyclerView extends RecyclerView
-        implements RecyclerView.OnItemTouchListener {
+public abstract class BaseRecyclerView extends RecyclerView implements RecyclerView.OnItemTouchListener {
 
     private static final int SCROLL_DELTA_THRESHOLD_DP = 4;
 
-    /** Keeps the last known scrolling delta/velocity along y-axis. */
-    @Thunk int mDy = 0;
+    /**
+     * Keeps the last known scrolling delta/velocity along y-axis.
+     */
+    @Thunk
+    int mDy = 0;
     private float mDeltaThreshold;
 
     protected final BaseRecyclerViewFastScrollBar mScrollbar;
@@ -113,23 +114,24 @@ public abstract class BaseRecyclerView extends RecyclerView
     public void onTouchEvent(RecyclerView rv, MotionEvent ev) {
         handleTouchEvent(ev);
     }
-    
-//    private boolean bMultiPointIgnore = false;
+
+    //    private boolean bMultiPointIgnore = false;
+
     /**
      * Handles the touch event and determines whether to show the fast scroller (or updates it if
      * it is already showing).
      */
     private boolean handleTouchEvent(MotionEvent ev) {
-//    	if (Launcher.mMultiPointIgnore) {	//ww+,disable allapp view scroll when 3-fingers-touched
-//    		if (!bMultiPointIgnore) {
-//    			bMultiPointIgnore = true;
-//    			stopScroll();
-//    			onFastScrollCompleted();
-//    		}
-//    		return true;
-//    	} else {
-//    		bMultiPointIgnore = false;
-//    	}
+        //    	if (Launcher.mMultiPointIgnore) {	//ww+,disable allapp view scroll when 3-fingers-touched
+        //    		if (!bMultiPointIgnore) {
+        //    			bMultiPointIgnore = true;
+        //    			stopScroll();
+        //    			onFastScrollCompleted();
+        //    		}
+        //    		return true;
+        //    	} else {
+        //    		bMultiPointIgnore = false;
+        //    	}
         int action = ev.getAction();
         int x = (int) ev.getX();
         int y = (int) ev.getY();
@@ -165,8 +167,7 @@ public abstract class BaseRecyclerView extends RecyclerView
      */
     protected boolean shouldStopScroll(MotionEvent ev) {
         if (ev.getAction() == MotionEvent.ACTION_DOWN) {
-            if ((Math.abs(mDy) < mDeltaThreshold &&
-                    getScrollState() != RecyclerView.SCROLL_STATE_IDLE)) {
+            if ((Math.abs(mDy) < mDeltaThreshold && getScrollState() != RecyclerView.SCROLL_STATE_IDLE)) {
                 // now the touch events are being passed to the {@link WidgetCell} until the
                 // touch sequence goes over the touch slop.
                 return true;
@@ -184,13 +185,13 @@ public abstract class BaseRecyclerView extends RecyclerView
 
     /**
      * Returns the available scroll height:
-     *   AvailableScrollHeight = Total height of the all items - last page height
+     * AvailableScrollHeight = Total height of the all items - last page height
      */
     protected abstract int getAvailableScrollHeight();
 
     /**
      * Returns the available scroll bar height:
-     *   AvailableScrollBarHeight = Total height of the visible view - thumb height
+     * AvailableScrollBarHeight = Total height of the visible view - thumb height
      */
     protected int getAvailableScrollBarHeight() {
         int availableScrollBarHeight = getScrollbarTrackHeight() - mScrollbar.getThumbHeight();
@@ -225,8 +226,7 @@ public abstract class BaseRecyclerView extends RecyclerView
      *
      * @param scrollY the current scroll y
      */
-    protected void synchronizeScrollBarThumbOffsetToViewScroll(int scrollY,
-            int availableScrollHeight) {
+    protected void synchronizeScrollBarThumbOffsetToViewScroll(int scrollY, int availableScrollHeight) {
         // Only show the scrollbar if there is height to be scrolled
         if (availableScrollHeight <= 0) {
             mScrollbar.setThumbOffsetY(-1);
@@ -236,8 +236,7 @@ public abstract class BaseRecyclerView extends RecyclerView
         // Calculate the current scroll position, the scrollY of the recycler view accounts for the
         // view padding, while the scrollBarY is drawn right up to the background padding (ignoring
         // padding)
-        int scrollBarY =
-                (int) (((float) scrollY / availableScrollHeight) * getAvailableScrollBarHeight());
+        int scrollBarY = (int) (((float) scrollY / availableScrollHeight) * getAvailableScrollBarHeight());
 
         // Calculate the position and size of the scroll bar
         mScrollbar.setThumbOffsetY(scrollBarY);
@@ -273,5 +272,6 @@ public abstract class BaseRecyclerView extends RecyclerView
     /**
      * <p>Override in each subclass of this base class.
      */
-    protected void onFastScrollCompleted() {}
+    protected void onFastScrollCompleted() {
+    }
 }

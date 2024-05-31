@@ -81,9 +81,7 @@ public class NotificationInfo implements View.OnClickListener {
             mIsIconLarge = true;
         }
         if (mIconDrawable == null) {
-            mIconDrawable = new BitmapDrawable(context.getResources(), LauncherAppState
-                    .getInstance(context).getIconCache()
-                    .getDefaultIcon(statusBarNotification.getUser()));
+            mIconDrawable = new BitmapDrawable(context.getResources(), LauncherAppState.getInstance(context).getIconCache().getDefaultIcon(statusBarNotification.getUser()));
             mBadgeIcon = Notification.BADGE_ICON_NONE;
         }
         intent = notification.contentIntent;
@@ -94,8 +92,7 @@ public class NotificationInfo implements View.OnClickListener {
     @Override
     public void onClick(View view) {
         final Launcher launcher = Launcher.getLauncher(view.getContext());
-        Bundle activityOptions = ActivityOptions.makeClipRevealAnimation(
-                view, 0, 0, view.getWidth(), view.getHeight()).toBundle();
+        Bundle activityOptions = ActivityOptions.makeClipRevealAnimation(view, 0, 0, view.getWidth(), view.getHeight()).toBundle();
         try {
             intent.send(null, 0, null, null, null, null, activityOptions);
             launcher.getUserEventDispatcher().logNotificationLaunch(view, intent);
@@ -129,7 +126,6 @@ public class NotificationInfo implements View.OnClickListener {
     public boolean shouldShowIconInBadge() {
         // If the icon we're using for this notification matches what the Notification
         // specified should show in the badge, then return true.
-        return mIsIconLarge && mBadgeIcon == Notification.BADGE_ICON_LARGE
-                || !mIsIconLarge && mBadgeIcon == Notification.BADGE_ICON_SMALL;
+        return mIsIconLarge && mBadgeIcon == Notification.BADGE_ICON_LARGE || !mIsIconLarge && mBadgeIcon == Notification.BADGE_ICON_SMALL;
     }
 }

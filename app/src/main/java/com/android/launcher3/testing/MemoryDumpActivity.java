@@ -53,9 +53,7 @@ public class MemoryDumpActivity extends Activity {
     public static String zipUp(ArrayList<String> paths) {
         final int BUFSIZ = 256 * 1024; // 256K
         final byte[] buf = new byte[BUFSIZ];
-        final String zipfilePath = String.format("%s/hprof-%d.zip",
-                Environment.getExternalStorageDirectory(),
-                System.currentTimeMillis());
+        final String zipfilePath = String.format("%s/hprof-%d.zip", Environment.getExternalStorageDirectory(), System.currentTimeMillis());
         ZipOutputStream zos = null;
         try {
             OutputStream os = new FileOutputStream(zipfilePath);
@@ -67,7 +65,7 @@ public class MemoryDumpActivity extends Activity {
                     ZipEntry entry = new ZipEntry(filename);
                     zos.putNextEntry(entry);
                     int len;
-                    while ( 0 < (len = is.read(buf, 0, BUFSIZ)) ) {
+                    while (0 < (len = is.read(buf, 0, BUFSIZ))) {
                         zos.write(buf, 0, len);
                     }
                     zos.closeEntry();
@@ -101,16 +99,10 @@ public class MemoryDumpActivity extends Activity {
         for (int pid : pids_copy) {
             MemoryTracker.ProcessMemInfo info = tracker.getMemInfo(pid);
             if (info != null) {
-                body.append("pid ").append(pid).append(":")
-                    .append(" up=").append(info.getUptime())
-                    .append(" pss=").append(info.currentPss)
-                    .append(" uss=").append(info.currentUss)
-                    .append("\n");
+                body.append("pid ").append(pid).append(":").append(" up=").append(info.getUptime()).append(" pss=").append(info.currentPss).append(" uss=").append(info.currentUss).append("\n");
             }
             if (pid == myPid) {
-                final String path = String.format("%s/launcher-memory-%d.ahprof",
-                        Environment.getExternalStorageDirectory(),
-                        pid);
+                final String path = String.format("%s/launcher-memory-%d.ahprof", Environment.getExternalStorageDirectory(), pid);
                 Log.v(TAG, "Dumping memory info for process " + pid + " to " + path);
                 try {
                     android.os.Debug.dumpHprofData(path); // will block
@@ -167,8 +159,7 @@ public class MemoryDumpActivity extends Activity {
         final ServiceConnection connection = new ServiceConnection() {
             public void onServiceConnected(ComponentName className, IBinder service) {
                 Log.v(TAG, "service connected, dumping...");
-                dumpHprofAndShare(context,
-                        ((MemoryTracker.MemoryTrackerInterface) service).getService());
+                dumpHprofAndShare(context, ((MemoryTracker.MemoryTrackerInterface) service).getService());
                 context.unbindService(this);
                 if (andThen != null) andThen.run();
             }
@@ -177,7 +168,6 @@ public class MemoryDumpActivity extends Activity {
             }
         };
         Log.v(TAG, "attempting to bind to memory tracker");
-        context.bindService(new Intent(context, MemoryTracker.class),
-                connection, Context.BIND_AUTO_CREATE);
+        context.bindService(new Intent(context, MemoryTracker.class), connection, Context.BIND_AUTO_CREATE);
     }
 }

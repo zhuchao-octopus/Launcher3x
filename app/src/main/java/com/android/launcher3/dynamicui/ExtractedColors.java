@@ -18,8 +18,6 @@ package com.android.launcher3.dynamicui;
 
 import android.content.Context;
 import android.graphics.Color;
-///import android.support.v4.graphics.ColorUtils;
-///import android.support.v7.graphics.Palette;
 import android.util.Log;
 
 import androidx.core.graphics.ColorUtils;
@@ -97,8 +95,7 @@ public class ExtractedColors {
      * These were saved there in {@link ColorExtractionService}.
      */
     public void load(Context context) {
-        String encodedString = Utilities.getPrefs(context).getString(
-                ExtractionUtils.EXTRACTED_COLORS_PREFERENCE_KEY, VERSION + "");
+        String encodedString = Utilities.getPrefs(context).getString(ExtractionUtils.EXTRACTED_COLORS_PREFERENCE_KEY, VERSION + "");
 
         decodeFromString(encodedString);
 
@@ -107,7 +104,9 @@ public class ExtractedColors {
         }
     }
 
-    /** @param index must be one of the index values defined at the top of this class. */
+    /**
+     * @param index must be one of the index values defined at the top of this class.
+     */
     public int getColor(int index, int defaultColor) {
         if (index > VERSION_INDEX && index < mColors.length) {
             return mColors[index];
@@ -134,7 +133,6 @@ public class ExtractedColors {
     }
 
     public void updateStatusBarPalette(Palette statusBarPalette) {
-        setColorAtIndex(STATUS_BAR_INDEX, ExtractionUtils.isSuperLight(statusBarPalette) ?
-                DEFAULT_LIGHT : DEFAULT_DARK);
+        setColorAtIndex(STATUS_BAR_INDEX, ExtractionUtils.isSuperLight(statusBarPalette) ? DEFAULT_LIGHT : DEFAULT_DARK);
     }
 }

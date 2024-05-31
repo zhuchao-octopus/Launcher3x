@@ -45,7 +45,8 @@ public class InterruptibleInOutAnimator {
     private static final int OUT = 2;
 
     // TODO: This isn't really necessary, but is here to help diagnose a bug in the drag viz
-    @Thunk int mDirection = STOPPED;
+    @Thunk
+    int mDirection = STOPPED;
 
     public InterruptibleInOutAnimator(View view, long duration, float fromValue, float toValue) {
         mAnimator = LauncherAnimUtils.ofFloat(fromValue, toValue).setDuration(duration);
@@ -64,8 +65,7 @@ public class InterruptibleInOutAnimator {
     private void animate(int direction) {
         final long currentPlayTime = mAnimator.getCurrentPlayTime();
         final float toValue = (direction == IN) ? mOriginalToValue : mOriginalFromValue;
-        final float startValue = mFirstRun ? mOriginalFromValue :
-                ((Float) mAnimator.getAnimatedValue()).floatValue();
+        final float startValue = mFirstRun ? mOriginalFromValue : ((Float) mAnimator.getAnimatedValue()).floatValue();
 
         // Make sure it's stopped before we modify any values
         cancel();

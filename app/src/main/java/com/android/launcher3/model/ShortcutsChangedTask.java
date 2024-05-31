@@ -21,7 +21,6 @@ import android.os.UserHandle;
 import com.android.launcher3.AllAppsList;
 import com.android.launcher3.ItemInfo;
 import com.android.launcher3.LauncherAppState;
-import com.android.launcher3.LauncherModel;
 import com.android.launcher3.LauncherSettings;
 import com.android.launcher3.ShortcutInfo;
 import com.android.launcher3.graphics.LauncherIcons;
@@ -42,8 +41,7 @@ public class ShortcutsChangedTask extends ExtendedModelTask {
     private final UserHandle mUser;
     private final boolean mUpdateIdMap;
 
-    public ShortcutsChangedTask(String packageName, List<ShortcutInfoCompat> shortcuts,
-            UserHandle user, boolean updateIdMap) {
+    public ShortcutsChangedTask(String packageName, List<ShortcutInfoCompat> shortcuts, UserHandle user, boolean updateIdMap) {
         mPackageName = packageName;
         mShortcuts = shortcuts;
         mUser = user;
@@ -62,8 +60,7 @@ public class ShortcutsChangedTask extends ExtendedModelTask {
         for (ItemInfo itemInfo : dataModel.itemsIdMap) {
             if (itemInfo.itemType == LauncherSettings.Favorites.ITEM_TYPE_DEEP_SHORTCUT) {
                 ShortcutInfo si = (ShortcutInfo) itemInfo;
-                if (si.getIntent().getPackage().equals(mPackageName)
-                        && si.user.equals(mUser)) {
+                if (si.getIntent().getPackage().equals(mPackageName) && si.user.equals(mUser)) {
                     idsToWorkspaceShortcutInfos.addToList(si.getDeepShortcutId(), si);
                 }
             }
@@ -72,11 +69,9 @@ public class ShortcutsChangedTask extends ExtendedModelTask {
         final ArrayList<ShortcutInfo> updatedShortcutInfos = new ArrayList<>();
         if (!idsToWorkspaceShortcutInfos.isEmpty()) {
             // Update the workspace to reflect the changes to updated shortcuts residing on it.
-            List<ShortcutInfoCompat> shortcuts = deepShortcutManager.queryForFullDetails(
-                    mPackageName, new ArrayList<>(idsToWorkspaceShortcutInfos.keySet()), mUser);
+            List<ShortcutInfoCompat> shortcuts = deepShortcutManager.queryForFullDetails(mPackageName, new ArrayList<>(idsToWorkspaceShortcutInfos.keySet()), mUser);
             for (ShortcutInfoCompat fullDetails : shortcuts) {
-                List<ShortcutInfo> shortcutInfos = idsToWorkspaceShortcutInfos
-                        .remove(fullDetails.getId());
+                List<ShortcutInfo> shortcutInfos = idsToWorkspaceShortcutInfos.remove(fullDetails.getId());
                 if (!fullDetails.isPinned()) {
                     // The shortcut was previously pinned but is no longer, so remove it from
                     // the workspace and our pinned shortcut counts.
@@ -88,8 +83,7 @@ public class ShortcutsChangedTask extends ExtendedModelTask {
                 }
                 for (ShortcutInfo shortcutInfo : shortcutInfos) {
                     shortcutInfo.updateFromDeepShortcutInfo(fullDetails, context);
-                    shortcutInfo.iconBitmap =
-                            LauncherIcons.createShortcutIcon(fullDetails, context);
+                    shortcutInfo.iconBitmap = LauncherIcons.createShortcutIcon(fullDetails, context);
                     updatedShortcutInfos.add(shortcutInfo);
                 }
             }

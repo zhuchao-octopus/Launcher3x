@@ -57,8 +57,7 @@ public class DragPreviewProvider {
 
     public DragPreviewProvider(View view, Context context) {
         mView = view;
-        blurSizeOutline =
-                context.getResources().getDimensionPixelSize(R.dimen.blur_size_medium_outline);
+        blurSizeOutline = context.getResources().getDimensionPixelSize(R.dimen.blur_size_medium_outline);
 
         if (mView instanceof TextView) {
             Drawable d = Workspace.getTextViewIcon((TextView) mView);
@@ -77,23 +76,22 @@ public class DragPreviewProvider {
         if (mView instanceof TextView) {
             Drawable d = Workspace.getTextViewIcon((TextView) mView);
             if (d == null && MachineConfig.VALUE_SYSTEM_UI43_3300.equals(ResourceUtil.mSystemUI)) {
-            	if (BubbleTextView.class.isInstance(mView)) {
-            		d = ((BubbleTextView)mView).getIconDrawable();
-            	}
-//            	d = mView.getContext().getDrawable(R.drawable.app_bg_0);
-//            	final int x = 0;//(mView.getMeasuredWidth() - ResourceUtil.mGeneralAppIconBgWidth) / 2;
-//            	final int y = (mView.getMeasuredHeight() - ResourceUtil.mGeneralAppIconBgHeight) / 2;
-				if (d != null) {
-	            	final int x = 0;
-	            	final int y = (mView.getMeasuredHeight() - ResourceUtil.mGeneralAppIconBgHeight) / 3;					
-	            	d.setBounds(x, y, ResourceUtil.mGeneralAppIconBgWidth + x, ResourceUtil.mGeneralAppIconBgHeight + y);
-            	}
+                if (BubbleTextView.class.isInstance(mView)) {
+                    d = ((BubbleTextView) mView).getIconDrawable();
+                }
+                //            	d = mView.getContext().getDrawable(R.drawable.app_bg_0);
+                //            	final int x = 0;//(mView.getMeasuredWidth() - ResourceUtil.mGeneralAppIconBgWidth) / 2;
+                //            	final int y = (mView.getMeasuredHeight() - ResourceUtil.mGeneralAppIconBgHeight) / 2;
+                if (d != null) {
+                    final int x = 0;
+                    final int y = (mView.getMeasuredHeight() - ResourceUtil.mGeneralAppIconBgHeight) / 3;
+                    d.setBounds(x, y, ResourceUtil.mGeneralAppIconBgWidth + x, ResourceUtil.mGeneralAppIconBgHeight + y);
+                }
             }
             if (d != null) {
-	            Rect bounds = getDrawableBounds(d);
-	            destCanvas.translate((float) blurSizeOutline / 2 - bounds.left,
-	                    (float) blurSizeOutline / 2 - bounds.top);
-	            d.draw(destCanvas);
+                Rect bounds = getDrawableBounds(d);
+                destCanvas.translate((float) blurSizeOutline / 2 - bounds.left, (float) blurSizeOutline / 2 - bounds.top);
+                d.draw(destCanvas);
             }
         } else {
             final Rect clipRect = mTempRect;
@@ -108,8 +106,7 @@ public class DragPreviewProvider {
                     textVisible = true;
                 }
             }
-            destCanvas.translate(-mView.getScrollX() + (float) blurSizeOutline / 2,
-                    -mView.getScrollY() + (float) blurSizeOutline / 2);
+            destCanvas.translate(-mView.getScrollX() + (float) blurSizeOutline / 2, -mView.getScrollY() + (float) blurSizeOutline / 2);
             destCanvas.clipRect(clipRect, Op.REPLACE);
             mView.draw(destCanvas);
 
@@ -141,8 +138,7 @@ public class DragPreviewProvider {
             height = (int) (mView.getHeight() * scale);
         }
 
-        Bitmap b = Bitmap.createBitmap(width + blurSizeOutline, height + blurSizeOutline,
-                Bitmap.Config.ARGB_8888);
+        Bitmap b = Bitmap.createBitmap(width + blurSizeOutline, height + blurSizeOutline, Bitmap.Config.ARGB_8888);
         canvas.setBitmap(b);
 
         canvas.save();
@@ -178,8 +174,7 @@ public class DragPreviewProvider {
             height = (int) Math.floor(mView.getHeight() * scale);
         }
 
-        Bitmap b = Bitmap.createBitmap(width + blurSizeOutline, height + blurSizeOutline,
-                Bitmap.Config.ALPHA_8);
+        Bitmap b = Bitmap.createBitmap(width + blurSizeOutline, height + blurSizeOutline, Bitmap.Config.ALPHA_8);
         canvas.setBitmap(b);
 
         canvas.save();
@@ -187,8 +182,7 @@ public class DragPreviewProvider {
         drawDragView(canvas);
         canvas.restore();
 
-        HolographicOutlineHelper.getInstance(mView.getContext())
-                .applyExpensiveOutlineWithBlur(b, canvas);
+        HolographicOutlineHelper.getInstance(mView.getContext()).applyExpensiveOutlineWithBlur(b, canvas);
 
         canvas.setBitmap(null);
         return b;
@@ -197,31 +191,28 @@ public class DragPreviewProvider {
     protected static Rect getDrawableBounds(Drawable d) {
         Rect bounds = new Rect();
         if (d == null && MachineConfig.VALUE_SYSTEM_UI43_3300.equals(ResourceUtil.mSystemUI)) {
-        	bounds.set(new Rect(0, 0, ResourceUtil.mGeneralAppIconBgWidth, ResourceUtil.mGeneralAppIconBgHeight));
+            bounds.set(new Rect(0, 0, ResourceUtil.mGeneralAppIconBgWidth, ResourceUtil.mGeneralAppIconBgHeight));
         } else {
-	        d.copyBounds(bounds);
-	        if (bounds.width() == 0 || bounds.height() == 0) {
-	            bounds.set(0, 0, d.getIntrinsicWidth(), d.getIntrinsicHeight());
-	        } else {
-	            bounds.offsetTo(0, 0);
-	        }
+            d.copyBounds(bounds);
+            if (bounds.width() == 0 || bounds.height() == 0) {
+                bounds.set(0, 0, d.getIntrinsicWidth(), d.getIntrinsicHeight());
+            } else {
+                bounds.offsetTo(0, 0);
+            }
         }
         return bounds;
     }
 
     public float getScaleAndPosition(Bitmap preview, int[] outPos) {
-        float scale = Launcher.getLauncher(mView.getContext())
-                .getDragLayer().getLocationInDragLayer(mView, outPos);
+        float scale = Launcher.getLauncher(mView.getContext()).getDragLayer().getLocationInDragLayer(mView, outPos);
         if (mView instanceof LauncherAppWidgetHostView) {
             // App widgets are technically scaled, but are drawn at their expected size -- so the
             // app widget scale should not affect the scale of the preview.
             scale /= ((LauncherAppWidgetHostView) mView).getScaleToFit();
         }
 
-        outPos[0] = Math.round(outPos[0] -
-                (preview.getWidth() - scale * mView.getWidth() * mView.getScaleX()) / 2);
-        outPos[1] = Math.round(outPos[1] - (1 - scale) * preview.getHeight() / 2
-                - (float) previewPadding / 2);
+        outPos[0] = Math.round(outPos[0] - (preview.getWidth() - scale * mView.getWidth() * mView.getScaleX()) / 2);
+        outPos[1] = Math.round(outPos[1] - (1 - scale) * preview.getHeight() / 2 - (float) previewPadding / 2);
         return scale;
     }
 }

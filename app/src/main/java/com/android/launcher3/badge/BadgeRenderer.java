@@ -35,6 +35,7 @@ import com.android.launcher3.graphics.ShadowGenerator;
 
 /**
  * Contains parameters necessary to draw a badge for an icon (e.g. the size of the badge).
+ *
  * @see BadgeInfo for the data to draw
  */
 public class BadgeRenderer {
@@ -61,8 +62,7 @@ public class BadgeRenderer {
     private final IconDrawer mLargeIconDrawer;
     private final IconDrawer mSmallIconDrawer;
     private final Paint mTextPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-    private final Paint mBackgroundPaint = new Paint(Paint.ANTI_ALIAS_FLAG
-            | Paint.FILTER_BITMAP_FLAG);
+    private final Paint mBackgroundPaint = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG);
     private final SparseArray<Bitmap> mBackgroundsWithShadow;
 
     public BadgeRenderer(Context context, int iconSizePx) {
@@ -88,21 +88,18 @@ public class BadgeRenderer {
     /**
      * Draw a circle in the top right corner of the given bounds, and draw
      * {@link BadgeInfo#getNotificationCount()} on top of the circle.
-     * @param palette The colors (based on the icon) to use for the badge.
-     * @param badgeInfo Contains data to draw on the badge. Could be null if we are animating out.
-     * @param iconBounds The bounds of the icon being badged.
-     * @param badgeScale The progress of the animation, from 0 to 1.
+     *
+     * @param palette        The colors (based on the icon) to use for the badge.
+     * @param badgeInfo      Contains data to draw on the badge. Could be null if we are animating out.
+     * @param iconBounds     The bounds of the icon being badged.
+     * @param badgeScale     The progress of the animation, from 0 to 1.
      * @param spaceForOffset How much space is available to offset the badge up and to the right.
      */
-    public void draw(Canvas canvas, IconPalette palette, @Nullable BadgeInfo badgeInfo,
-            Rect iconBounds, float badgeScale, Point spaceForOffset) {
+    public void draw(Canvas canvas, IconPalette palette, @Nullable BadgeInfo badgeInfo, Rect iconBounds, float badgeScale, Point spaceForOffset) {
         mTextPaint.setColor(palette.textColor);
-        IconDrawer iconDrawer = badgeInfo != null && badgeInfo.isIconLarge()
-                ? mLargeIconDrawer : mSmallIconDrawer;
-        Shader icon = badgeInfo == null ? null : badgeInfo.getNotificationIconForBadge(
-                mContext, palette.backgroundColor, mSize, iconDrawer.mPadding);
-        String notificationCount = badgeInfo == null ? "0"
-                : String.valueOf(badgeInfo.getNotificationCount());
+        IconDrawer iconDrawer = badgeInfo != null && badgeInfo.isIconLarge() ? mLargeIconDrawer : mSmallIconDrawer;
+        Shader icon = badgeInfo == null ? null : badgeInfo.getNotificationIconForBadge(mContext, palette.backgroundColor, mSize, iconDrawer.mPadding);
+        String notificationCount = badgeInfo == null ? "0" : String.valueOf(badgeInfo.getNotificationCount());
         int numChars = notificationCount.length();
         int width = DOTS_ONLY ? mSize : mSize + mCharSize * (numChars - 1);
         // Lazily load the background with shadow.
@@ -128,40 +125,36 @@ public class BadgeRenderer {
         // Prepare the background and shadow and possible stacking effect.
         mBackgroundPaint.setColorFilter(palette.backgroundColorMatrixFilter);
         int backgroundWithShadowSize = backgroundWithShadow.getHeight(); // Same as width.
-        boolean shouldStack = !isDot && badgeInfo != null
-                && badgeInfo.getNotificationKeys().size() > 1;
+        boolean shouldStack = !isDot && badgeInfo != null && badgeInfo.getNotificationKeys().size() > 1;
         if (shouldStack) {
             int offsetDiffX = mStackOffsetX - mOffset;
             int offsetDiffY = mStackOffsetY - mOffset;
             canvas.translate(offsetDiffX, offsetDiffY);
-            canvas.drawBitmap(backgroundWithShadow, -backgroundWithShadowSize / 2,
-                    -backgroundWithShadowSize / 2, mBackgroundPaint);
+            canvas.drawBitmap(backgroundWithShadow, -backgroundWithShadowSize / 2, -backgroundWithShadowSize / 2, mBackgroundPaint);
             canvas.translate(-offsetDiffX, -offsetDiffY);
         }
 
         if (isText) {
-            canvas.drawBitmap(backgroundWithShadow, -backgroundWithShadowSize / 2,
-                    -backgroundWithShadowSize / 2, mBackgroundPaint);
+            canvas.drawBitmap(backgroundWithShadow, -backgroundWithShadowSize / 2, -backgroundWithShadowSize / 2, mBackgroundPaint);
             canvas.drawText(notificationCount, 0, mTextHeight / 2, mTextPaint);
         } else if (isIcon) {
-            canvas.drawBitmap(backgroundWithShadow, -backgroundWithShadowSize / 2,
-                    -backgroundWithShadowSize / 2, mBackgroundPaint);
+            canvas.drawBitmap(backgroundWithShadow, -backgroundWithShadowSize / 2, -backgroundWithShadowSize / 2, mBackgroundPaint);
             iconDrawer.drawIcon(icon, canvas);
         } else if (isDot) {
             mBackgroundPaint.setColorFilter(palette.saturatedBackgroundColorMatrixFilter);
-            canvas.drawBitmap(backgroundWithShadow, -backgroundWithShadowSize / 2,
-                    -backgroundWithShadowSize / 2, mBackgroundPaint);
+            canvas.drawBitmap(backgroundWithShadow, -backgroundWithShadowSize / 2, -backgroundWithShadowSize / 2, mBackgroundPaint);
         }
         canvas.restore();
     }
 
-    /** Draws the notification icon with padding of a given size. */
+    /**
+     * Draws the notification icon with padding of a given size.
+     */
     private class IconDrawer {
 
         private final int mPadding;
         private final Bitmap mCircleClipBitmap;
-        private final Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.DITHER_FLAG |
-                Paint.FILTER_BITMAP_FLAG);
+        private final Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.DITHER_FLAG | Paint.FILTER_BITMAP_FLAG);
 
         public IconDrawer(int padding) {
             mPadding = padding;

@@ -7,7 +7,6 @@ import android.animation.AnimatorSet;
 import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
 import android.graphics.Color;
-
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
@@ -24,9 +23,9 @@ import com.android.launcher3.LauncherAnimUtils;
 import com.android.launcher3.R;
 import com.android.launcher3.Utilities;
 import com.android.launcher3.Workspace;
+import com.android.launcher3.userevent.LauncherLogProto.*;
 import com.android.launcher3.userevent.LauncherLogProto.Action;
 import com.android.launcher3.userevent.LauncherLogProto.ContainerType;
-import com.android.launcher3.userevent.LauncherLogProto.*;
 import com.android.launcher3.util.Themes;
 import com.android.launcher3.util.TouchController;
 
@@ -40,8 +39,7 @@ import com.android.launcher3.util.TouchController;
  * If release velocity < THRES1, snap according to either top or bottom depending on whether it's
  * closer to top or closer to the page indicator.
  */
-public class AllAppsTransitionController implements TouchController, VerticalPullDetector.Listener,
-        View.OnLayoutChangeListener {
+public class AllAppsTransitionController implements TouchController, VerticalPullDetector.Listener, View.OnLayoutChangeListener {
 
     private static final String TAG = "AllAppsTrans";
     private static final boolean DBG = false;
@@ -49,8 +47,7 @@ public class AllAppsTransitionController implements TouchController, VerticalPul
     private final Interpolator mAccelInterpolator = new AccelerateInterpolator(2f);
     private final Interpolator mDecelInterpolator = new DecelerateInterpolator(3f);
     private final Interpolator mFastOutSlowInInterpolator = new FastOutSlowInInterpolator();
-    private final VerticalPullDetector.ScrollInterpolator mScrollInterpolator
-            = new VerticalPullDetector.ScrollInterpolator();
+    private final VerticalPullDetector.ScrollInterpolator mScrollInterpolator = new VerticalPullDetector.ScrollInterpolator();
 
     private static final float PARALLAX_COEFFICIENT = .125f;
     private static final int SINGLE_FRAME_MS = 16;
@@ -112,8 +109,7 @@ public class AllAppsTransitionController implements TouchController, VerticalPul
             mNoIntercept = false;
             if (!mLauncher.isAllAppsVisible() && mLauncher.getWorkspace().workspaceInModalState()) {
                 mNoIntercept = true;
-            } else if (mLauncher.isAllAppsVisible() &&
-                    !mAppsView.shouldContainerScroll(ev)) {
+            } else if (mLauncher.isAllAppsVisible() && !mAppsView.shouldContainerScroll(ev)) {
                 mNoIntercept = true;
             } else if (AbstractFloatingView.getTopOpenView(mLauncher) != null) {
                 mNoIntercept = true;
@@ -139,8 +135,7 @@ public class AllAppsTransitionController implements TouchController, VerticalPul
                         ignoreSlopWhenSettling = true;
                     }
                 }
-                mDetector.setDetectableScrollConditions(directionsToDetectScroll,
-                        ignoreSlopWhenSettling);
+                mDetector.setDetectableScrollConditions(directionsToDetectScroll, ignoreSlopWhenSettling);
             }
         }
 
@@ -201,36 +196,25 @@ public class AllAppsTransitionController implements TouchController, VerticalPul
                 calculateDuration(velocity, mAppsView.getTranslationY());
 
                 if (!mLauncher.isAllAppsVisible()) {
-                    mLauncher.getUserEventDispatcher().logActionOnContainer(
-                            Action.Touch.FLING.getNumber(),
-                            Action.Direction.UP.getNumber(),
-                            ContainerType.HOTSEAT.getNumber());
+                    mLauncher.getUserEventDispatcher().logActionOnContainer(Action.Touch.FLING.getNumber(), Action.Direction.UP.getNumber(), ContainerType.HOTSEAT.getNumber());
                 }
-                mLauncher.showAppsView(true /* animated */,false /* updatePredictedApps */,false /* focusSearchBar */);
+                mLauncher.showAppsView(true /* animated */, false /* updatePredictedApps */, false /* focusSearchBar */);
             } else {
                 calculateDuration(velocity, Math.abs(mShiftRange - mAppsView.getTranslationY()));
                 mLauncher.showWorkspace(true);
             }
             // snap to top or bottom using the release velocity
-        }
-        else
-        {
+        } else {
             if (mAppsView.getTranslationY() > mShiftRange / 2) {
                 calculateDuration(velocity, Math.abs(mShiftRange - mAppsView.getTranslationY()));
                 mLauncher.showWorkspace(true);
-            }
-            else
-            {
+            } else {
                 calculateDuration(velocity, Math.abs(mAppsView.getTranslationY()));
                 if (!mLauncher.isAllAppsVisible()) {
-                    mLauncher.getUserEventDispatcher().logActionOnContainer(
-                            Action.Touch.SWIPE.getNumber(),
-                            Action.Direction.UP.getNumber(),
-                            ContainerType.HOTSEAT.getNumber());
+                    mLauncher.getUserEventDispatcher().logActionOnContainer(Action.Touch.SWIPE.getNumber(), Action.Direction.UP.getNumber(), ContainerType.HOTSEAT.getNumber());
                 }
                 mLauncher.showAppsView(true, /* animated */
-                        false /* updatePredictedApps */,
-                        false /* focusSearchBar */);
+                        false /* updatePredictedApps */, false /* focusSearchBar */);
             }
         }
     }
@@ -269,7 +253,7 @@ public class AllAppsTransitionController implements TouchController, VerticalPul
     }
 
     /**
-     * @param progress       value between 0 and 1, 0 shows all apps and 1 shows workspace
+     * @param progress value between 0 and 1, 0 shows all apps and 1 shows workspace
      */
     public void setProgress(float progress) {
         float shiftPrevious = mProgress * mShiftRange;
@@ -280,33 +264,26 @@ public class AllAppsTransitionController implements TouchController, VerticalPul
         float alpha = 1 - workspaceHotseatAlpha;
         float interpolation = mAccelInterpolator.getInterpolation(workspaceHotseatAlpha);
 
-        int color = (Integer) mEvaluator.evaluate(mDecelInterpolator.getInterpolation(alpha),
-                mHotseatBackgroundColor, mAllAppsBackgroundColor);
-        int bgAlpha = Color.alpha((int) mEvaluator.evaluate(alpha,
-                mHotseatBackgroundColor, mAllAppsBackgroundColor));
+        int color = (Integer) mEvaluator.evaluate(mDecelInterpolator.getInterpolation(alpha), mHotseatBackgroundColor, mAllAppsBackgroundColor);
+        int bgAlpha = Color.alpha((int) mEvaluator.evaluate(alpha, mHotseatBackgroundColor, mAllAppsBackgroundColor));
 
         mAppsView.setRevealDrawableColor(ColorUtils.setAlphaComponent(color, bgAlpha));
         mAppsView.getContentView().setAlpha(alpha);
         mAppsView.setTranslationY(shiftCurrent);
 
         if (!mLauncher.getDeviceProfile().isVerticalBarLayout()) {
-            mWorkspace.setHotseatTranslationAndAlpha(Workspace.Direction.Y, -mShiftRange + shiftCurrent,
-                    interpolation);
+            mWorkspace.setHotseatTranslationAndAlpha(Workspace.Direction.Y, -mShiftRange + shiftCurrent, interpolation);
         } else {
-            mWorkspace.setHotseatTranslationAndAlpha(Workspace.Direction.Y,
-                    PARALLAX_COEFFICIENT * (-mShiftRange + shiftCurrent),
-                    interpolation);
+            mWorkspace.setHotseatTranslationAndAlpha(Workspace.Direction.Y, PARALLAX_COEFFICIENT * (-mShiftRange + shiftCurrent), interpolation);
         }
 
         if (mIsTranslateWithoutWorkspace) {
             return;
         }
-        mWorkspace.setWorkspaceYTranslationAndAlpha(
-                PARALLAX_COEFFICIENT * (-mShiftRange + shiftCurrent), interpolation);
+        mWorkspace.setWorkspaceYTranslationAndAlpha(PARALLAX_COEFFICIENT * (-mShiftRange + shiftCurrent), interpolation);
 
         if (!mDetector.isDraggingState()) {
-            mContainerVelocity = mDetector.computeVelocity(shiftCurrent - shiftPrevious,
-                    System.currentTimeMillis());
+            mContainerVelocity = mDetector.computeVelocity(shiftCurrent - shiftPrevious, System.currentTimeMillis());
         }
 
         mCaretController.updateCaret(progress, mContainerVelocity, mDetector.isDraggingState());
@@ -342,8 +319,7 @@ public class AllAppsTransitionController implements TouchController, VerticalPul
             shouldPost = false;
         }
 
-        ObjectAnimator driftAndAlpha = ObjectAnimator.ofFloat(this, "progress",
-                mProgress, 0f);
+        ObjectAnimator driftAndAlpha = ObjectAnimator.ofFloat(this, "progress", mProgress, 0f);
         driftAndAlpha.setDuration(mAnimationDuration);
         driftAndAlpha.setInterpolator(interpolator);
         animationOut.play(driftAndAlpha);
@@ -376,8 +352,7 @@ public class AllAppsTransitionController implements TouchController, VerticalPul
         cancelDiscoveryAnimation();
 
         // assumption is that this variable is always null
-        mDiscoBounceAnimation = (AnimatorSet) AnimatorInflater.loadAnimator(mLauncher,
-                R.anim.discovery_bounce);
+        mDiscoBounceAnimation = (AnimatorSet) AnimatorInflater.loadAnimator(mLauncher, R.anim.discovery_bounce);
         mDiscoBounceAnimation.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationStart(Animator animator) {
@@ -393,16 +368,16 @@ public class AllAppsTransitionController implements TouchController, VerticalPul
             }
         });
         mDiscoBounceAnimation.setTarget(this);
-        if(mAppsView!=null){
-        mAppsView.post(new Runnable() {
-            @Override
-            public void run() {
-                if (mDiscoBounceAnimation == null) {
-                    return;
+        if (mAppsView != null) {
+            mAppsView.post(new Runnable() {
+                @Override
+                public void run() {
+                    if (mDiscoBounceAnimation == null) {
+                        return;
+                    }
+                    mDiscoBounceAnimation.start();
                 }
-                mDiscoBounceAnimation.start();
-            }
-        });
+            });
         }
     }
 
@@ -427,8 +402,7 @@ public class AllAppsTransitionController implements TouchController, VerticalPul
             shouldPost = false;
         }
 
-        ObjectAnimator driftAndAlpha = ObjectAnimator.ofFloat(this, "progress",
-                mProgress, 1f);
+        ObjectAnimator driftAndAlpha = ObjectAnimator.ofFloat(this, "progress", mProgress, 1f);
         driftAndAlpha.setDuration(mAnimationDuration);
         driftAndAlpha.setInterpolator(interpolator);
         animationOut.play(driftAndAlpha);
@@ -495,13 +469,11 @@ public class AllAppsTransitionController implements TouchController, VerticalPul
         mWorkspace = workspace;
         mHotseat.addOnLayoutChangeListener(this);
         mHotseat.bringToFront();
-        mCaretController = new AllAppsCaretController(
-                mWorkspace.getPageIndicator().getCaretDrawable(), mLauncher);
+        mCaretController = new AllAppsCaretController(mWorkspace.getPageIndicator().getCaretDrawable(), mLauncher);
     }
 
     @Override
-    public void onLayoutChange(View v, int left, int top, int right, int bottom,
-            int oldLeft, int oldTop, int oldRight, int oldBottom) {
+    public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
         if (!mLauncher.getDeviceProfile().isVerticalBarLayout()) {
             mShiftRange = top;
         } else {

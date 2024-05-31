@@ -21,7 +21,7 @@ import java.util.List;
 /**
  * Represents a system shortcut for a given app. The shortcut should have a static label and
  * icon, and an onClickListener that depends on the item that the shortcut services.
- *
+ * <p>
  * Example system shortcuts, defined as inner classes, include Widgets and AppInfo.
  */
 public abstract class SystemShortcut {
@@ -43,8 +43,7 @@ public abstract class SystemShortcut {
         return context.getString(mLabelResId);
     }
 
-    public abstract View.OnClickListener getOnClickListener(final Launcher launcher,
-            final ItemInfo itemInfo);
+    public abstract View.OnClickListener getOnClickListener(final Launcher launcher, final ItemInfo itemInfo);
 
     public static class Widgets extends SystemShortcut {
 
@@ -53,10 +52,8 @@ public abstract class SystemShortcut {
         }
 
         @Override
-        public View.OnClickListener getOnClickListener(final Launcher launcher,
-                final ItemInfo itemInfo) {
-            final List<WidgetItem> widgets = launcher.getWidgetsForPackageUser(new PackageUserKey(
-                    itemInfo.getTargetComponent().getPackageName(), itemInfo.user));
+        public View.OnClickListener getOnClickListener(final Launcher launcher, final ItemInfo itemInfo) {
+            final List<WidgetItem> widgets = launcher.getWidgetsForPackageUser(new PackageUserKey(itemInfo.getTargetComponent().getPackageName(), itemInfo.user));
             if (widgets == null) {
                 return null;
             }
@@ -64,9 +61,7 @@ public abstract class SystemShortcut {
                 @Override
                 public void onClick(View view) {
                     AbstractFloatingView.closeAllOpenViews(launcher);
-                    WidgetsBottomSheet widgetsBottomSheet =
-                            (WidgetsBottomSheet) launcher.getLayoutInflater().inflate(
-                                    R.layout.widgets_bottom_sheet, launcher.getDragLayer(), false);
+                    WidgetsBottomSheet widgetsBottomSheet = (WidgetsBottomSheet) launcher.getLayoutInflater().inflate(R.layout.widgets_bottom_sheet, launcher.getDragLayer(), false);
                     widgetsBottomSheet.populateAndShow(itemInfo);
                 }
             };
@@ -79,8 +74,7 @@ public abstract class SystemShortcut {
         }
 
         @Override
-        public View.OnClickListener getOnClickListener(final Launcher launcher,
-                final ItemInfo itemInfo) {
+        public View.OnClickListener getOnClickListener(final Launcher launcher, final ItemInfo itemInfo) {
             return new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

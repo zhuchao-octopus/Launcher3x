@@ -50,8 +50,6 @@ public class WidgetItemComparator implements Comparator<WidgetItem> {
         // also same, put the widget with smaller height before.
         int thisArea = a.spanX * a.spanY;
         int otherArea = b.spanX * b.spanY;
-        return thisArea == otherArea
-                ? Integer.compare(a.spanY, b.spanY)
-                : Integer.compare(thisArea, otherArea);
+        return thisArea == otherArea ? Integer.compare(a.spanY, b.spanY) : Integer.compare(thisArea, otherArea);
     }
 }

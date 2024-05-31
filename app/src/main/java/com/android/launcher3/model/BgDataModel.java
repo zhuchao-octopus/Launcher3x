@@ -28,20 +28,16 @@ import com.android.launcher3.LauncherAppWidgetInfo;
 import com.android.launcher3.LauncherSettings;
 import com.android.launcher3.ShortcutInfo;
 import com.android.launcher3.config.ProviderConfig;
-import com.android.launcher3.logging.LoggerUtils;
 import com.android.launcher3.logging.DumpTargetWrapper;
-import com.android.launcher3.shortcuts.DeepShortcutManager;
-import com.android.launcher3.shortcuts.ShortcutInfoCompat;
-import com.android.launcher3.shortcuts.ShortcutKey;
 import com.android.launcher3.model.LauncherDumpProto;
 import com.android.launcher3.model.LauncherDumpProto.ContainerType;
 import com.android.launcher3.model.LauncherDumpProto.DumpTarget;
-import com.android.launcher3.model.LauncherDumpProto.ItemType;
+import com.android.launcher3.shortcuts.DeepShortcutManager;
+import com.android.launcher3.shortcuts.ShortcutInfoCompat;
+import com.android.launcher3.shortcuts.ShortcutKey;
 import com.android.launcher3.util.ComponentKey;
 import com.android.launcher3.util.LongArrayMap;
 import com.android.launcher3.util.MultiHashMap;
-import com.google.protobuf.nano.MessageNano;
-///import com.google.protobuf.MessageNano;
 
 import java.io.FileDescriptor;
 import java.io.FileOutputStream;
@@ -111,8 +107,7 @@ public class BgDataModel {
         deepShortcutMap.clear();
     }
 
-     public synchronized void dump(String prefix, FileDescriptor fd, PrintWriter writer,
-             String[] args) {
+    public synchronized void dump(String prefix, FileDescriptor fd, PrintWriter writer, String[] args) {
         if (args.length > 0 && TextUtils.equals(args[0], "--proto")) {
             dumpProto(prefix, fd, writer, args);
             return;
@@ -132,11 +127,11 @@ public class BgDataModel {
             writer.println(prefix + '\t' + appWidgets.get(i).toString());
         }
         writer.println(prefix + " ---- folder items ");
-        for (int i = 0; i< folders.size(); i++) {
+        for (int i = 0; i < folders.size(); i++) {
             writer.println(prefix + '\t' + folders.valueAt(i).toString());
         }
         writer.println(prefix + " ---- items id map ");
-        for (int i = 0; i< itemsIdMap.size(); i++) {
+        for (int i = 0; i < itemsIdMap.size(); i++) {
             writer.println(prefix + '\t' + itemsIdMap.valueAt(i).toString());
         }
 
@@ -152,15 +147,13 @@ public class BgDataModel {
         }
     }
 
-    private synchronized void dumpProto(String prefix, FileDescriptor fd, PrintWriter writer,
-            String[] args) {
+    private synchronized void dumpProto(String prefix, FileDescriptor fd, PrintWriter writer, String[] args) {
 
         // Add top parent nodes. (L1)
         DumpTargetWrapper hotseat = new DumpTargetWrapper(ContainerType.HOTSEAT.getNumber(), 0);
         LongArrayMap<DumpTargetWrapper> workspaces = new LongArrayMap<>();
         for (int i = 0; i < workspaceScreens.size(); i++) {
-            workspaces.put(new Long(workspaceScreens.get(i)),
-                    new DumpTargetWrapper(ContainerType.WORKSPACE.getNumber(), i));
+            workspaces.put(new Long(workspaceScreens.get(i)), new DumpTargetWrapper(ContainerType.WORKSPACE.getNumber(), i));
         }
         DumpTargetWrapper dtw;
         // Add non leaf / non top nodes (L2)
@@ -168,7 +161,7 @@ public class BgDataModel {
             FolderInfo fInfo = folders.valueAt(i);
             dtw = new DumpTargetWrapper(ContainerType.FOLDER.getNumber(), folders.size());
             dtw.writeToDumpTarget(fInfo);
-            for(ShortcutInfo sInfo: fInfo.contents) {
+            for (ShortcutInfo sInfo : fInfo.contents) {
                 DumpTargetWrapper child = new DumpTargetWrapper(sInfo);
                 child.writeToDumpTarget(sInfo);
                 dtw.add(child);
@@ -263,8 +256,7 @@ public class BgDataModel {
                             if (info.container == item.id) {
                                 // We are deleting a folder which still contains items that
                                 // think they are contained by that folder.
-                                String msg = "deleting a folder (" + item + ") which still " +
-                                        "contains items (" + info + ")";
+                                String msg = "deleting a folder (" + item + ") which still " + "contains items (" + info + ")";
                                 Log.e(TAG, msg);
                             }
                         }
@@ -275,9 +267,7 @@ public class BgDataModel {
                     // Decrement pinned shortcut count
                     ShortcutKey pinnedShortcut = ShortcutKey.fromItemInfo(item);
                     MutableInt count = pinnedShortcutCounts.get(pinnedShortcut);
-                    if ((count == null || --count.value == 0)
-                            && !InstallShortcutReceiver.getPendingShortcuts(context)
-                                .contains(pinnedShortcut)) {
+                    if ((count == null || --count.value == 0) && !InstallShortcutReceiver.getPendingShortcuts(context).contains(pinnedShortcut)) {
                         DeepShortcutManager.getInstance(context).unpinShortcut(pinnedShortcut);
                     }
                     // Fall through.
@@ -321,15 +311,13 @@ public class BgDataModel {
             }
             case LauncherSettings.Favorites.ITEM_TYPE_APPLICATION:
             case LauncherSettings.Favorites.ITEM_TYPE_SHORTCUT:
-                if (item.container == LauncherSettings.Favorites.CONTAINER_DESKTOP ||
-                        item.container == LauncherSettings.Favorites.CONTAINER_HOTSEAT) {
+                if (item.container == LauncherSettings.Favorites.CONTAINER_DESKTOP || item.container == LauncherSettings.Favorites.CONTAINER_HOTSEAT) {
                     workspaceItems.add(item);
                 } else {
                     if (newItem) {
                         if (!folders.containsKey(item.container)) {
                             // Adding an item to a folder that doesn't exist.
-                            String msg = "adding item: " + item + " to a folder that " +
-                                    " doesn't exist";
+                            String msg = "adding item: " + item + " to a folder that " + " doesn't exist";
                             Log.e(TAG, msg);
                         }
                     } else {
@@ -363,14 +351,12 @@ public class BgDataModel {
     /**
      * Clear all the deep shortcuts for the given package, and re-add the new shortcuts.
      */
-    public synchronized void updateDeepShortcutMap(
-            String packageName, UserHandle user, List<ShortcutInfoCompat> shortcuts) {
+    public synchronized void updateDeepShortcutMap(String packageName, UserHandle user, List<ShortcutInfoCompat> shortcuts) {
         if (packageName != null) {
             Iterator<ComponentKey> keysIter = deepShortcutMap.keySet().iterator();
             while (keysIter.hasNext()) {
                 ComponentKey next = keysIter.next();
-                if (next.componentName.getPackageName().equals(packageName)
-                        && next.user.equals(user)) {
+                if (next.componentName.getPackageName().equals(packageName) && next.user.equals(user)) {
                     keysIter.remove();
                 }
             }
@@ -378,11 +364,9 @@ public class BgDataModel {
 
         // Now add the new shortcuts to the map.
         for (ShortcutInfoCompat shortcut : shortcuts) {
-            boolean shouldShowInContainer = shortcut.isEnabled()
-                    && (shortcut.isDeclaredInManifest() || shortcut.isDynamic());
+            boolean shouldShowInContainer = shortcut.isEnabled() && (shortcut.isDeclaredInManifest() || shortcut.isDynamic());
             if (shouldShowInContainer) {
-                ComponentKey targetComponent
-                        = new ComponentKey(shortcut.getActivity(), shortcut.getUserHandle());
+                ComponentKey targetComponent = new ComponentKey(shortcut.getActivity(), shortcut.getUserHandle());
                 deepShortcutMap.addToList(targetComponent, shortcut.getId());
             }
         }

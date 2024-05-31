@@ -74,8 +74,7 @@ public class QsbWidgetHostView extends AppWidgetHostView {
     }
 
     public static View getDefaultView(ViewGroup parent) {
-        View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.qsb_default_view, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.qsb_default_view, parent, false);
         v.findViewById(R.id.btn_qsb_search).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {

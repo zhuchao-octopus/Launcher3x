@@ -30,17 +30,18 @@ public class FixedScaleDrawable extends DrawableWrapper {
     @Override
     public void draw(Canvas canvas) {
         int saveCount = canvas.save();///(Canvas.MATRIX_SAVE_FLAG);
-        canvas.scale(mScaleX, mScaleY,
-                getBounds().exactCenterX(), getBounds().exactCenterY());
+        canvas.scale(mScaleX, mScaleY, getBounds().exactCenterX(), getBounds().exactCenterY());
         super.draw(canvas);
         canvas.restoreToCount(saveCount);
     }
 
     @Override
-    public void inflate(Resources r, XmlPullParser parser, AttributeSet attrs) { }
+    public void inflate(Resources r, XmlPullParser parser, AttributeSet attrs) {
+    }
 
     @Override
-    public void inflate(Resources r, XmlPullParser parser, AttributeSet attrs, Theme theme) { }
+    public void inflate(Resources r, XmlPullParser parser, AttributeSet attrs, Theme theme) {
+    }
 
     public void setScale(float scale) {
         float h = getIntrinsicHeight();

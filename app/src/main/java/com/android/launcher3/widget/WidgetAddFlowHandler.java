@@ -60,8 +60,7 @@ public class WidgetAddFlowHandler implements Parcelable {
         Intent intent = new Intent(AppWidgetManager.ACTION_APPWIDGET_BIND);
         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_PROVIDER, mProviderInfo.provider);
-        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_PROVIDER_PROFILE,
-                mProviderInfo.getProfile());
+        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_PROVIDER_PROFILE, mProviderInfo.getProfile());
         // TODO: we need to make sure that this accounts for the options bundle.
         // intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_OPTIONS, options);
         launcher.startActivityForResult(intent, requestCode);
@@ -70,24 +69,22 @@ public class WidgetAddFlowHandler implements Parcelable {
     /**
      * @see #startConfigActivity(Launcher, int, ItemInfo, int)
      */
-    public boolean startConfigActivity(Launcher launcher, LauncherAppWidgetInfo info,
-            int requestCode) {
+    public boolean startConfigActivity(Launcher launcher, LauncherAppWidgetInfo info, int requestCode) {
         return startConfigActivity(launcher, info.appWidgetId, info, requestCode);
     }
 
     /**
      * Starts the widget configuration flow if needed.
+     *
      * @return true if the configuration flow was started, false otherwise.
      */
-    public boolean startConfigActivity(Launcher launcher, int appWidgetId, ItemInfo info,
-            int requestCode) {
+    public boolean startConfigActivity(Launcher launcher, int appWidgetId, ItemInfo info, int requestCode) {
         if (!needsConfigure()) {
             return false;
         }
         launcher.setWaitingForResult(PendingRequestArgs.forWidgetInfo(appWidgetId, this, info));
 
-        AppWidgetManagerCompat.getInstance(launcher).startConfigActivity(
-                mProviderInfo, appWidgetId, launcher, launcher.getAppWidgetHost(), requestCode);
+        AppWidgetManagerCompat.getInstance(launcher).startConfigActivity(mProviderInfo, appWidgetId, launcher, launcher.getAppWidgetHost(), requestCode);
         return true;
     }
 
@@ -99,14 +96,13 @@ public class WidgetAddFlowHandler implements Parcelable {
         return LauncherAppWidgetProviderInfo.fromProviderInfo(context, mProviderInfo);
     }
 
-    public static final Parcelable.Creator<WidgetAddFlowHandler> CREATOR =
-            new Parcelable.Creator<WidgetAddFlowHandler>() {
-                public WidgetAddFlowHandler createFromParcel(Parcel source) {
-                    return new WidgetAddFlowHandler(source);
-                }
+    public static final Parcelable.Creator<WidgetAddFlowHandler> CREATOR = new Parcelable.Creator<WidgetAddFlowHandler>() {
+        public WidgetAddFlowHandler createFromParcel(Parcel source) {
+            return new WidgetAddFlowHandler(source);
+        }
 
-                public WidgetAddFlowHandler[] newArray(int size) {
-                    return new WidgetAddFlowHandler[size];
-                }
-            };
+        public WidgetAddFlowHandler[] newArray(int size) {
+            return new WidgetAddFlowHandler[size];
+        }
+    };
 }

@@ -54,8 +54,7 @@ public class IconNormalizer {
     private static final float CIRCLE_AREA_BY_RECT = (float) Math.PI / 4;
 
     // Slope used to calculate icon visible area to full icon size for any generic shaped icon.
-    private static final float LINEAR_SCALE_SLOPE =
-            (MAX_CIRCLE_AREA_FACTOR - MAX_SQUARE_AREA_FACTOR) / (1 - CIRCLE_AREA_BY_RECT);
+    private static final float LINEAR_SCALE_SLOPE = (MAX_CIRCLE_AREA_FACTOR - MAX_SQUARE_AREA_FACTOR) / (1 - CIRCLE_AREA_BY_RECT);
 
     private static final int MIN_VISIBLE_ALPHA = 40;
 
@@ -156,9 +155,9 @@ public class IconNormalizer {
         if (DEBUG) {
             final File beforeFile = new File(mDir, "isShape" + mFileId + "_before.png");
             try {
-                mBitmapARGB.compress(Bitmap.CompressFormat.PNG, 100,
-                        new FileOutputStream(beforeFile));
-            } catch (Exception e) {}
+                mBitmapARGB.compress(Bitmap.CompressFormat.PNG, 100, new FileOutputStream(beforeFile));
+            } catch (Exception e) {
+            }
         }
 
         // Fit the shape within the icon's bounding box
@@ -177,9 +176,9 @@ public class IconNormalizer {
         if (DEBUG) {
             final File afterFile = new File(mDir, "isShape" + mFileId + "_after_" + isTrans + ".png");
             try {
-                mBitmapARGB.compress(Bitmap.CompressFormat.PNG, 100,
-                        new FileOutputStream(afterFile));
-            } catch (Exception e) {}
+                mBitmapARGB.compress(Bitmap.CompressFormat.PNG, 100, new FileOutputStream(afterFile));
+            } catch (Exception e) {
+            }
         }
 
         // Check if the result is almost transparent
@@ -198,20 +197,17 @@ public class IconNormalizer {
     private boolean isTransparentBitmap(Bitmap bitmap) {
         int w = mBounds.width();
         int h = mBounds.height();
-        bitmap.getPixels(mPixelsARGB, 0 /* the first index to write into the array */,
-                w /* stride */,
-                mBounds.left, mBounds.top,
-                w, h);
+        bitmap.getPixels(mPixelsARGB, 0 /* the first index to write into the array */, w /* stride */, mBounds.left, mBounds.top, w, h);
         int sum = 0;
         for (int i = 0; i < w * h; i++) {
-            if(Color.alpha(mPixelsARGB[i]) > MIN_VISIBLE_ALPHA) {
-                    sum++;
+            if (Color.alpha(mPixelsARGB[i]) > MIN_VISIBLE_ALPHA) {
+                sum++;
             }
         }
         float percentageDiffPixels = ((float) sum) / (mBounds.width() * mBounds.height());
         boolean transparentImage = percentageDiffPixels < PIXEL_DIFF_PERCENTAGE_THRESHOLD;
         if (DEBUG) {
-            Log.d(TAG, "Total # pixel that is different (id="+ mFileId + "):" + percentageDiffPixels + "="+ sum + "/" + mBounds.width() * mBounds.height());
+            Log.d(TAG, "Total # pixel that is different (id=" + mFileId + "):" + percentageDiffPixels + "=" + sum + "/" + mBounds.width() * mBounds.height());
         }
         return transparentImage;
     }
@@ -219,21 +215,19 @@ public class IconNormalizer {
     /**
      * Returns the amount by which the {@param d} should be scaled (in both dimensions) so that it
      * matches the design guidelines for a launcher icon.
-     *
+     * <p>
      * We first calculate the convex hull of the visible portion of the icon.
      * This hull then compared with the bounding rectangle of the hull to find how closely it
      * resembles a circle and a square, by comparing the ratio of the areas. Note that this is not an
      * ideal solution but it gives satisfactory result without affecting the performance.
-     *
+     * <p>
      * This closeness is used to determine the ratio of hull area to the full icon size.
      * Refer {@link #MAX_CIRCLE_AREA_FACTOR} and {@link #MAX_SQUARE_AREA_FACTOR}
      *
      * @param outBounds optional rect to receive the fraction distance from each edge.
      */
-    public synchronized float getScale(@NonNull Drawable d, @Nullable RectF outBounds,
-                                       @Nullable Path path, @Nullable boolean[] outMaskShape) {
-        if (Utilities.isAtLeastO() && d instanceof AdaptiveIconDrawable &&
-                mAdaptiveIconScale != SCALE_NOT_INITIALIZED) {
+    public synchronized float getScale(@NonNull Drawable d, @Nullable RectF outBounds, @Nullable Path path, @Nullable boolean[] outMaskShape) {
+        if (Utilities.isAtLeastO() && d instanceof AdaptiveIconDrawable && mAdaptiveIconScale != SCALE_NOT_INITIALIZED) {
             if (outBounds != null) {
                 outBounds.set(mAdaptiveIconBounds);
             }
@@ -337,9 +331,7 @@ public class IconNormalizer {
         mBounds.bottom = bottomY;
 
         if (outBounds != null) {
-            outBounds.set(((float) mBounds.left) / width, ((float) mBounds.top),
-                    1 - ((float) mBounds.right) / width,
-                    1 - ((float) mBounds.bottom) / height);
+            outBounds.set(((float) mBounds.left) / width, ((float) mBounds.top), 1 - ((float) mBounds.right) / width, 1 - ((float) mBounds.bottom) / height);
         }
 
         if (outMaskShape != null && outMaskShape.length > 0) {
@@ -348,8 +340,7 @@ public class IconNormalizer {
         float areaScale = area / (width * height);
         // Use sqrt of the final ratio as the images is scaled across both width and height.
         float scale = areaScale > scaleRequired ? (float) Math.sqrt(scaleRequired / areaScale) : 1;
-        if (Utilities.isAtLeastO() && d instanceof AdaptiveIconDrawable &&
-                mAdaptiveIconScale == SCALE_NOT_INITIALIZED) {
+        if (Utilities.isAtLeastO() && d instanceof AdaptiveIconDrawable && mAdaptiveIconScale == SCALE_NOT_INITIALIZED) {
             mAdaptiveIconScale = scale;
             mAdaptiveIconBounds.set(mBounds);
         }
@@ -359,13 +350,13 @@ public class IconNormalizer {
     /**
      * Modifies {@param xCoordinates} to represent a convex border. Fills in all missing values
      * (except on either ends) with appropriate values.
+     *
      * @param xCoordinates map of x coordinate per y.
-     * @param direction 1 for left border and -1 for right border.
-     * @param topY the first Y position (inclusive) with a valid value.
-     * @param bottomY the last Y position (inclusive) with a valid value.
+     * @param direction    1 for left border and -1 for right border.
+     * @param topY         the first Y position (inclusive) with a valid value.
+     * @param bottomY      the last Y position (inclusive) with a valid value.
      */
-    private static void convertToConvexArray(
-            float[] xCoordinates, int direction, int topY, int bottomY) {
+    private static void convertToConvexArray(float[] xCoordinates, int direction, int topY, int bottomY) {
         int total = xCoordinates.length;
         // The tangent at each pixel.
         float[] angles = new float[total - 1];
@@ -390,7 +381,7 @@ public class IconNormalizer {
                 // position which creates a convex angle.
                 if ((currentAngle - lastAngle) * direction < 0) {
                     while (start > first) {
-                        start --;
+                        start--;
                         currentAngle = (xCoordinates[i] - xCoordinates[start]) / (i - start);
                         if ((currentAngle - angles[start]) * direction >= 0) {
                             break;

@@ -86,8 +86,7 @@ public class WallpaperOffsetInterpolator implements Choreographer.FrameCallback 
             long durationSinceAnimation = System.currentTimeMillis() - mAnimationStartTime;
             float t0 = durationSinceAnimation / (float) ANIMATION_DURATION;
             float t1 = mInterpolator.getInterpolation(t0);
-            mCurrentOffset = mAnimationStartOffset +
-                    (mFinalOffset - mAnimationStartOffset) * t1;
+            mCurrentOffset = mAnimationStartOffset + (mFinalOffset - mAnimationStartOffset) * t1;
             mAnimating = durationSinceAnimation < ANIMATION_DURATION;
         } else {
             mCurrentOffset = mFinalOffset;
@@ -142,8 +141,7 @@ public class WallpaperOffsetInterpolator implements Choreographer.FrameCallback 
 
         // Sometimes the left parameter of the pages is animated during a layout transition;
         // this parameter offsets it to keep the wallpaper from animating as well
-        int adjustedScroll = scroll - leftPageScrollX -
-                mWorkspace.getLayoutTransitionOffsetForPage(0);
+        int adjustedScroll = scroll - leftPageScrollX - mWorkspace.getLayoutTransitionOffsetForPage(0);
         float offset = Utilities.boundToRange((float) adjustedScroll / scrollRange, 0f, 1f);
 
         // The offset is now distributed 0..1 between the left and right pages that we care about,
@@ -151,11 +149,9 @@ public class WallpaperOffsetInterpolator implements Choreographer.FrameCallback 
         float rtlOffset = 0;
         if (mIsRtl) {
             // In RTL, the pages are right aligned, so adjust the offset from the end
-            rtlOffset = (float) ((mNumPagesForWallpaperParallax - 1) - (numScrollingPages - 1)) /
-                    (mNumPagesForWallpaperParallax - 1);
+            rtlOffset = (float) ((mNumPagesForWallpaperParallax - 1) - (numScrollingPages - 1)) / (mNumPagesForWallpaperParallax - 1);
         }
-        return rtlOffset + offset *
-                ((float) (numScrollingPages - 1) / (mNumPagesForWallpaperParallax - 1));
+        return rtlOffset + offset * ((float) (numScrollingPages - 1) / (mNumPagesForWallpaperParallax - 1));
     }
 
     private float wallpaperOffsetForCurrentScroll() {

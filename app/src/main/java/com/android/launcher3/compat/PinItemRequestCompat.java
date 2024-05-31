@@ -53,9 +53,7 @@ public class PinItemRequestCompat implements Parcelable {
 
     public AppWidgetProviderInfo getAppWidgetProviderInfo(Context context) {
         try {
-            return (AppWidgetProviderInfo) mObject.getClass()
-                    .getDeclaredMethod("getAppWidgetProviderInfo", Context.class)
-                    .invoke(mObject, context);
+            return (AppWidgetProviderInfo) mObject.getClass().getDeclaredMethod("getAppWidgetProviderInfo", Context.class).invoke(mObject, context);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -71,8 +69,7 @@ public class PinItemRequestCompat implements Parcelable {
 
     public boolean accept(Bundle options) {
         try {
-            return (Boolean) mObject.getClass().getDeclaredMethod("accept", Bundle.class)
-                    .invoke(mObject, options);
+            return (Boolean) mObject.getClass().getDeclaredMethod("accept", Bundle.class).invoke(mObject, options);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -104,17 +101,16 @@ public class PinItemRequestCompat implements Parcelable {
         parcel.writeParcelable(mObject, i);
     }
 
-    public static final Parcelable.Creator<PinItemRequestCompat> CREATOR =
-            new Parcelable.Creator<PinItemRequestCompat>() {
-                public PinItemRequestCompat createFromParcel(Parcel source) {
-                    Parcelable object = source.readParcelable(null);
-                    return new PinItemRequestCompat(object);
-                }
+    public static final Parcelable.Creator<PinItemRequestCompat> CREATOR = new Parcelable.Creator<PinItemRequestCompat>() {
+        public PinItemRequestCompat createFromParcel(Parcel source) {
+            Parcelable object = source.readParcelable(null);
+            return new PinItemRequestCompat(object);
+        }
 
-                public PinItemRequestCompat[] newArray(int size) {
-                    return new PinItemRequestCompat[size];
-                }
-            };
+        public PinItemRequestCompat[] newArray(int size) {
+            return new PinItemRequestCompat[size];
+        }
+    };
 
     public static PinItemRequestCompat getPinItemRequest(Intent intent) {
         if (!Utilities.isAtLeastO()) {

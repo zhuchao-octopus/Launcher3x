@@ -21,7 +21,6 @@ import android.os.UserHandle;
 import com.android.launcher3.AllAppsList;
 import com.android.launcher3.ItemInfo;
 import com.android.launcher3.LauncherAppState;
-import com.android.launcher3.LauncherModel;
 import com.android.launcher3.LauncherSettings;
 import com.android.launcher3.ShortcutInfo;
 import com.android.launcher3.compat.UserManagerCompat;
@@ -55,8 +54,7 @@ public class UserLockStateChangedTask extends ExtendedModelTask {
 
         HashMap<ShortcutKey, ShortcutInfoCompat> pinnedShortcuts = new HashMap<>();
         if (isUserUnlocked) {
-            List<ShortcutInfoCompat> shortcuts =
-                    deepShortcutManager.queryForPinnedShortcuts(null, mUser);
+            List<ShortcutInfoCompat> shortcuts = deepShortcutManager.queryForPinnedShortcuts(null, mUser);
             if (deepShortcutManager.wasLastCallSuccess()) {
                 for (ShortcutInfoCompat shortcut : shortcuts) {
                     pinnedShortcuts.put(ShortcutKey.fromInfo(shortcut), shortcut);
@@ -73,8 +71,7 @@ public class UserLockStateChangedTask extends ExtendedModelTask {
         ArrayList<ShortcutInfo> updatedShortcutInfos = new ArrayList<>();
         ArrayList<ShortcutInfo> deletedShortcutInfos = new ArrayList<>();
         for (ItemInfo itemInfo : dataModel.itemsIdMap) {
-            if (itemInfo.itemType == LauncherSettings.Favorites.ITEM_TYPE_DEEP_SHORTCUT
-                    && mUser.equals(itemInfo.user)) {
+            if (itemInfo.itemType == LauncherSettings.Favorites.ITEM_TYPE_DEEP_SHORTCUT && mUser.equals(itemInfo.user)) {
                 ShortcutInfo si = (ShortcutInfo) itemInfo;
                 if (isUserUnlocked) {
                     ShortcutInfoCompat shortcut = pinnedShortcuts.get(ShortcutKey.fromItemInfo(si));
@@ -107,8 +104,7 @@ public class UserLockStateChangedTask extends ExtendedModelTask {
         }
 
         if (isUserUnlocked) {
-            dataModel.updateDeepShortcutMap(
-                    null, mUser, deepShortcutManager.queryForAllShortcuts(mUser));
+            dataModel.updateDeepShortcutMap(null, mUser, deepShortcutManager.queryForAllShortcuts(mUser));
         }
         bindDeepShortcuts(dataModel);
     }

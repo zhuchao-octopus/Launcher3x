@@ -4,7 +4,6 @@ import android.app.backup.BackupAgent;
 import android.app.backup.BackupDataInput;
 import android.app.backup.BackupDataOutput;
 import android.os.ParcelFileDescriptor;
-import android.util.Log;
 
 import com.android.launcher3.logging.FileLog;
 import com.android.launcher3.provider.RestoreDbTask;
@@ -15,21 +14,19 @@ public class LauncherBackupAgent extends BackupAgent {
     public void onCreate() {
         super.onCreate();
 
-    	ResourceUtil.updateUi(this);
-//		Log.d("ResourceUtil", "LauncherBackupAgent:");
+        ResourceUtil.updateUi(this);
+        //		Log.d("ResourceUtil", "LauncherBackupAgent:");
         // Set the log dir as LauncherAppState is not initialized during restore.
         FileLog.setDir(getFilesDir());
     }
 
     @Override
-    public void onRestore(
-            BackupDataInput data, int appVersionCode, ParcelFileDescriptor newState) {
+    public void onRestore(BackupDataInput data, int appVersionCode, ParcelFileDescriptor newState) {
         // Doesn't do incremental backup/restore
     }
 
     @Override
-    public void onBackup(
-            ParcelFileDescriptor oldState, BackupDataOutput data, ParcelFileDescriptor newState) {
+    public void onBackup(ParcelFileDescriptor oldState, BackupDataOutput data, ParcelFileDescriptor newState) {
         // Doesn't do incremental backup/restore
     }
 

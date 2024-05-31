@@ -116,7 +116,9 @@ public class LauncherAppWidgetInfo extends ItemInfo {
         restoreStatus = RESTORE_COMPLETED;
     }
 
-    /** Used for testing **/
+    /**
+     * Used for testing
+     **/
     public LauncherAppWidgetInfo() {
         itemType = LauncherSettings.Favorites.ITEM_TYPE_APPWIDGET;
     }
@@ -128,10 +130,7 @@ public class LauncherAppWidgetInfo extends ItemInfo {
     @Override
     public void onAddToDatabase(ContentWriter writer) {
         super.onAddToDatabase(writer);
-        writer.put(LauncherSettings.Favorites.APPWIDGET_ID, appWidgetId)
-                .put(LauncherSettings.Favorites.APPWIDGET_PROVIDER, providerName.flattenToString())
-                .put(LauncherSettings.Favorites.RESTORED, restoreStatus)
-                .put(LauncherSettings.Favorites.INTENT, bindOptions);
+        writer.put(LauncherSettings.Favorites.APPWIDGET_ID, appWidgetId).put(LauncherSettings.Favorites.APPWIDGET_PROVIDER, providerName.flattenToString()).put(LauncherSettings.Favorites.RESTORED, restoreStatus).put(LauncherSettings.Favorites.INTENT, bindOptions);
     }
 
     /**
@@ -151,8 +150,7 @@ public class LauncherAppWidgetInfo extends ItemInfo {
     }
 
     public final boolean isWidgetIdAllocated() {
-        return (restoreStatus & FLAG_ID_NOT_VALID) == 0 ||
-                (restoreStatus & FLAG_ID_ALLOCATED) == FLAG_ID_ALLOCATED;
+        return (restoreStatus & FLAG_ID_NOT_VALID) == 0 || (restoreStatus & FLAG_ID_ALLOCATED) == FLAG_ID_ALLOCATED;
     }
 
     public final boolean hasRestoreFlag(int flag) {

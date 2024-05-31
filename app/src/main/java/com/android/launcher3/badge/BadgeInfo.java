@@ -39,7 +39,9 @@ public class BadgeInfo {
 
     public static final int MAX_COUNT = 999;
 
-    /** Used to link this BadgeInfo to icons on the workspace and all apps */
+    /**
+     * Used to link this BadgeInfo to icons on the workspace and all apps
+     */
     private PackageUserKey mPackageUserKey;
 
     /**
@@ -54,7 +56,9 @@ public class BadgeInfo {
      */
     private int mTotalCount;
 
-    /** This will only be initialized if the badge should display the notification icon. */
+    /**
+     * This will only be initialized if the badge should display the notification icon.
+     */
     private NotificationInfo mNotificationInfo;
 
     /**
@@ -73,8 +77,7 @@ public class BadgeInfo {
      */
     public boolean addOrUpdateNotificationKey(NotificationKeyData notificationKey) {
         int indexOfPrevKey = mNotificationKeys.indexOf(notificationKey);
-        NotificationKeyData prevKey = indexOfPrevKey == -1 ? null
-                : mNotificationKeys.get(indexOfPrevKey);
+        NotificationKeyData prevKey = indexOfPrevKey == -1 ? null : mNotificationKeys.get(indexOfPrevKey);
         if (prevKey != null) {
             if (prevKey.count == notificationKey.count) {
                 return false;
@@ -122,25 +125,22 @@ public class BadgeInfo {
 
     /**
      * Returns a shader to set on a Paint that will draw the notification icon in a badge.
-     *
+     * <p>
      * The shader is cached until {@link #setNotificationToShow(NotificationInfo)} is called.
      */
-    public @Nullable Shader getNotificationIconForBadge(Context context, int badgeColor,
-            int badgeSize, int badgePadding) {
+    public @Nullable Shader getNotificationIconForBadge(Context context, int badgeColor, int badgeSize, int badgePadding) {
         if (mNotificationInfo == null) {
             return null;
         }
         if (mNotificationIcon == null) {
-            Drawable icon = mNotificationInfo.getIconForBackground(context, badgeColor)
-                    .getConstantState().newDrawable();
+            Drawable icon = mNotificationInfo.getIconForBackground(context, badgeColor).getConstantState().newDrawable();
             int iconSize = badgeSize - badgePadding * 2;
             icon.setBounds(0, 0, iconSize, iconSize);
             Bitmap iconBitmap = Bitmap.createBitmap(badgeSize, badgeSize, Bitmap.Config.ARGB_8888);
             Canvas canvas = new Canvas(iconBitmap);
             canvas.translate(badgePadding, badgePadding);
             icon.draw(canvas);
-            mNotificationIcon = new BitmapShader(iconBitmap, Shader.TileMode.CLAMP,
-                    Shader.TileMode.CLAMP);
+            mNotificationIcon = new BitmapShader(iconBitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
         }
         return mNotificationIcon;
     }
@@ -158,8 +158,6 @@ public class BadgeInfo {
      * or if the badge has a notification icon to show.
      */
     public boolean shouldBeInvalidated(BadgeInfo newBadge) {
-        return mPackageUserKey.equals(newBadge.mPackageUserKey)
-                && (getNotificationCount() != newBadge.getNotificationCount()
-                    || hasNotificationToShow());
+        return mPackageUserKey.equals(newBadge.mPackageUserKey) && (getNotificationCount() != newBadge.getNotificationCount() || hasNotificationToShow());
     }
 }

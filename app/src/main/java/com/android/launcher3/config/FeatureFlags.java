@@ -20,7 +20,8 @@ package com.android.launcher3.config;
  * Defines a set of flags used to control various launcher behaviors
  */
 public final class FeatureFlags {
-    private FeatureFlags() {}
+    private FeatureFlags() {
+    }
 
     // Custom flags go below this
     public static boolean LAUNCHER3_DISABLE_ICON_NORMALIZATION = true;

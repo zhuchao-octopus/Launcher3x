@@ -69,10 +69,9 @@ public class AddWorkspaceItemsTask extends ExtendedModelTask {
         // can not use sBgWorkspaceScreens because loadWorkspace() may not have been
         // called.
         ArrayList<Long> workspaceScreens = LauncherModel.loadWorkspaceScreensDb(context);
-        synchronized(dataModel) {
+        synchronized (dataModel) {
             for (ItemInfo item : workspaceApps) {
-                if (item.itemType == LauncherSettings.Favorites.ITEM_TYPE_APPLICATION ||
-                        item.itemType == LauncherSettings.Favorites.ITEM_TYPE_SHORTCUT) {
+                if (item.itemType == LauncherSettings.Favorites.ITEM_TYPE_APPLICATION || item.itemType == LauncherSettings.Favorites.ITEM_TYPE_SHORTCUT) {
                     // Short-circuit this logic if the icon exists somewhere on the workspace
                     if (shortcutExists(dataModel, item.getIntent(), item.user)) {
                         continue;
@@ -80,14 +79,12 @@ public class AddWorkspaceItemsTask extends ExtendedModelTask {
                 }
 
                 // Find appropriate space for the item.
-                Pair<Long, int[]> coords = findSpaceForItem(app, dataModel, workspaceScreens,
-                        addedWorkspaceScreensFinal, item.spanX, item.spanY);
+                Pair<Long, int[]> coords = findSpaceForItem(app, dataModel, workspaceScreens, addedWorkspaceScreensFinal, item.spanX, item.spanY);
                 long screenId = coords.first;
                 int[] cordinates = coords.second;
 
                 ItemInfo itemInfo;
-                if (item instanceof ShortcutInfo || item instanceof FolderInfo ||
-                        item instanceof LauncherAppWidgetInfo) {
+                if (item instanceof ShortcutInfo || item instanceof FolderInfo || item instanceof LauncherAppWidgetInfo) {
                     itemInfo = item;
                 } else if (item instanceof AppInfo) {
                     itemInfo = ((AppInfo) item).makeShortcut();
@@ -95,22 +92,19 @@ public class AddWorkspaceItemsTask extends ExtendedModelTask {
                     throw new RuntimeException("Unexpected info type");
                 }
 
-               
-                if (itemInfo.screenId != -1){
-                	boolean isAavilable = IsPosAvailable(app, dataModel,(int)itemInfo.screenId,
-                			itemInfo.cellX,itemInfo.cellY, item.spanX, item.spanY);
-                	
-                	 Log.d("ffff", "!!!!!!!!:"+isAavilable);
-                	 if (isAavilable){
-                		 screenId = itemInfo.screenId;
-                		 cordinates[0] = itemInfo.cellX;
-                		 cordinates[1] = itemInfo.cellY;
-                	 }
-                } 
+
+                if (itemInfo.screenId != -1) {
+                    boolean isAavilable = IsPosAvailable(app, dataModel, (int) itemInfo.screenId, itemInfo.cellX, itemInfo.cellY, item.spanX, item.spanY);
+
+                    Log.d("ffff", "!!!!!!!!:" + isAavilable);
+                    if (isAavilable) {
+                        screenId = itemInfo.screenId;
+                        cordinates[0] = itemInfo.cellX;
+                        cordinates[1] = itemInfo.cellY;
+                    }
+                }
                 // Add the shortcut to the db
-                getModelWriter().addItemToDatabase(itemInfo,
-                        LauncherSettings.Favorites.CONTAINER_DESKTOP, screenId,
-                        cordinates[0], cordinates[1]);
+                getModelWriter().addItemToDatabase(itemInfo, LauncherSettings.Favorites.CONTAINER_DESKTOP, screenId, cordinates[0], cordinates[1]);
 
                 // Save the ShortcutInfo for binding in the workspace
                 addedItemsFinal.add(itemInfo);
@@ -137,8 +131,7 @@ public class AddWorkspaceItemsTask extends ExtendedModelTask {
                             }
                         }
                     }
-                    callbacks.bindAppsAdded(addedWorkspaceScreensFinal,
-                            addNotAnimated, addAnimated, null);
+                    callbacks.bindAppsAdded(addedWorkspaceScreensFinal, addNotAnimated, addAnimated, null);
                 }
             });
         }
@@ -194,13 +187,10 @@ public class AddWorkspaceItemsTask extends ExtendedModelTask {
 
     /**
      * Find a position on the screen for the given size or adds a new screen.
+     *
      * @return screenId and the coordinates for the item.
      */
-    protected Pair<Long, int[]> findSpaceForItem(
-            LauncherAppState app, BgDataModel dataModel,
-            ArrayList<Long> workspaceScreens,
-            ArrayList<Long> addedWorkspaceScreensFinal,
-            int spanX, int spanY) {
+    protected Pair<Long, int[]> findSpaceForItem(LauncherAppState app, BgDataModel dataModel, ArrayList<Long> workspaceScreens, ArrayList<Long> addedWorkspaceScreensFinal, int spanX, int spanY) {
         LongSparseArray<ArrayList<ItemInfo>> screenItems = new LongSparseArray<>();
 
         // Use sBgItemsIdMap as all the items are already loaded.
@@ -227,16 +217,14 @@ public class AddWorkspaceItemsTask extends ExtendedModelTask {
         int preferredScreenIndex = workspaceScreens.isEmpty() ? 0 : 1;
         if (preferredScreenIndex < screenCount) {
             screenId = workspaceScreens.get(preferredScreenIndex);
-            found = findNextAvailableIconSpaceInScreen(
-                    app, screenItems.get(screenId), cordinates, spanX, spanY);
+            found = findNextAvailableIconSpaceInScreen(app, screenItems.get(screenId), cordinates, spanX, spanY);
         }
 
         if (!found) {
             // Search on any of the screens starting from the first screen.
             for (int screen = 1; screen < screenCount; screen++) {
                 screenId = workspaceScreens.get(screen);
-                if (findNextAvailableIconSpaceInScreen(
-                        app, screenItems.get(screenId), cordinates, spanX, spanY)) {
+                if (findNextAvailableIconSpaceInScreen(app, screenItems.get(screenId), cordinates, spanX, spanY)) {
                     // We found a space for it
                     found = true;
                     break;
@@ -246,26 +234,21 @@ public class AddWorkspaceItemsTask extends ExtendedModelTask {
 
         if (!found) {
             // Still no position found. Add a new screen to the end.
-            screenId = LauncherSettings.Settings.call(app.getContext().getContentResolver(),
-                    LauncherSettings.Settings.METHOD_NEW_SCREEN_ID)
-                    .getLong(LauncherSettings.Settings.EXTRA_VALUE);
+            screenId = LauncherSettings.Settings.call(app.getContext().getContentResolver(), LauncherSettings.Settings.METHOD_NEW_SCREEN_ID).getLong(LauncherSettings.Settings.EXTRA_VALUE);
 
             // Save the screen id for binding in the workspace
             workspaceScreens.add(screenId);
             addedWorkspaceScreensFinal.add(screenId);
 
             // If we still can't find an empty space, then God help us all!!!
-            if (!findNextAvailableIconSpaceInScreen(
-                    app, screenItems.get(screenId), cordinates, spanX, spanY)) {
+            if (!findNextAvailableIconSpaceInScreen(app, screenItems.get(screenId), cordinates, spanX, spanY)) {
                 throw new RuntimeException("Can't find space to add the item");
             }
         }
         return Pair.create(screenId, cordinates);
     }
 
-    private boolean findNextAvailableIconSpaceInScreen(
-            LauncherAppState app, ArrayList<ItemInfo> occupiedPos,
-            int[] xy, int spanX, int spanY) {
+    private boolean findNextAvailableIconSpaceInScreen(LauncherAppState app, ArrayList<ItemInfo> occupiedPos, int[] xy, int spanX, int spanY) {
         InvariantDeviceProfile profile = app.getInvariantDeviceProfile();
 
         GridOccupancy occupied = new GridOccupancy(profile.numColumns, profile.numRows);
@@ -276,25 +259,21 @@ public class AddWorkspaceItemsTask extends ExtendedModelTask {
         }
         return occupied.findVacantCell(xy, spanX, spanY);
     }
-    
-    private boolean IsPosAvailable(
-            LauncherAppState app, BgDataModel dataModel, int screenId,
-            int x, int y, int spanX, int spanY) {
-    	
-    	ArrayList<ItemInfo> items = new ArrayList<>();
+
+    private boolean IsPosAvailable(LauncherAppState app, BgDataModel dataModel, int screenId, int x, int y, int spanX, int spanY) {
+
+        ArrayList<ItemInfo> items = new ArrayList<>();
 
         // Use sBgItemsIdMap as all the items are already loaded.
-            for (ItemInfo info : dataModel.itemsIdMap) {
-                if (info.container == LauncherSettings.Favorites.CONTAINER_DESKTOP) {
-                	if (info.screenId == screenId){                    
-                		items.add(info);
-                	}
+        for (ItemInfo info : dataModel.itemsIdMap) {
+            if (info.container == LauncherSettings.Favorites.CONTAINER_DESKTOP) {
+                if (info.screenId == screenId) {
+                    items.add(info);
                 }
             }
-        
-        
-        
-    	
+        }
+
+
         InvariantDeviceProfile profile = app.getInvariantDeviceProfile();
 
         GridOccupancy occupied = new GridOccupancy(profile.numColumns, profile.numRows);

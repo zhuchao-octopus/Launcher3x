@@ -28,7 +28,9 @@ import com.android.launcher3.config.ProviderConfig;
  * Settings related utilities.
  */
 public class LauncherSettings {
-    /** Columns required on table staht will be subject to backup and restore. */
+    /**
+     * Columns required on table staht will be subject to backup and restore.
+     */
     static interface ChangeLogColumns extends BaseColumns {
         /**
          * The time of the last update to this row.
@@ -90,7 +92,7 @@ public class LauncherSettings {
 
     /**
      * Workspace Screens.
-     *
+     * <p>
      * Tracks the order of workspace screens.
      */
     public static final class WorkspaceScreens implements ChangeLogColumns {
@@ -100,8 +102,7 @@ public class LauncherSettings {
         /**
          * The content:// style URL for this table
          */
-        public static final Uri CONTENT_URI = Uri.parse("content://" +
-                ProviderConfig.AUTHORITY + "/" + TABLE_NAME);
+        public static final Uri CONTENT_URI = Uri.parse("content://" + ProviderConfig.AUTHORITY + "/" + TABLE_NAME);
 
         /**
          * The rank of this screen -- ie. how it is ordered relative to the other screens.
@@ -120,19 +121,16 @@ public class LauncherSettings {
         /**
          * The content:// style URL for this table
          */
-        public static final Uri CONTENT_URI = Uri.parse("content://" +
-                ProviderConfig.AUTHORITY + "/" + TABLE_NAME);
+        public static final Uri CONTENT_URI = Uri.parse("content://" + ProviderConfig.AUTHORITY + "/" + TABLE_NAME);
 
         /**
          * The content:// style URL for a given row, identified by its id.
          *
          * @param id The row id.
-         *
          * @return The unique content URL for the specified row.
          */
         public static Uri getContentUri(long id) {
-            return Uri.parse("content://" + ProviderConfig.AUTHORITY +
-                    "/" + TABLE_NAME + "/" + id);
+            return Uri.parse("content://" + ProviderConfig.AUTHORITY + "/" + TABLE_NAME + "/" + id);
         }
 
         /**
@@ -149,9 +147,12 @@ public class LauncherSettings {
 
         static final String containerToString(int container) {
             switch (container) {
-                case CONTAINER_DESKTOP: return "desktop";
-                case CONTAINER_HOTSEAT: return "hotseat";
-                default: return String.valueOf(container);
+                case CONTAINER_DESKTOP:
+                    return "desktop";
+                case CONTAINER_HOTSEAT:
+                    return "hotseat";
+                default:
+                    return String.valueOf(container);
             }
         }
 
@@ -189,7 +190,7 @@ public class LauncherSettings {
 
         /**
          * The profile id of the item in the cell.
-         * <P>
+         * <p>
          * Type: INTEGER
          * </P>
          */
@@ -249,28 +250,7 @@ public class LauncherSettings {
 
         public static void addTableToDb(SQLiteDatabase db, long myProfileId, boolean optional) {
             String ifNotExists = optional ? " IF NOT EXISTS " : "";
-            db.execSQL("CREATE TABLE " + ifNotExists + TABLE_NAME + " (" +
-                    "_id INTEGER PRIMARY KEY," +
-                    "title TEXT," +
-                    "intent TEXT," +
-                    "container INTEGER," +
-                    "screen INTEGER," +
-                    "cellX INTEGER," +
-                    "cellY INTEGER," +
-                    "spanX INTEGER," +
-                    "spanY INTEGER," +
-                    "itemType INTEGER," +
-                    "appWidgetId INTEGER NOT NULL DEFAULT -1," +
-                    "iconPackage TEXT," +
-                    "iconResource TEXT," +
-                    "icon BLOB," +
-                    "appWidgetProvider TEXT," +
-                    "modified INTEGER NOT NULL DEFAULT 0," +
-                    "restored INTEGER NOT NULL DEFAULT 0," +
-                    "profileId INTEGER DEFAULT " + myProfileId + "," +
-                    "rank INTEGER NOT NULL DEFAULT 0," +
-                    "options INTEGER NOT NULL DEFAULT 0" +
-                    ");");
+            db.execSQL("CREATE TABLE " + ifNotExists + TABLE_NAME + " (" + "_id INTEGER PRIMARY KEY," + "title TEXT," + "intent TEXT," + "container INTEGER," + "screen INTEGER," + "cellX INTEGER," + "cellY INTEGER," + "spanX INTEGER," + "spanY INTEGER," + "itemType INTEGER," + "appWidgetId INTEGER NOT NULL DEFAULT -1," + "iconPackage TEXT," + "iconResource TEXT," + "icon BLOB," + "appWidgetProvider TEXT," + "modified INTEGER NOT NULL DEFAULT 0," + "restored INTEGER NOT NULL DEFAULT 0," + "profileId INTEGER DEFAULT " + myProfileId + "," + "rank INTEGER NOT NULL DEFAULT 0," + "options INTEGER NOT NULL DEFAULT 0" + ");");
         }
     }
 
@@ -279,8 +259,7 @@ public class LauncherSettings {
      */
     public static final class Settings {
 
-        public static final Uri CONTENT_URI = Uri.parse("content://" +
-                ProviderConfig.AUTHORITY + "/settings");
+        public static final Uri CONTENT_URI = Uri.parse("content://" + ProviderConfig.AUTHORITY + "/settings");
 
         public static final String METHOD_CLEAR_EMPTY_DB_FLAG = "clear_empty_db_flag";
         public static final String METHOD_WAS_EMPTY_DB_CREATED = "get_empty_db_flag";
@@ -294,8 +273,7 @@ public class LauncherSettings {
 
         public static final String METHOD_LOAD_DEFAULT_FAVORITES = "load_default_favorites";
 
-        public static final String METHOD_SET_EXTRACTED_COLORS_AND_WALLPAPER_ID =
-                "set_extracted_colors_and_wallpaper_id_setting";
+        public static final String METHOD_SET_EXTRACTED_COLORS_AND_WALLPAPER_ID = "set_extracted_colors_and_wallpaper_id_setting";
         public static final String EXTRA_EXTRACTED_COLORS = "extra_extractedColors";
         public static final String EXTRA_WALLPAPER_ID = "extra_wallpaperId";
 

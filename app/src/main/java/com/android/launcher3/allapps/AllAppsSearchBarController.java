@@ -44,8 +44,7 @@ import java.util.ArrayList;
 /**
  * An interface to a search box that AllApps can command.
  */
-public abstract class AllAppsSearchBarController
-        implements TextWatcher, OnEditorActionListener, ExtendedEditText.OnBackKeyListener {
+public abstract class AllAppsSearchBarController implements TextWatcher, OnEditorActionListener, ExtendedEditText.OnBackKeyListener {
 
     protected Launcher mLauncher;
     protected AlphabeticalAppsList mApps;
@@ -59,12 +58,11 @@ public abstract class AllAppsSearchBarController
     public void setVisibility(int visibility) {
         mInput.setVisibility(visibility);
     }
+
     /**
      * Sets the references to the apps model and the search result callback.
      */
-    public final void initialize(
-            AlphabeticalAppsList apps, ExtendedEditText input,
-            Launcher launcher, Callbacks cb) {
+    public final void initialize(AlphabeticalAppsList apps, ExtendedEditText input, Launcher launcher, Callbacks cb) {
         mApps = apps;
         mCb = cb;
         mLauncher = launcher;
@@ -74,8 +72,7 @@ public abstract class AllAppsSearchBarController
         mInput.setOnEditorActionListener(this);
         mInput.setOnBackKeyListener(this);
 
-        mInputMethodManager = (InputMethodManager)
-                mInput.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        mInputMethodManager = (InputMethodManager) mInput.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
 
         mSearchAlgorithm = onInitializeSearch();
 
@@ -190,11 +187,7 @@ public abstract class AllAppsSearchBarController
      * Creates a new market search intent.
      */
     public Intent createMarketSearchIntent(String query) {
-        Uri marketSearchUri = Uri.parse("market://search")
-                .buildUpon()
-                .appendQueryParameter("c", "apps")
-                .appendQueryParameter("q", query)
-                .build();
+        Uri marketSearchUri = Uri.parse("market://search").buildUpon().appendQueryParameter("c", "apps").appendQueryParameter("q", query).build();
         return new Intent(Intent.ACTION_VIEW).setData(marketSearchUri);
     }
 
@@ -231,8 +224,7 @@ public abstract class AllAppsSearchBarController
          * @param app result item if UPDATE, else null
          * @param app the update state, START, UPDATE or END
          */
-        void onAppDiscoverySearchUpdate(@Nullable AppDiscoveryItem app,
-                @NonNull AppDiscoveryUpdateState state);
+        void onAppDiscoverySearchUpdate(@Nullable AppDiscoveryItem app, @NonNull AppDiscoveryUpdateState state);
     }
 
 }

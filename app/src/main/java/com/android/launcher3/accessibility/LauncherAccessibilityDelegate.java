@@ -18,7 +18,6 @@ import com.android.launcher3.AppInfo;
 import com.android.launcher3.AppWidgetResizeFrame;
 import com.android.launcher3.BubbleTextView;
 import com.android.launcher3.CellLayout;
-import com.android.launcher3.popup.PopupContainerWithArrow;
 import com.android.launcher3.DeleteDropTarget;
 import com.android.launcher3.DropTarget.DragObject;
 import com.android.launcher3.FolderInfo;
@@ -27,7 +26,6 @@ import com.android.launcher3.ItemInfo;
 import com.android.launcher3.Launcher;
 import com.android.launcher3.LauncherAppWidgetHostView;
 import com.android.launcher3.LauncherAppWidgetInfo;
-import com.android.launcher3.LauncherModel;
 import com.android.launcher3.LauncherSettings;
 import com.android.launcher3.PendingAddItemInfo;
 import com.android.launcher3.R;
@@ -37,6 +35,7 @@ import com.android.launcher3.Workspace;
 import com.android.launcher3.dragndrop.DragController.DragListener;
 import com.android.launcher3.dragndrop.DragOptions;
 import com.android.launcher3.folder.Folder;
+import com.android.launcher3.popup.PopupContainerWithArrow;
 import com.android.launcher3.shortcuts.DeepShortcutManager;
 import com.android.launcher3.util.Thunk;
 
@@ -56,9 +55,7 @@ public class LauncherAccessibilityDelegate extends AccessibilityDelegate impleme
     public static final int DEEP_SHORTCUTS = R.id.action_deep_shortcuts;
 
     public enum DragType {
-        ICON,
-        FOLDER,
-        WIDGET
+        ICON, FOLDER, WIDGET
     }
 
     public static class DragInfo {
@@ -68,29 +65,22 @@ public class LauncherAccessibilityDelegate extends AccessibilityDelegate impleme
     }
 
     protected final SparseArray<AccessibilityAction> mActions = new SparseArray<>();
-    @Thunk final Launcher mLauncher;
+    @Thunk
+    final Launcher mLauncher;
 
     private DragInfo mDragInfo = null;
 
     public LauncherAccessibilityDelegate(Launcher launcher) {
         mLauncher = launcher;
 
-        mActions.put(REMOVE, new AccessibilityAction(REMOVE,
-                launcher.getText(R.string.remove_drop_target_label)));
-        mActions.put(INFO, new AccessibilityAction(INFO,
-                launcher.getText(R.string.app_info_drop_target_label)));
-        mActions.put(UNINSTALL, new AccessibilityAction(UNINSTALL,
-                launcher.getText(R.string.uninstall_drop_target_label)));
-        mActions.put(ADD_TO_WORKSPACE, new AccessibilityAction(ADD_TO_WORKSPACE,
-                launcher.getText(R.string.action_add_to_workspace)));
-        mActions.put(MOVE, new AccessibilityAction(MOVE,
-                launcher.getText(R.string.action_move)));
-        mActions.put(MOVE_TO_WORKSPACE, new AccessibilityAction(MOVE_TO_WORKSPACE,
-                launcher.getText(R.string.action_move_to_workspace)));
-        mActions.put(RESIZE, new AccessibilityAction(RESIZE,
-                        launcher.getText(R.string.action_resize)));
-        mActions.put(DEEP_SHORTCUTS, new AccessibilityAction(DEEP_SHORTCUTS,
-                launcher.getText(R.string.action_deep_shortcut)));
+        mActions.put(REMOVE, new AccessibilityAction(REMOVE, launcher.getText(R.string.remove_drop_target_label)));
+        mActions.put(INFO, new AccessibilityAction(INFO, launcher.getText(R.string.app_info_drop_target_label)));
+        mActions.put(UNINSTALL, new AccessibilityAction(UNINSTALL, launcher.getText(R.string.uninstall_drop_target_label)));
+        mActions.put(ADD_TO_WORKSPACE, new AccessibilityAction(ADD_TO_WORKSPACE, launcher.getText(R.string.action_add_to_workspace)));
+        mActions.put(MOVE, new AccessibilityAction(MOVE, launcher.getText(R.string.action_move)));
+        mActions.put(MOVE_TO_WORKSPACE, new AccessibilityAction(MOVE_TO_WORKSPACE, launcher.getText(R.string.action_move_to_workspace)));
+        mActions.put(RESIZE, new AccessibilityAction(RESIZE, launcher.getText(R.string.action_resize)));
+        mActions.put(DEEP_SHORTCUTS, new AccessibilityAction(DEEP_SHORTCUTS, launcher.getText(R.string.action_deep_shortcut)));
     }
 
     @Override
@@ -120,9 +110,7 @@ public class LauncherAccessibilityDelegate extends AccessibilityDelegate impleme
         }
 
         // Do not add move actions for keyboard request as this uses virtual nodes.
-        if (!fromKeyboard && ((item instanceof ShortcutInfo)
-                || (item instanceof LauncherAppWidgetInfo)
-                || (item instanceof FolderInfo))) {
+        if (!fromKeyboard && ((item instanceof ShortcutInfo) || (item instanceof LauncherAppWidgetInfo) || (item instanceof FolderInfo))) {
             info.addAction(mActions.get(MOVE));
 
             if (item.container >= 0) {
@@ -141,8 +129,7 @@ public class LauncherAccessibilityDelegate extends AccessibilityDelegate impleme
 
     @Override
     public boolean performAccessibilityAction(View host, int action, Bundle args) {
-        if ((host.getTag() instanceof ItemInfo)
-                && performAction(host, (ItemInfo) host.getTag(), action)) {
+        if ((host.getTag() instanceof ItemInfo) && performAction(host, (ItemInfo) host.getTag(), action)) {
             return true;
         }
         return super.performAccessibilityAction(host, action, args);
@@ -168,9 +155,7 @@ public class LauncherAccessibilityDelegate extends AccessibilityDelegate impleme
                 public void run() {
                     if (item instanceof AppInfo) {
                         ShortcutInfo info = ((AppInfo) item).makeShortcut();
-                        mLauncher.getModelWriter().addItemToDatabase(info,
-                                LauncherSettings.Favorites.CONTAINER_DESKTOP,
-                                screenId, coordinates[0], coordinates[1]);
+                        mLauncher.getModelWriter().addItemToDatabase(info, LauncherSettings.Favorites.CONTAINER_DESKTOP, screenId, coordinates[0], coordinates[1]);
 
                         ArrayList<ItemInfo> itemList = new ArrayList<>();
                         itemList.add(info);
@@ -179,8 +164,7 @@ public class LauncherAccessibilityDelegate extends AccessibilityDelegate impleme
                         PendingAddItemInfo info = (PendingAddItemInfo) item;
                         Workspace workspace = mLauncher.getWorkspace();
                         workspace.snapToPage(workspace.getPageIndexForScreenId(screenId));
-                        mLauncher.addPendingItem(info, LauncherSettings.Favorites.CONTAINER_DESKTOP,
-                                screenId, coordinates, info.spanX, info.spanY);
+                        mLauncher.addPendingItem(info, LauncherSettings.Favorites.CONTAINER_DESKTOP, screenId, coordinates, info.spanX, info.spanY);
                     }
                     announceConfirmation(R.string.item_added_to_workspace);
                 }
@@ -194,9 +178,7 @@ public class LauncherAccessibilityDelegate extends AccessibilityDelegate impleme
 
             final int[] coordinates = new int[2];
             final long screenId = findSpaceOnWorkspace(item, coordinates);
-            mLauncher.getModelWriter().moveItemInDatabase(info,
-                    LauncherSettings.Favorites.CONTAINER_DESKTOP,
-                    screenId, coordinates[0], coordinates[1]);
+            mLauncher.getModelWriter().moveItemInDatabase(info, LauncherSettings.Favorites.CONTAINER_DESKTOP, screenId, coordinates[0], coordinates[1]);
 
             // Bind the item in next frame so that if a new workspace page was created,
             // it will get laid out.
@@ -218,17 +200,14 @@ public class LauncherAccessibilityDelegate extends AccessibilityDelegate impleme
                 labels[i] = mLauncher.getText(actions.get(i));
             }
 
-            new AlertDialog.Builder(mLauncher)
-                .setTitle(R.string.action_resize)
-                .setItems(labels, new DialogInterface.OnClickListener() {
+            new AlertDialog.Builder(mLauncher).setTitle(R.string.action_resize).setItems(labels, new DialogInterface.OnClickListener() {
 
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        performResizeAction(actions.get(which), host, info);
-                        dialog.dismiss();
-                    }
-                })
-                .show();
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    performResizeAction(actions.get(which), host, info);
+                    dialog.dismiss();
+                }
+            }).show();
             return true;
         } else if (action == DEEP_SHORTCUTS) {
             return PopupContainerWithArrow.showForIcon((BubbleTextView) host) != null;
@@ -246,8 +225,7 @@ public class LauncherAccessibilityDelegate extends AccessibilityDelegate impleme
 
         CellLayout layout = (CellLayout) host.getParent().getParent();
         if ((providerInfo.resizeMode & AppWidgetProviderInfo.RESIZE_HORIZONTAL) != 0) {
-            if (layout.isRegionVacant(info.cellX + info.spanX, info.cellY, 1, info.spanY) ||
-                    layout.isRegionVacant(info.cellX - 1, info.cellY, 1, info.spanY)) {
+            if (layout.isRegionVacant(info.cellX + info.spanX, info.cellY, 1, info.spanY) || layout.isRegionVacant(info.cellX - 1, info.cellY, 1, info.spanY)) {
                 actions.add(R.string.action_increase_width);
             }
 
@@ -257,8 +235,7 @@ public class LauncherAccessibilityDelegate extends AccessibilityDelegate impleme
         }
 
         if ((providerInfo.resizeMode & AppWidgetProviderInfo.RESIZE_VERTICAL) != 0) {
-            if (layout.isRegionVacant(info.cellX, info.cellY + info.spanY, info.spanX, 1) ||
-                    layout.isRegionVacant(info.cellX, info.cellY - 1, info.spanX, 1)) {
+            if (layout.isRegionVacant(info.cellX, info.cellY + info.spanY, info.spanX, 1) || layout.isRegionVacant(info.cellX, info.cellY - 1, info.spanX, 1)) {
                 actions.add(R.string.action_increase_height);
             }
 
@@ -269,50 +246,50 @@ public class LauncherAccessibilityDelegate extends AccessibilityDelegate impleme
         return actions;
     }
 
-    @Thunk void performResizeAction(int action, View host, LauncherAppWidgetInfo info) {
+    @Thunk
+    void performResizeAction(int action, View host, LauncherAppWidgetInfo info) {
         CellLayout.LayoutParams lp = (CellLayout.LayoutParams) host.getLayoutParams();
         CellLayout layout = (CellLayout) host.getParent().getParent();
         layout.markCellsAsUnoccupiedForView(host);
 
         if (action == R.string.action_increase_width) {
-            if (((host.getLayoutDirection() == View.LAYOUT_DIRECTION_RTL)
-                    && layout.isRegionVacant(info.cellX - 1, info.cellY, 1, info.spanY))
-                    || !layout.isRegionVacant(info.cellX + info.spanX, info.cellY, 1, info.spanY)) {
-                lp.cellX --;
-                info.cellX --;
+            if (((host.getLayoutDirection() == View.LAYOUT_DIRECTION_RTL) && layout.isRegionVacant(info.cellX - 1, info.cellY, 1, info.spanY)) || !layout.isRegionVacant(info.cellX + info.spanX, info.cellY, 1, info.spanY)) {
+                lp.cellX--;
+                info.cellX--;
             }
-            lp.cellHSpan ++;
-            info.spanX ++;
+            lp.cellHSpan++;
+            info.spanX++;
         } else if (action == R.string.action_decrease_width) {
-            lp.cellHSpan --;
-            info.spanX --;
+            lp.cellHSpan--;
+            info.spanX--;
         } else if (action == R.string.action_increase_height) {
             if (!layout.isRegionVacant(info.cellX, info.cellY + info.spanY, info.spanX, 1)) {
-                lp.cellY --;
-                info.cellY --;
+                lp.cellY--;
+                info.cellY--;
             }
-            lp.cellVSpan ++;
-            info.spanY ++;
+            lp.cellVSpan++;
+            info.spanY++;
         } else if (action == R.string.action_decrease_height) {
-            lp.cellVSpan --;
-            info.spanY --;
+            lp.cellVSpan--;
+            info.spanY--;
         }
 
         layout.markCellsAsOccupiedForView(host);
         Rect sizeRange = new Rect();
         AppWidgetResizeFrame.getWidgetSizeRanges(mLauncher, info.spanX, info.spanY, sizeRange);
-        ((LauncherAppWidgetHostView) host).updateAppWidgetSize(null,
-                sizeRange.left, sizeRange.top, sizeRange.right, sizeRange.bottom);
+        ((LauncherAppWidgetHostView) host).updateAppWidgetSize(null, sizeRange.left, sizeRange.top, sizeRange.right, sizeRange.bottom);
         host.requestLayout();
         mLauncher.getModelWriter().updateItemInDatabase(info);
         announceConfirmation(mLauncher.getString(R.string.widget_resized, info.spanX, info.spanY));
     }
 
-    @Thunk void announceConfirmation(int resId) {
+    @Thunk
+    void announceConfirmation(int resId) {
         announceConfirmation(mLauncher.getResources().getString(resId));
     }
 
-    @Thunk void announceConfirmation(String confirmation) {
+    @Thunk
+    void announceConfirmation(String confirmation) {
         mLauncher.getDragLayer().announceForAccessibility(confirmation);
 
     }
@@ -327,11 +304,10 @@ public class LauncherAccessibilityDelegate extends AccessibilityDelegate impleme
 
     /**
      * @param clickedTarget the actual view that was clicked
-     * @param dropLocation relative to {@param clickedTarget}. If provided, its center is used
-     * as the actual drop location otherwise the views center is used.
+     * @param dropLocation  relative to {@param clickedTarget}. If provided, its center is used
+     *                      as the actual drop location otherwise the views center is used.
      */
-    public void handleAccessibleDrop(View clickedTarget, Rect dropLocation,
-            String confirmation) {
+    public void handleAccessibleDrop(View clickedTarget, Rect dropLocation, String confirmation) {
         if (!isInAccessibleDrag()) return;
 
         int[] loc = new int[2];

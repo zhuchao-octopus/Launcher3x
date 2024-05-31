@@ -65,8 +65,7 @@ public class HolographicOutlineHelper {
         mMediumOuterBlurMaskFilter = new BlurMaskFilter(mediumBlur, BlurMaskFilter.Blur.OUTER);
         mMediumInnerBlurMaskFilter = new BlurMaskFilter(mediumBlur, BlurMaskFilter.Blur.NORMAL);
 
-        mThinOuterBlurMaskFilter = new BlurMaskFilter(
-                res.getDimension(R.dimen.blur_size_thin_outline), BlurMaskFilter.Blur.OUTER);
+        mThinOuterBlurMaskFilter = new BlurMaskFilter(res.getDimension(R.dimen.blur_size_thin_outline), BlurMaskFilter.Blur.OUTER);
 
         mShadowBitmapShift = res.getDimension(R.dimen.blur_size_click_shadow);
         mShadowBlurMaskFilter = new BlurMaskFilter(mShadowBitmapShift, BlurMaskFilter.Blur.NORMAL);
@@ -124,24 +123,18 @@ public class HolographicOutlineHelper {
 
         // mask out the inner blur
         srcDstCanvas.setBitmap(thickInnerBlur);
-        srcDstCanvas.drawBitmap(srcDst, -thickInnerBlurOffset[0],
-                -thickInnerBlurOffset[1], mErasePaint);
-        srcDstCanvas.drawRect(0, 0, -thickInnerBlurOffset[0], thickInnerBlur.getHeight(),
-                mErasePaint);
-        srcDstCanvas.drawRect(0, 0, thickInnerBlur.getWidth(), -thickInnerBlurOffset[1],
-                mErasePaint);
+        srcDstCanvas.drawBitmap(srcDst, -thickInnerBlurOffset[0], -thickInnerBlurOffset[1], mErasePaint);
+        srcDstCanvas.drawRect(0, 0, -thickInnerBlurOffset[0], thickInnerBlur.getHeight(), mErasePaint);
+        srcDstCanvas.drawRect(0, 0, thickInnerBlur.getWidth(), -thickInnerBlurOffset[1], mErasePaint);
 
         // draw the inner and outer blur
         srcDstCanvas.setBitmap(srcDst);
         srcDstCanvas.drawColor(0, PorterDuff.Mode.CLEAR);
-        srcDstCanvas.drawBitmap(thickInnerBlur, thickInnerBlurOffset[0], thickInnerBlurOffset[1],
-                mDrawPaint);
-        srcDstCanvas.drawBitmap(thickOuterBlur, outerBlurOffset[0], outerBlurOffset[1],
-                mDrawPaint);
+        srcDstCanvas.drawBitmap(thickInnerBlur, thickInnerBlurOffset[0], thickInnerBlurOffset[1], mDrawPaint);
+        srcDstCanvas.drawBitmap(thickOuterBlur, outerBlurOffset[0], outerBlurOffset[1], mDrawPaint);
 
         // draw the bright outline
-        srcDstCanvas.drawBitmap(brightOutline, brightOutlineOffset[0], brightOutlineOffset[1],
-                mDrawPaint);
+        srcDstCanvas.drawBitmap(brightOutline, brightOutlineOffset[0], brightOutlineOffset[1], mDrawPaint);
 
         // cleanup
         srcDstCanvas.setBitmap(null);

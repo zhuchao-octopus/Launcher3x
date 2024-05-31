@@ -16,6 +16,9 @@
 
 package com.android.launcher3;
 
+import static com.android.launcher3.Workspace.State.NORMAL;
+import static com.android.launcher3.Workspace.State.OVERVIEW;
+
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
@@ -28,18 +31,15 @@ import com.android.launcher3.anim.AnimationLayerSet;
 import com.android.launcher3.userevent.LauncherLogProto.Action;
 import com.android.launcher3.userevent.LauncherLogProto.ContainerType;
 
-import static com.android.launcher3.Workspace.State.NORMAL;
-import static com.android.launcher3.Workspace.State.OVERVIEW;
-
 /**
  * Manages the animations that play as the user pinches to/from overview mode.
- *
- *  It will look like this pinching in:
+ * <p>
+ * It will look like this pinching in:
  * - Workspace scales down
  * - At some threshold 1, hotseat and QSB fade out (full animation)
  * - At a later threshold 2, panel buttons fade in and scrim fades in
  * - At a final threshold 3, snap to overview
- *
+ * <p>
  * Pinching out:
  * - Workspace scales up
  * - At threshold 1, panel buttons fade out
@@ -76,8 +76,7 @@ public class PinchAnimationManager {
 
         mOverviewScale = mWorkspace.getOverviewModeShrinkFactor();
         mOverviewTranslationY = mWorkspace.getOverviewModeTranslationY();
-        mNormalOverviewTransitionDuration = mWorkspace.getStateTransitionAnimation()
-                .mOverviewTransitionTime;
+        mNormalOverviewTransitionDuration = mWorkspace.getStateTransitionAnimation().mOverviewTransitionTime;
     }
 
     public int getNormalOverviewTransitionDuration() {
@@ -89,22 +88,19 @@ public class PinchAnimationManager {
      * {@link #setAnimationProgress(float)} throughout the duration. If duration is -1,
      * the default overview transition duration is used.
      */
-    public void animateToProgress(float currentProgress, float toProgress, int duration,
-            final PinchThresholdManager thresholdManager) {
+    public void animateToProgress(float currentProgress, float toProgress, int duration, final PinchThresholdManager thresholdManager) {
         if (duration == -1) {
             duration = mNormalOverviewTransitionDuration;
         }
         ValueAnimator animator = ValueAnimator.ofFloat(currentProgress, toProgress);
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                @Override
-                public void onAnimationUpdate(ValueAnimator animation) {
-                    float pinchProgress = (Float) animation.getAnimatedValue();
-                    setAnimationProgress(pinchProgress);
-                    thresholdManager.updateAndAnimatePassedThreshold(pinchProgress,
-                            PinchAnimationManager.this);
-                }
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                float pinchProgress = (Float) animation.getAnimatedValue();
+                setAnimationProgress(pinchProgress);
+                thresholdManager.updateAndAnimatePassedThreshold(pinchProgress, PinchAnimationManager.this);
             }
-        );
+        });
         animator.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
@@ -124,6 +120,7 @@ public class PinchAnimationManager {
     /**
      * Animates to the specified progress. This should be called repeatedly throughout the pinch
      * gesture to run animations that interpolate throughout the gesture.
+     *
      * @param interpolatedProgress The progress from 0 to 1, where 0 is overview and 1 is workspace.
      */
     public void setAnimationProgress(float interpolatedProgress) {
@@ -139,15 +136,15 @@ public class PinchAnimationManager {
      * Animates certain properties based on which threshold was passed, and in what direction. The
      * starting state must also be taken into account because the thresholds mean different things
      * when going from workspace to overview and vice versa.
-     * @param threshold One of {@link PinchThresholdManager#THRESHOLD_ONE},
-     *                  {@link PinchThresholdManager#THRESHOLD_TWO}, or
-     *                  {@link PinchThresholdManager#THRESHOLD_THREE}
-     * @param startState {@link Workspace.State#NORMAL} or {@link Workspace.State#OVERVIEW}.
+     *
+     * @param threshold    One of {@link PinchThresholdManager#THRESHOLD_ONE},
+     *                     {@link PinchThresholdManager#THRESHOLD_TWO}, or
+     *                     {@link PinchThresholdManager#THRESHOLD_THREE}
+     * @param startState   {@link Workspace.State#NORMAL} or {@link Workspace.State#OVERVIEW}.
      * @param goingTowards {@link Workspace.State#NORMAL} or {@link Workspace.State#OVERVIEW}.
      *                     Note that this doesn't have to be the opposite of startState;
      */
-    public void animateThreshold(float threshold, Workspace.State startState,
-            Workspace.State goingTowards) {
+    public void animateThreshold(float threshold, Workspace.State startState, Workspace.State goingTowards) {
         if (threshold == PinchThresholdManager.THRESHOLD_ONE) {
             if (startState == OVERVIEW) {
                 animateOverviewPanelButtons(goingTowards == OVERVIEW);
@@ -165,15 +162,11 @@ public class PinchAnimationManager {
         } else if (threshold == PinchThresholdManager.THRESHOLD_THREE) {
             // Passing threshold 3 ends the pinch and snaps to the new state.
             if (startState == OVERVIEW && goingTowards == NORMAL) {
-                mLauncher.getUserEventDispatcher().logActionOnContainer(
-                        Action.Touch.PINCH.getNumber(), Action.Direction.NONE.getNumber(),
-                        ContainerType.OVERVIEW.getNumber(), mWorkspace.getCurrentPage());
+                mLauncher.getUserEventDispatcher().logActionOnContainer(Action.Touch.PINCH.getNumber(), Action.Direction.NONE.getNumber(), ContainerType.OVERVIEW.getNumber(), mWorkspace.getCurrentPage());
                 mLauncher.showWorkspace(true);
                 mWorkspace.snapToPage(mWorkspace.getCurrentPage());
             } else if (startState == NORMAL && goingTowards == OVERVIEW) {
-                mLauncher.getUserEventDispatcher().logActionOnContainer(
-                        Action.Touch.PINCH.getNumber(), Action.Direction.NONE.getNumber(),
-                        ContainerType.WORKSPACE.getNumber(), mWorkspace.getCurrentPage());
+                mLauncher.getUserEventDispatcher().logActionOnContainer(Action.Touch.PINCH.getNumber(), Action.Direction.NONE.getNumber(), ContainerType.WORKSPACE.getNumber(), mWorkspace.getCurrentPage());
                 mLauncher.showOverviewMode(true);
             }
         } else {
@@ -194,10 +187,8 @@ public class PinchAnimationManager {
     }
 
     private void animateHotseatAndQsb(boolean show) {
-        startAnimator(INDEX_HOTSEAT,
-                mWorkspace.createHotseatAlphaAnimator(show ? 1 : 0), THRESHOLD_ANIM_DURATION);
-        startAnimator(INDEX_QSB, mWorkspace.mQsbAlphaController.animateAlphaAtIndex(
-                show ? 1 : 0, Workspace.QSB_ALPHA_INDEX_STATE_CHANGE), THRESHOLD_ANIM_DURATION);
+        startAnimator(INDEX_HOTSEAT, mWorkspace.createHotseatAlphaAnimator(show ? 1 : 0), THRESHOLD_ANIM_DURATION);
+        startAnimator(INDEX_QSB, mWorkspace.mQsbAlphaController.animateAlphaAtIndex(show ? 1 : 0, Workspace.QSB_ALPHA_INDEX_STATE_CHANGE), THRESHOLD_ANIM_DURATION);
     }
 
     private void animateOverviewPanelButtons(boolean show) {
@@ -206,9 +197,7 @@ public class PinchAnimationManager {
 
     private void animateScrim(boolean show) {
         float endValue = show ? mWorkspace.getStateTransitionAnimation().mWorkspaceScrimAlpha : 0;
-        startAnimator(INDEX_SCRIM,
-                ObjectAnimator.ofFloat(mLauncher.getDragLayer(), "backgroundAlpha", endValue),
-                mNormalOverviewTransitionDuration);
+        startAnimator(INDEX_SCRIM, ObjectAnimator.ofFloat(mLauncher.getDragLayer(), "backgroundAlpha", endValue), mNormalOverviewTransitionDuration);
     }
 
     private void animateShowHideView(int index, final View view, boolean show) {

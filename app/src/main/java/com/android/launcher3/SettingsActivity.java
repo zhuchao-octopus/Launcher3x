@@ -45,9 +45,7 @@ public class SettingsActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         // Display the fragment as the main content.
-        getFragmentManager().beginTransaction()
-                .replace(android.R.id.content, new LauncherSettingsFragment())
-                .commit();
+        getFragmentManager().beginTransaction().replace(android.R.id.content, new LauncherSettingsFragment()).commit();
     }
 
     /**
@@ -76,9 +74,7 @@ public class SettingsActivity extends Activity {
 
                 // Register a content observer to listen for system setting changes while
                 // this UI is active.
-                resolver.registerContentObserver(
-                        Settings.System.getUriFor(System.ACCELEROMETER_ROTATION),
-                        false, mRotationLockObserver);
+                resolver.registerContentObserver(Settings.System.getUriFor(System.ACCELEROMETER_ROTATION), false, mRotationLockObserver);
 
                 // Initialize the UI once
                 mRotationLockObserver.onChange(true);
@@ -87,15 +83,12 @@ public class SettingsActivity extends Activity {
 
             Preference iconBadgingPref = findPreference(ICON_BADGING_PREFERENCE_KEY);
             if (!BuildCompat.isAtLeastO()) {
-                getPreferenceScreen().removePreference(
-                        findPreference(SessionCommitReceiver.ADD_ICON_PREFERENCE_KEY));
+                getPreferenceScreen().removePreference(findPreference(SessionCommitReceiver.ADD_ICON_PREFERENCE_KEY));
                 getPreferenceScreen().removePreference(iconBadgingPref);
             } else {
                 // Listen to system notification badge settings while this UI is active.
                 mIconBadgingObserver = new IconBadgingObserver(iconBadgingPref, resolver);
-                resolver.registerContentObserver(
-                        Settings.Secure.getUriFor(NOTIFICATION_BADGING),
-                        false, mIconBadgingObserver);
+                resolver.registerContentObserver(Settings.Secure.getUriFor(NOTIFICATION_BADGING), false, mIconBadgingObserver);
                 mIconBadgingObserver.onChange(true);
             }
 
@@ -107,8 +100,8 @@ public class SettingsActivity extends Activity {
                     getPreferenceScreen().removePreference(iconShapeOverride);
                 }
             }
-            if(rotationPref!=null){
-            	getPreferenceScreen().removePreference(rotationPref); //add by allen
+            if (rotationPref != null) {
+                getPreferenceScreen().removePreference(rotationPref); //add by allen
             }
         }
 
@@ -135,8 +128,7 @@ public class SettingsActivity extends Activity {
         private final Preference mRotationPref;
         private final ContentResolver mResolver;
 
-        public SystemDisplayRotationLockObserver(
-                Preference rotationPref, ContentResolver resolver) {
+        public SystemDisplayRotationLockObserver(Preference rotationPref, ContentResolver resolver) {
             super(new Handler());
             mRotationPref = rotationPref;
             mResolver = resolver;
@@ -144,11 +136,9 @@ public class SettingsActivity extends Activity {
 
         @Override
         public void onChange(boolean selfChange) {
-            boolean enabled = Settings.System.getInt(mResolver,
-                    Settings.System.ACCELEROMETER_ROTATION, 1) == 1;
+            boolean enabled = Settings.System.getInt(mResolver, Settings.System.ACCELEROMETER_ROTATION, 1) == 1;
             mRotationPref.setEnabled(enabled);
-            mRotationPref.setSummary(enabled
-                    ? R.string.allow_rotation_desc : R.string.allow_rotation_blocked_desc);
+            mRotationPref.setSummary(enabled ? R.string.allow_rotation_desc : R.string.allow_rotation_blocked_desc);
         }
     }
 
@@ -170,9 +160,7 @@ public class SettingsActivity extends Activity {
         @Override
         public void onChange(boolean selfChange) {
             boolean enabled = Settings.Secure.getInt(mResolver, NOTIFICATION_BADGING, 1) == 1;
-            mBadgingPref.setSummary(enabled
-                    ? R.string.icon_badging_desc_on
-                    : R.string.icon_badging_desc_off);
+            mBadgingPref.setSummary(enabled ? R.string.icon_badging_desc_on : R.string.icon_badging_desc_off);
         }
     }
 

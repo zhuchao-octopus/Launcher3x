@@ -39,8 +39,7 @@ public class AlphabeticIndexCompat {
 
         mBaseIndex = index == null ? new BaseIndex() : index;
 
-        if (context.getResources().getConfiguration().locale
-                .getLanguage().equals(Locale.JAPANESE.getLanguage())) {
+        if (context.getResources().getConfiguration().locale.getLanguage().equals(Locale.JAPANESE.getLanguage())) {
             // Japanese character 他 ("misc")
             mDefaultMiscLabel = "\u4ed6";
             // TODO(winsonc, omakoto): We need to handle Japanese sections better, especially the kanji
@@ -126,8 +125,7 @@ public class AlphabeticIndexCompat {
             mAlphabeticIndex = clazz.getConstructor(Locale.class).newInstance(curLocale);
 
             if (!curLocale.getLanguage().equals(Locale.ENGLISH.getLanguage())) {
-                clazz.getDeclaredMethod("addLabels", Locale.class)
-                        .invoke(mAlphabeticIndex, Locale.ENGLISH);
+                clazz.getDeclaredMethod("addLabels", Locale.class).invoke(mAlphabeticIndex, Locale.ENGLISH);
             }
         }
 

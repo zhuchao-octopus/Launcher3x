@@ -36,7 +36,6 @@ class AppWidgetManagerCompatVO extends AppWidgetManagerCompatVL {
         if (packageUser == null) {
             return super.getAllProviders(null);
         }
-        return mAppWidgetManager.getInstalledProvidersForPackage(packageUser.mPackageName,
-                packageUser.mUser);
+        return mAppWidgetManager.getInstalledProvidersForPackage(packageUser.mPackageName, packageUser.mUser);
     }
 }

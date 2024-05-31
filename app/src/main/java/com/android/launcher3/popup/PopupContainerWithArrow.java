@@ -16,6 +16,10 @@
 
 package com.android.launcher3.popup;
 
+import static com.android.launcher3.userevent.LauncherLogProto.ContainerType;
+import static com.android.launcher3.userevent.LauncherLogProto.ItemType;
+import static com.android.launcher3.userevent.LauncherLogProto.Target;
+
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
@@ -78,16 +82,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static com.android.launcher3.userevent.LauncherLogProto.ContainerType;
-import static com.android.launcher3.userevent.LauncherLogProto.ItemType;
-import static com.android.launcher3.userevent.LauncherLogProto.Target;
-
 /**
  * A container for shortcuts to deep links within apps.
  */
 @TargetApi(Build.VERSION_CODES.N)
-public class PopupContainerWithArrow extends AbstractFloatingView implements DragSource,
-        DragController.DragListener {
+public class PopupContainerWithArrow extends AbstractFloatingView implements DragSource, DragController.DragListener {
 
     protected final Launcher mLauncher;
     private final int mStartDragThreshold;
@@ -112,8 +111,7 @@ public class PopupContainerWithArrow extends AbstractFloatingView implements Dra
         super(context, attrs, defStyleAttr);
         mLauncher = Launcher.getLauncher(context);
 
-        mStartDragThreshold = getResources().getDimensionPixelSize(
-                R.dimen.deep_shortcuts_start_drag_threshold);
+        mStartDragThreshold = getResources().getDimensionPixelSize(R.dimen.deep_shortcuts_start_drag_threshold);
         mAccessibilityDelegate = new ShortcutMenuAccessibilityDelegate(mLauncher);
         mIsRtl = Utilities.isRtl(getResources());
     }
@@ -132,6 +130,7 @@ public class PopupContainerWithArrow extends AbstractFloatingView implements Dra
 
     /**
      * Shows the notifications and deep shortcuts associated with {@param icon}.
+     *
      * @return the container if shown or null.
      */
     public static PopupContainerWithArrow showForIcon(BubbleTextView icon) {
@@ -148,33 +147,26 @@ public class PopupContainerWithArrow extends AbstractFloatingView implements Dra
 
         PopupDataProvider popupDataProvider = launcher.getPopupDataProvider();
         List<String> shortcutIds = popupDataProvider.getShortcutIdsForItem(itemInfo);
-        List<NotificationKeyData> notificationKeys = popupDataProvider
-                .getNotificationKeysForItem(itemInfo);
-        List<SystemShortcut> systemShortcuts = popupDataProvider
-                .getEnabledSystemShortcutsForItem(itemInfo);
+        List<NotificationKeyData> notificationKeys = popupDataProvider.getNotificationKeysForItem(itemInfo);
+        List<SystemShortcut> systemShortcuts = popupDataProvider.getEnabledSystemShortcutsForItem(itemInfo);
 
-        final PopupContainerWithArrow container =
-                (PopupContainerWithArrow) launcher.getLayoutInflater().inflate(
-                        R.layout.popup_container, launcher.getDragLayer(), false);
+        final PopupContainerWithArrow container = (PopupContainerWithArrow) launcher.getLayoutInflater().inflate(R.layout.popup_container, launcher.getDragLayer(), false);
         container.setVisibility(View.INVISIBLE);
         launcher.getDragLayer().addView(container);
         container.populateAndShow(icon, shortcutIds, notificationKeys, systemShortcuts);
         return container;
     }
 
-    public void populateAndShow(final BubbleTextView originalIcon, final List<String> shortcutIds,
-            final List<NotificationKeyData> notificationKeys, List<SystemShortcut> systemShortcuts) {
+    public void populateAndShow(final BubbleTextView originalIcon, final List<String> shortcutIds, final List<NotificationKeyData> notificationKeys, List<SystemShortcut> systemShortcuts) {
         final Resources resources = getResources();
         final int arrowWidth = resources.getDimensionPixelSize(R.dimen.popup_arrow_width);
         final int arrowHeight = resources.getDimensionPixelSize(R.dimen.popup_arrow_height);
-        final int arrowVerticalOffset = resources.getDimensionPixelSize(
-                R.dimen.popup_arrow_vertical_offset);
+        final int arrowVerticalOffset = resources.getDimensionPixelSize(R.dimen.popup_arrow_vertical_offset);
 
         mOriginalIcon = originalIcon;
 
         // Add dummy views first, and populate with real info when ready.
-        PopupPopulator.Item[] itemsToPopulate = PopupPopulator
-                .getItemsToPopulate(shortcutIds, notificationKeys, systemShortcuts);
+        PopupPopulator.Item[] itemsToPopulate = PopupPopulator.getItemsToPopulate(shortcutIds, notificationKeys, systemShortcuts);
         addDummyViews(itemsToPopulate, notificationKeys.size() > 1);
 
         measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
@@ -193,12 +185,8 @@ public class PopupContainerWithArrow extends AbstractFloatingView implements Dra
         }
 
         ItemInfo originalItemInfo = (ItemInfo) originalIcon.getTag();
-        List<DeepShortcutView> shortcutViews = mShortcutsItemView == null
-                ? Collections.EMPTY_LIST
-                : mShortcutsItemView.getDeepShortcutViews(reverseOrder);
-        List<View> systemShortcutViews = mShortcutsItemView == null
-                ? Collections.EMPTY_LIST
-                : mShortcutsItemView.getSystemShortcutViews(reverseOrder);
+        List<DeepShortcutView> shortcutViews = mShortcutsItemView == null ? Collections.EMPTY_LIST : mShortcutsItemView.getDeepShortcutViews(reverseOrder);
+        List<View> systemShortcutViews = mShortcutsItemView == null ? Collections.EMPTY_LIST : mShortcutsItemView.getSystemShortcutViews(reverseOrder);
         if (mNotificationItemView != null) {
             updateNotificationHeader();
         }
@@ -206,18 +194,13 @@ public class PopupContainerWithArrow extends AbstractFloatingView implements Dra
         int numShortcuts = shortcutViews.size() + systemShortcutViews.size();
         int numNotifications = notificationKeys.size();
         if (numNotifications == 0) {
-            setContentDescription(getContext().getString(R.string.shortcuts_menu_description,
-                    numShortcuts, originalIcon.getContentDescription().toString()));
+            setContentDescription(getContext().getString(R.string.shortcuts_menu_description, numShortcuts, originalIcon.getContentDescription().toString()));
         } else {
-            setContentDescription(getContext().getString(
-                    R.string.shortcuts_menu_with_notifications_description, numShortcuts,
-                    numNotifications, originalIcon.getContentDescription().toString()));
+            setContentDescription(getContext().getString(R.string.shortcuts_menu_with_notifications_description, numShortcuts, numNotifications, originalIcon.getContentDescription().toString()));
         }
 
         // Add the arrow.
-        final int arrowHorizontalOffset = resources.getDimensionPixelSize(isAlignedWithStart() ?
-                R.dimen.popup_arrow_horizontal_offset_start :
-                R.dimen.popup_arrow_horizontal_offset_end);
+        final int arrowHorizontalOffset = resources.getDimensionPixelSize(isAlignedWithStart() ? R.dimen.popup_arrow_horizontal_offset_start : R.dimen.popup_arrow_horizontal_offset_end);
         mArrow = addArrowView(arrowHorizontalOffset, arrowVerticalOffset, arrowWidth, arrowHeight);
         mArrow.setPivotX(arrowWidth / 2);
         mArrow.setPivotY(mIsAboveIcon ? 0 : arrowHeight);
@@ -229,14 +212,10 @@ public class PopupContainerWithArrow extends AbstractFloatingView implements Dra
 
         // Load the shortcuts on a background thread and update the container as it animates.
         final Looper workerLooper = LauncherModel.getWorkerLooper();
-        new Handler(workerLooper).postAtFrontOfQueue(PopupPopulator.createUpdateRunnable(
-                mLauncher, originalItemInfo, new Handler(Looper.getMainLooper()),
-                this, shortcutIds, shortcutViews, notificationKeys, mNotificationItemView,
-                systemShortcuts, systemShortcutViews));
+        new Handler(workerLooper).postAtFrontOfQueue(PopupPopulator.createUpdateRunnable(mLauncher, originalItemInfo, new Handler(Looper.getMainLooper()), this, shortcutIds, shortcutViews, notificationKeys, mNotificationItemView, systemShortcuts, systemShortcutViews));
     }
 
-    private void addDummyViews(PopupPopulator.Item[] itemTypesToPopulate,
-            boolean notificationFooterHasIcons) {
+    private void addDummyViews(PopupPopulator.Item[] itemTypesToPopulate, boolean notificationFooterHasIcons) {
         final Resources res = getResources();
         final int spacing = res.getDimensionPixelSize(R.dimen.popup_items_spacing);
         final LayoutInflater inflater = mLauncher.getLayoutInflater();
@@ -244,27 +223,23 @@ public class PopupContainerWithArrow extends AbstractFloatingView implements Dra
         int numItems = itemTypesToPopulate.length;
         for (int i = 0; i < numItems; i++) {
             PopupPopulator.Item itemTypeToPopulate = itemTypesToPopulate[i];
-            PopupPopulator.Item nextItemTypeToPopulate =
-                    i < numItems - 1 ? itemTypesToPopulate[i + 1] : null;
+            PopupPopulator.Item nextItemTypeToPopulate = i < numItems - 1 ? itemTypesToPopulate[i + 1] : null;
             final View item = inflater.inflate(itemTypeToPopulate.layoutId, this, false);
 
             if (itemTypeToPopulate == PopupPopulator.Item.NOTIFICATION) {
                 mNotificationItemView = (NotificationItemView) item;
-                int footerHeight = notificationFooterHasIcons ?
-                        res.getDimensionPixelSize(R.dimen.notification_footer_height) : 0;
+                int footerHeight = notificationFooterHasIcons ? res.getDimensionPixelSize(R.dimen.notification_footer_height) : 0;
                 item.findViewById(R.id.footer).getLayoutParams().height = footerHeight;
                 mNotificationItemView.getMainView().setAccessibilityDelegate(mAccessibilityDelegate);
             } else if (itemTypeToPopulate == PopupPopulator.Item.SHORTCUT) {
                 item.setAccessibilityDelegate(mAccessibilityDelegate);
             }
 
-            boolean shouldAddBottomMargin = nextItemTypeToPopulate != null
-                    && itemTypeToPopulate.isShortcut ^ nextItemTypeToPopulate.isShortcut;
+            boolean shouldAddBottomMargin = nextItemTypeToPopulate != null && itemTypeToPopulate.isShortcut ^ nextItemTypeToPopulate.isShortcut;
 
             if (itemTypeToPopulate.isShortcut) {
                 if (mShortcutsItemView == null) {
-                    mShortcutsItemView = (ShortcutsItemView) inflater.inflate(
-                            R.layout.shortcuts_item, this, false);
+                    mShortcutsItemView = (ShortcutsItemView) inflater.inflate(R.layout.shortcuts_item, this, false);
                     addView(mShortcutsItemView);
                 }
                 mShortcutsItemView.addShortcutView(item, itemTypeToPopulate);
@@ -300,13 +275,10 @@ public class PopupContainerWithArrow extends AbstractFloatingView implements Dra
         final AnimatorSet shortcutAnims = LauncherAnimUtils.createAnimatorSet();
         final int itemCount = getItemCount();
 
-        final long duration = getResources().getInteger(
-                R.integer.config_deepShortcutOpenDuration);
-        final long arrowScaleDuration = getResources().getInteger(
-                R.integer.config_deepShortcutArrowOpenDuration);
+        final long duration = getResources().getInteger(R.integer.config_deepShortcutOpenDuration);
+        final long arrowScaleDuration = getResources().getInteger(R.integer.config_deepShortcutArrowOpenDuration);
         final long arrowScaleDelay = duration - arrowScaleDuration;
-        final long stagger = getResources().getInteger(
-                R.integer.config_deepShortcutOpenStagger);
+        final long stagger = getResources().getInteger(R.integer.config_deepShortcutOpenStagger);
         final TimeInterpolator fadeInterpolator = new LogAccelerateInterpolator(100, 0);
 
         // Animate shortcuts
@@ -339,10 +311,7 @@ public class PopupContainerWithArrow extends AbstractFloatingView implements Dra
             @Override
             public void onAnimationEnd(Animator animation) {
                 mOpenCloseAnimator = null;
-                Utilities.sendCustomAccessibilityEvent(
-                        PopupContainerWithArrow.this,
-                        AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED,
-                        getContext().getString(R.string.action_deep_shortcut));
+                Utilities.sendCustomAccessibilityEvent(PopupContainerWithArrow.this, AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED, getContext().getString(R.string.action_deep_shortcut));
             }
         });
 
@@ -359,13 +328,13 @@ public class PopupContainerWithArrow extends AbstractFloatingView implements Dra
 
     /**
      * Orients this container above or below the given icon, aligning with the left or right.
-     *
+     * <p>
      * These are the preferred orientations, in order (RTL prefers right-aligned over left):
      * - Above and left-aligned
      * - Above and right-aligned
      * - Below and left-aligned
      * - Below and right-aligned
-     *
+     * <p>
      * So we always align left if there is enough horizontal space
      * and align above if there is enough vertical space.
      */
@@ -381,8 +350,7 @@ public class PopupContainerWithArrow extends AbstractFloatingView implements Dra
         int leftAlignedX = mTempRect.left + icon.getPaddingLeft();
         int rightAlignedX = mTempRect.right - width - icon.getPaddingRight();
         int x = leftAlignedX;
-        boolean canBeLeftAligned = leftAlignedX + width + insets.left
-                < dragLayer.getRight() - insets.right;
+        boolean canBeLeftAligned = leftAlignedX + width + insets.left < dragLayer.getRight() - insets.right;
         boolean canBeRightAligned = rightAlignedX > dragLayer.getLeft() + insets.left;
         if (!canBeLeftAligned || (mIsRtl && canBeRightAligned)) {
             x = rightAlignedX;
@@ -400,15 +368,12 @@ public class PopupContainerWithArrow extends AbstractFloatingView implements Dra
         if (isAlignedWithStart()) {
             // Aligning with the shortcut icon.
             int shortcutIconWidth = resources.getDimensionPixelSize(R.dimen.deep_shortcut_icon_size);
-            int shortcutPaddingStart = resources.getDimensionPixelSize(
-                    R.dimen.popup_padding_start);
+            int shortcutPaddingStart = resources.getDimensionPixelSize(R.dimen.popup_padding_start);
             xOffset = iconWidth / 2 - shortcutIconWidth / 2 - shortcutPaddingStart;
         } else {
             // Aligning with the drag handle.
-            int shortcutDragHandleWidth = resources.getDimensionPixelSize(
-                    R.dimen.deep_shortcut_drag_handle_size);
-            int shortcutPaddingEnd = resources.getDimensionPixelSize(
-                    R.dimen.popup_padding_end);
+            int shortcutDragHandleWidth = resources.getDimensionPixelSize(R.dimen.deep_shortcut_drag_handle_size);
+            int shortcutPaddingEnd = resources.getDimensionPixelSize(R.dimen.popup_padding_end);
             xOffset = iconWidth / 2 - shortcutDragHandleWidth / 2 - shortcutPaddingEnd;
         }
         x += mIsLeftAligned ? xOffset : -xOffset;
@@ -475,8 +440,9 @@ public class PopupContainerWithArrow extends AbstractFloatingView implements Dra
 
     /**
      * Adds an arrow view pointing at the original icon.
+     *
      * @param horizontalOffset the horizontal offset of the arrow, so that it
-     *                              points at the center of the original icon
+     *                         points at the center of the original icon
      */
     private View addArrowView(int horizontalOffset, int verticalOffset, int width, int height) {
         LayoutParams layoutParams = new LayoutParams(width, height);
@@ -499,13 +465,11 @@ public class PopupContainerWithArrow extends AbstractFloatingView implements Dra
             // so we centered it instead. In that case we don't want to show the arrow.
             arrowView.setVisibility(INVISIBLE);
         } else {
-            ShapeDrawable arrowDrawable = new ShapeDrawable(TriangleShape.create(
-                    width, height, !mIsAboveIcon));
+            ShapeDrawable arrowDrawable = new ShapeDrawable(TriangleShape.create(width, height, !mIsAboveIcon));
             Paint arrowPaint = arrowDrawable.getPaint();
             // Note that we have to use getChildAt() instead of getItemViewAt(),
             // since the latter expects the arrow which hasn't been added yet.
-            PopupItemView itemAttachedToArrow = (PopupItemView)
-                    (getChildAt(mIsAboveIcon ? getChildCount() - 1 : 0));
+            PopupItemView itemAttachedToArrow = (PopupItemView) (getChildAt(mIsAboveIcon ? getChildCount() - 1 : 0));
             arrowPaint.setColor(itemAttachedToArrow.getArrowColor(mIsAboveIcon));
             // The corner path effect won't be reflected in the shadow, but shouldn't be noticeable.
             int radius = getResources().getDimensionPixelSize(R.dimen.popup_arrow_corner_radius);
@@ -524,7 +488,7 @@ public class PopupContainerWithArrow extends AbstractFloatingView implements Dra
 
     /**
      * Determines when the deferred drag should be started.
-     *
+     * <p>
      * Current behavior:
      * - Start the drag if the touch passes a certain distance from the original touch down.
      */
@@ -560,8 +524,7 @@ public class PopupContainerWithArrow extends AbstractFloatingView implements Dra
             return false;
         }
         // Stop sending touch events to deep shortcut views if user moved beyond touch slop.
-        return Math.hypot(mInterceptTouchDown.x - ev.getX(), mInterceptTouchDown.y - ev.getY())
-                > ViewConfiguration.get(getContext()).getScaledTouchSlop();
+        return Math.hypot(mInterceptTouchDown.x - ev.getX(), mInterceptTouchDown.y - ev.getY()) > ViewConfiguration.get(getContext()).getScaledTouchSlop();
     }
 
     /**
@@ -592,26 +555,21 @@ public class PopupContainerWithArrow extends AbstractFloatingView implements Dra
         BadgeInfo badgeInfo = updatedBadges.get(PackageUserKey.fromItemInfo(originalInfo));
         if (badgeInfo == null || badgeInfo.getNotificationKeys().size() == 0) {
             AnimatorSet removeNotification = LauncherAnimUtils.createAnimatorSet();
-            final int duration = getResources().getInteger(
-                    R.integer.config_removeNotificationViewDuration);
+            final int duration = getResources().getInteger(R.integer.config_removeNotificationViewDuration);
             final int spacing = getResources().getDimensionPixelSize(R.dimen.popup_items_spacing);
-            removeNotification.play(reduceNotificationViewHeight(
-                    mNotificationItemView.getHeightMinusFooter() + spacing, duration));
-            final View removeMarginView = mIsAboveIcon ? getItemViewAt(getItemCount() - 2)
-                    : mNotificationItemView;
+            removeNotification.play(reduceNotificationViewHeight(mNotificationItemView.getHeightMinusFooter() + spacing, duration));
+            final View removeMarginView = mIsAboveIcon ? getItemViewAt(getItemCount() - 2) : mNotificationItemView;
             if (removeMarginView != null) {
                 ValueAnimator removeMargin = ValueAnimator.ofFloat(1, 0).setDuration(duration);
                 removeMargin.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                     @Override
                     public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                        ((MarginLayoutParams) removeMarginView.getLayoutParams()).bottomMargin
-                                = (int) (spacing * (float) valueAnimator.getAnimatedValue());
+                        ((MarginLayoutParams) removeMarginView.getLayoutParams()).bottomMargin = (int) (spacing * (float) valueAnimator.getAnimatedValue());
                     }
                 });
                 removeNotification.play(removeMargin);
             }
-            Animator fade = ObjectAnimator.ofFloat(mNotificationItemView, ALPHA, 0)
-                    .setDuration(duration);
+            Animator fade = ObjectAnimator.ofFloat(mNotificationItemView, ALPHA, 0).setDuration(duration);
             fade.addListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
@@ -624,8 +582,7 @@ public class PopupContainerWithArrow extends AbstractFloatingView implements Dra
                 }
             });
             removeNotification.play(fade);
-            final long arrowScaleDuration = getResources().getInteger(
-                    R.integer.config_deepShortcutArrowOpenDuration);
+            final long arrowScaleDuration = getResources().getInteger(R.integer.config_deepShortcutArrowOpenDuration);
             Animator hideArrow = createArrowScaleAnim(0).setDuration(arrowScaleDuration);
             hideArrow.setStartDelay(0);
             Animator showArrow = createArrowScaleAnim(1).setDuration(arrowScaleDuration);
@@ -634,8 +591,7 @@ public class PopupContainerWithArrow extends AbstractFloatingView implements Dra
             removeNotification.start();
             return;
         }
-        mNotificationItemView.trimNotifications(NotificationKeyData.extractKeysOnly(
-                badgeInfo.getNotificationKeys()));
+        mNotificationItemView.trimNotifications(NotificationKeyData.extractKeysOnly(badgeInfo.getNotificationKeys()));
     }
 
     @Override
@@ -646,8 +602,7 @@ public class PopupContainerWithArrow extends AbstractFloatingView implements Dra
     }
 
     private ObjectAnimator createArrowScaleAnim(float scale) {
-        return LauncherAnimUtils.ofPropertyValuesHolder(
-                mArrow, new PropertyListBuilder().scale(scale).build());
+        return LauncherAnimUtils.ofPropertyValuesHolder(mArrow, new PropertyListBuilder().scale(scale).build());
     }
 
     /**
@@ -660,16 +615,14 @@ public class PopupContainerWithArrow extends AbstractFloatingView implements Dra
         final int translateYBy = mIsAboveIcon ? heightToRemove : -heightToRemove;
         mReduceHeightAnimatorSet = LauncherAnimUtils.createAnimatorSet();
         mReduceHeightAnimatorSet.play(mNotificationItemView.animateHeightRemoval(heightToRemove));
-        PropertyResetListener<View, Float> resetTranslationYListener
-                = new PropertyResetListener<>(TRANSLATION_Y, 0f);
+        PropertyResetListener<View, Float> resetTranslationYListener = new PropertyResetListener<>(TRANSLATION_Y, 0f);
         for (int i = 0; i < getItemCount(); i++) {
             final PopupItemView itemView = getItemViewAt(i);
             if (!mIsAboveIcon && itemView == mNotificationItemView) {
                 // The notification view is already in the right place when container is below icon.
                 continue;
             }
-            ValueAnimator translateItem = ObjectAnimator.ofFloat(itemView, TRANSLATION_Y,
-                    itemView.getTranslationY() + translateYBy).setDuration(duration);
+            ValueAnimator translateItem = ObjectAnimator.ofFloat(itemView, TRANSLATION_Y, itemView.getTranslationY() + translateYBy).setDuration(duration);
             translateItem.addListener(resetTranslationYListener);
             mReduceHeightAnimatorSet.play(translateItem);
         }
@@ -704,8 +657,7 @@ public class PopupContainerWithArrow extends AbstractFloatingView implements Dra
     }
 
     @Override
-    public void onDropCompleted(View target, DropTarget.DragObject d, boolean isFlingToDelete,
-            boolean success) {
+    public void onDropCompleted(View target, DropTarget.DragObject d, boolean isFlingToDelete, boolean success) {
         if (!success) {
             d.dragView.remove();
             mLauncher.showWorkspace(true);
@@ -770,12 +722,9 @@ public class PopupContainerWithArrow extends AbstractFloatingView implements Dra
                 numOpenShortcuts++;
             }
         }
-        final long duration = getResources().getInteger(
-                R.integer.config_deepShortcutCloseDuration);
-        final long arrowScaleDuration = getResources().getInteger(
-                R.integer.config_deepShortcutArrowOpenDuration);
-        final long stagger = getResources().getInteger(
-                R.integer.config_deepShortcutCloseStagger);
+        final long duration = getResources().getInteger(R.integer.config_deepShortcutCloseDuration);
+        final long arrowScaleDuration = getResources().getInteger(R.integer.config_deepShortcutArrowOpenDuration);
+        final long stagger = getResources().getInteger(R.integer.config_deepShortcutCloseStagger);
         final TimeInterpolator fadeInterpolator = new LogAccelerateInterpolator(100, 0);
 
         int firstOpenItemIndex = mIsAboveIcon ? itemCount - numOpenShortcuts : 0;
@@ -783,8 +732,7 @@ public class PopupContainerWithArrow extends AbstractFloatingView implements Dra
             final PopupItemView view = getItemViewAt(i);
             Animator anim;
             anim = view.createCloseAnimation(mIsAboveIcon, mIsLeftAligned, duration);
-            int animationIndex = mIsAboveIcon ? i - firstOpenItemIndex
-                    : numOpenShortcuts - i - 1;
+            int animationIndex = mIsAboveIcon ? i - firstOpenItemIndex : numOpenShortcuts - i - 1;
             anim.setStartDelay(stagger * animationIndex);
 
             Animator fadeAnim = ObjectAnimator.ofFloat(view, View.ALPHA, 0);
@@ -831,8 +779,7 @@ public class PopupContainerWithArrow extends AbstractFloatingView implements Dra
         }
         mIsOpen = false;
         mDeferContainerRemoval = false;
-        boolean isInHotseat = ((ItemInfo) mOriginalIcon.getTag()).container
-                == LauncherSettings.Favorites.CONTAINER_HOTSEAT;
+        boolean isInHotseat = ((ItemInfo) mOriginalIcon.getTag()).container == LauncherSettings.Favorites.CONTAINER_HOTSEAT;
         mOriginalIcon.setTextVisibility(!isInHotseat);
         mOriginalIcon.forceHideBadge(false);
         mLauncher.getDragController().removeDragListener(this);

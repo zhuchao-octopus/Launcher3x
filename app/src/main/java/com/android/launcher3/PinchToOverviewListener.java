@@ -25,15 +25,14 @@ import com.android.launcher3.util.TouchController;
 
 /**
  * Detects pinches and animates the Workspace to/from overview mode.
- *
+ * <p>
  * Usage: Pass MotionEvents to onInterceptTouchEvent() and onTouchEvent(). This class will handle
  * the pinch detection, and use {@link PinchAnimationManager} to handle the animations.
  *
  * @see PinchThresholdManager
  * @see PinchAnimationManager
  */
-public class PinchToOverviewListener extends ScaleGestureDetector.SimpleOnScaleGestureListener
-        implements TouchController {
+public class PinchToOverviewListener extends ScaleGestureDetector.SimpleOnScaleGestureListener implements TouchController {
     private static final float OVERVIEW_PROGRESS = 0f;
     private static final float WORKSPACE_PROGRESS = 1f;
     /**
@@ -109,8 +108,7 @@ public class PinchToOverviewListener extends ScaleGestureDetector.SimpleOnScaleG
 
         mPreviousProgress = mWorkspace.isInOverviewMode() ? OVERVIEW_PROGRESS : WORKSPACE_PROGRESS;
         mPreviousTimeMillis = System.currentTimeMillis();
-        mInterpolator = mWorkspace.isInOverviewMode() ? new LogDecelerateInterpolator(100, 0)
-                : new LogAccelerateInterpolator(100, 0);
+        mInterpolator = mWorkspace.isInOverviewMode() ? new LogDecelerateInterpolator(100, 0) : new LogAccelerateInterpolator(100, 0);
         mPinchStarted = true;
         mWorkspace.onPrepareStateTransition(true);
         return true;
@@ -122,8 +120,7 @@ public class PinchToOverviewListener extends ScaleGestureDetector.SimpleOnScaleG
 
         float progressVelocity = mProgressDelta / mTimeDelta;
         float passedThreshold = mThresholdManager.getPassedThreshold();
-        boolean isFling = mWorkspace.isInOverviewMode() && progressVelocity >= FLING_VELOCITY
-                || !mWorkspace.isInOverviewMode() && progressVelocity <= -FLING_VELOCITY;
+        boolean isFling = mWorkspace.isInOverviewMode() && progressVelocity >= FLING_VELOCITY || !mWorkspace.isInOverviewMode() && progressVelocity <= -FLING_VELOCITY;
         boolean shouldCancelPinch = !isFling && passedThreshold < PinchThresholdManager.THRESHOLD_ONE;
         // If we are going towards overview, mPreviousProgress is how much further we need to
         // go, since it is going from 1 to 0. If we are going to workspace, we want
@@ -136,10 +133,8 @@ public class PinchToOverviewListener extends ScaleGestureDetector.SimpleOnScaleG
         if (shouldCancelPinch) {
             cancelPinch(mPreviousProgress, duration);
         } else if (passedThreshold < PinchThresholdManager.THRESHOLD_THREE) {
-            float toProgress = mWorkspace.isInOverviewMode() ?
-                    WORKSPACE_PROGRESS : OVERVIEW_PROGRESS;
-            mAnimationManager.animateToProgress(mPreviousProgress, toProgress, duration,
-                    mThresholdManager);
+            float toProgress = mWorkspace.isInOverviewMode() ? WORKSPACE_PROGRESS : OVERVIEW_PROGRESS;
+            mAnimationManager.animateToProgress(mPreviousProgress, toProgress, duration, mThresholdManager);
         } else {
             mThresholdManager.reset();
             mWorkspace.onEndStateTransition();
@@ -166,8 +161,7 @@ public class PinchToOverviewListener extends ScaleGestureDetector.SimpleOnScaleG
         if (mPinchCanceled) return;
         mPinchCanceled = true;
         float toProgress = mWorkspace.isInOverviewMode() ? OVERVIEW_PROGRESS : WORKSPACE_PROGRESS;
-        mAnimationManager.animateToProgress(currentProgress, toProgress, duration,
-                mThresholdManager);
+        mAnimationManager.animateToProgress(currentProgress, toProgress, duration, mThresholdManager);
         mPinchStarted = false;
     }
 
@@ -182,8 +176,7 @@ public class PinchToOverviewListener extends ScaleGestureDetector.SimpleOnScaleG
         }
 
         float pinchDist = detector.getCurrentSpan() - detector.getPreviousSpan();
-        if (pinchDist < 0 && mWorkspace.isInOverviewMode() ||
-                pinchDist > 0 && !mWorkspace.isInOverviewMode()) {
+        if (pinchDist < 0 && mWorkspace.isInOverviewMode() || pinchDist > 0 && !mWorkspace.isInOverviewMode()) {
             // Pinching the wrong way, so ignore.
             return false;
         }
@@ -200,8 +193,7 @@ public class PinchToOverviewListener extends ScaleGestureDetector.SimpleOnScaleG
         float interpolatedProgress = mInterpolator.getInterpolation(progress);
 
         mAnimationManager.setAnimationProgress(interpolatedProgress);
-        float passedThreshold = mThresholdManager.updateAndAnimatePassedThreshold(
-                interpolatedProgress, mAnimationManager);
+        float passedThreshold = mThresholdManager.updateAndAnimatePassedThreshold(interpolatedProgress, mAnimationManager);
         if (passedThreshold == PinchThresholdManager.THRESHOLD_THREE) {
             return true;
         }

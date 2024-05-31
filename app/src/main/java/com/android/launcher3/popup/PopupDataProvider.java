@@ -18,7 +18,6 @@ package com.android.launcher3.popup;
 
 import android.content.ComponentName;
 import android.service.notification.StatusBarNotification;
-
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -51,17 +50,22 @@ public class PopupDataProvider implements NotificationListener.NotificationsChan
     private static final boolean LOGD = false;
     private static final String TAG = "PopupDataProvider";
 
-    /** Note that these are in order of priority. */
-    private static final SystemShortcut[] SYSTEM_SHORTCUTS = new SystemShortcut[] {
-            new SystemShortcut.AppInfo(),
-            new SystemShortcut.Widgets(),
+    /**
+     * Note that these are in order of priority.
+     */
+    private static final SystemShortcut[] SYSTEM_SHORTCUTS = new SystemShortcut[]{
+            new SystemShortcut.AppInfo(), new SystemShortcut.Widgets(),
     };
 
     private final Launcher mLauncher;
 
-    /** Maps launcher activity components to their list of shortcut ids. */
+    /**
+     * Maps launcher activity components to their list of shortcut ids.
+     */
     private MultiHashMap<ComponentKey, String> mDeepShortcutMap = new MultiHashMap<>();
-    /** Maps packages to their BadgeInfo's . */
+    /**
+     * Maps packages to their BadgeInfo's .
+     */
     private Map<PackageUserKey, BadgeInfo> mPackageUserToBadgeInfos = new HashMap<>();
 
     public PopupDataProvider(Launcher launcher) {
@@ -69,8 +73,7 @@ public class PopupDataProvider implements NotificationListener.NotificationsChan
     }
 
     @Override
-    public void onNotificationPosted(PackageUserKey postedPackageUserKey,
-            NotificationKeyData notificationKey, boolean shouldBeFilteredOut) {
+    public void onNotificationPosted(PackageUserKey postedPackageUserKey, NotificationKeyData notificationKey, boolean shouldBeFilteredOut) {
         BadgeInfo badgeInfo = mPackageUserToBadgeInfos.get(postedPackageUserKey);
         boolean badgeShouldBeRefreshed;
         if (badgeInfo == null) {
@@ -83,20 +86,16 @@ public class PopupDataProvider implements NotificationListener.NotificationsChan
                 badgeShouldBeRefreshed = false;
             }
         } else {
-            badgeShouldBeRefreshed = shouldBeFilteredOut
-                    ? badgeInfo.removeNotificationKey(notificationKey)
-                    : badgeInfo.addOrUpdateNotificationKey(notificationKey);
+            badgeShouldBeRefreshed = shouldBeFilteredOut ? badgeInfo.removeNotificationKey(notificationKey) : badgeInfo.addOrUpdateNotificationKey(notificationKey);
             if (badgeInfo.getNotificationKeys().size() == 0) {
                 mPackageUserToBadgeInfos.remove(postedPackageUserKey);
             }
         }
-        updateLauncherIconBadges(Utilities.singletonHashSet(postedPackageUserKey),
-                badgeShouldBeRefreshed);
+        updateLauncherIconBadges(Utilities.singletonHashSet(postedPackageUserKey), badgeShouldBeRefreshed);
     }
 
     @Override
-    public void onNotificationRemoved(PackageUserKey removedPackageUserKey,
-            NotificationKeyData notificationKey) {
+    public void onNotificationRemoved(PackageUserKey removedPackageUserKey, NotificationKeyData notificationKey) {
         BadgeInfo oldBadgeInfo = mPackageUserToBadgeInfos.get(removedPackageUserKey);
         if (oldBadgeInfo != null && oldBadgeInfo.removeNotificationKey(notificationKey)) {
             if (oldBadgeInfo.getNotificationKeys().size() == 0) {
@@ -124,8 +123,7 @@ public class PopupDataProvider implements NotificationListener.NotificationsChan
                 badgeInfo = new BadgeInfo(packageUserKey);
                 mPackageUserToBadgeInfos.put(packageUserKey, badgeInfo);
             }
-            badgeInfo.addOrUpdateNotificationKey(NotificationKeyData
-                    .fromNotification(notification));
+            badgeInfo.addOrUpdateNotificationKey(NotificationKeyData.fromNotification(notification));
         }
 
         // Add and remove from updatedBadges so it contains the PackageUserKeys of updated badges.
@@ -157,14 +155,14 @@ public class PopupDataProvider implements NotificationListener.NotificationsChan
 
     /**
      * Updates the icons on launcher (workspace, folders, all apps) to refresh their badges.
+     *
      * @param updatedBadges The packages whose badges should be refreshed (either a notification was
      *                      added or removed, or the badge should show the notification icon).
      * @param shouldRefresh An optional parameter that will allow us to only refresh badges that
      *                      have actually changed. If a notification updated its content but not
      *                      its count or icon, then the badge doesn't change.
      */
-    private void updateLauncherIconBadges(Set<PackageUserKey> updatedBadges,
-            boolean shouldRefresh) {
+    private void updateLauncherIconBadges(Set<PackageUserKey> updatedBadges, boolean shouldRefresh) {
         Iterator<PackageUserKey> iterator = updatedBadges.iterator();
         while (iterator.hasNext()) {
             BadgeInfo badgeInfo = mPackageUserToBadgeInfos.get(iterator.next());
@@ -182,6 +180,7 @@ public class PopupDataProvider implements NotificationListener.NotificationsChan
     /**
      * Determines whether the badge should show a notification icon rather than a number,
      * and sets that icon on the BadgeInfo if so.
+     *
      * @param badgeInfo The badge to update with an icon (null if it shouldn't show one).
      * @return Whether the badge icon potentially changed (true unless it stayed null).
      */
@@ -193,8 +192,7 @@ public class PopupDataProvider implements NotificationListener.NotificationsChan
             // Look for the most recent notification that has an icon that should be shown in badge.
             for (NotificationKeyData notificationKeyData : badgeInfo.getNotificationKeys()) {
                 String notificationKey = notificationKeyData.notificationKey;
-                StatusBarNotification[] activeNotifications = notificationListener
-                        .getActiveNotifications(new String[]{notificationKey});
+                StatusBarNotification[] activeNotifications = notificationListener.getActiveNotifications(new String[]{notificationKey});
                 if (activeNotifications.length == 1) {
                     notificationInfo = new NotificationInfo(mLauncher, activeNotifications[0]);
                     if (notificationInfo.shouldShowIconInBadge()) {
@@ -242,12 +240,12 @@ public class PopupDataProvider implements NotificationListener.NotificationsChan
         return badgeInfo == null ? Collections.EMPTY_LIST : badgeInfo.getNotificationKeys();
     }
 
-    /** This makes a potentially expensive binder call and should be run on a background thread. */
-    public @NonNull List<StatusBarNotification> getStatusBarNotificationsForKeys(
-            List<NotificationKeyData> notificationKeys) {
+    /**
+     * This makes a potentially expensive binder call and should be run on a background thread.
+     */
+    public @NonNull List<StatusBarNotification> getStatusBarNotificationsForKeys(List<NotificationKeyData> notificationKeys) {
         NotificationListener notificationListener = NotificationListener.getInstanceIfConnected();
-        return notificationListener == null ? Collections.EMPTY_LIST
-                : notificationListener.getNotificationsForKeys(notificationKeys);
+        return notificationListener == null ? Collections.EMPTY_LIST : notificationListener.getNotificationsForKeys(notificationKeys);
     }
 
     public @NonNull List<SystemShortcut> getEnabledSystemShortcutsForItem(ItemInfo info) {

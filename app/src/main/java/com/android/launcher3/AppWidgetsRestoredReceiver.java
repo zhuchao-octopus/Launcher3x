@@ -25,13 +25,12 @@ public class AppWidgetsRestoredReceiver extends BroadcastReceiver {
             final int[] newIds = intent.getIntArrayExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS);
             if (oldIds.length == newIds.length) {
                 final PendingResult asyncResult = goAsync();
-                new Handler(LauncherModel.getWorkerLooper())
-                        .postAtFrontOfQueue(new Runnable() {
-                            @Override
-                            public void run() {
-                                restoreAppWidgetIds(context, asyncResult, oldIds, newIds);
-                            }
-                        });
+                new Handler(LauncherModel.getWorkerLooper()).postAtFrontOfQueue(new Runnable() {
+                    @Override
+                    public void run() {
+                        restoreAppWidgetIds(context, asyncResult, oldIds, newIds);
+                    }
+                });
             } else {
                 Log.e(TAG, "Invalid host restored received");
             }
@@ -41,8 +40,7 @@ public class AppWidgetsRestoredReceiver extends BroadcastReceiver {
     /**
      * Updates the app widgets whose id has changed during the restore process.
      */
-    static void restoreAppWidgetIds(Context context, PendingResult asyncResult,
-            int[] oldWidgetIds, int[] newWidgetIds) {
+    static void restoreAppWidgetIds(Context context, PendingResult asyncResult, int[] oldWidgetIds, int[] newWidgetIds) {
         final ContentResolver cr = context.getContentResolver();
         final AppWidgetManager widgets = AppWidgetManager.getInstance(context);
         AppWidgetHost appWidgetHost = new AppWidgetHost(context, Launcher.APPWIDGET_HOST_ID);
@@ -59,17 +57,11 @@ public class AppWidgetsRestoredReceiver extends BroadcastReceiver {
                 state = LauncherAppWidgetInfo.FLAG_PROVIDER_NOT_READY;
             }
 
-            String[] widgetIdParams = new String[] { Integer.toString(oldWidgetIds[i]) };
-            int result = new ContentWriter(context, new ContentWriter.CommitParams(
-                    "appWidgetId=? and (restored & 1) = 1", widgetIdParams))
-                    .put(LauncherSettings.Favorites.APPWIDGET_ID, newWidgetIds[i])
-                    .put(LauncherSettings.Favorites.RESTORED, state)
-                    .commit();
+            String[] widgetIdParams = new String[]{Integer.toString(oldWidgetIds[i])};
+            int result = new ContentWriter(context, new ContentWriter.CommitParams("appWidgetId=? and (restored & 1) = 1", widgetIdParams)).put(LauncherSettings.Favorites.APPWIDGET_ID, newWidgetIds[i]).put(LauncherSettings.Favorites.RESTORED, state).commit();
 
             if (result == 0) {
-                Cursor cursor = cr.query(Favorites.CONTENT_URI,
-                        new String[] {Favorites.APPWIDGET_ID},
-                        "appWidgetId=?", widgetIdParams, null);
+                Cursor cursor = cr.query(Favorites.CONTENT_URI, new String[]{Favorites.APPWIDGET_ID}, "appWidgetId=?", widgetIdParams, null);
                 try {
                     if (!cursor.moveToFirst()) {
                         // The widget no long exists.

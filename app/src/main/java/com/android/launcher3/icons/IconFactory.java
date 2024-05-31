@@ -46,10 +46,7 @@ public class IconFactory extends BaseIconFactory {
             poolId = sPoolId;
         }
 
-        return new IconFactory(context,
-                context.getResources().getConfiguration().densityDpi,
-                context.getResources().getDimensionPixelSize(R.dimen.default_icon_bitmap_size),
-                poolId);
+        return new IconFactory(context, context.getResources().getConfiguration().densityDpi, context.getResources().getDimensionPixelSize(R.dimen.default_icon_bitmap_size), poolId);
     }
 
     public static void clearPool() {

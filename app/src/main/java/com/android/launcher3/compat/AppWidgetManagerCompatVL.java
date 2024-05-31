@@ -58,8 +58,7 @@ class AppWidgetManagerCompatVL extends AppWidgetManagerCompat {
             return providers;
         }
         // Only get providers for the given package/user.
-        List<AppWidgetProviderInfo> providers = new ArrayList<>(mAppWidgetManager
-                .getInstalledProvidersForProfile(packageUser.mUser));
+        List<AppWidgetProviderInfo> providers = new ArrayList<>(mAppWidgetManager.getInstalledProvidersForProfile(packageUser.mUser));
         Iterator<AppWidgetProviderInfo> iterator = providers.iterator();
         while (iterator.hasNext()) {
             if (!iterator.next().provider.getPackageName().equals(packageUser.mPackageName)) {
@@ -70,15 +69,12 @@ class AppWidgetManagerCompatVL extends AppWidgetManagerCompat {
     }
 
     @Override
-    public boolean bindAppWidgetIdIfAllowed(int appWidgetId, AppWidgetProviderInfo info,
-            Bundle options) {
-        return mAppWidgetManager.bindAppWidgetIdIfAllowed(
-                appWidgetId, info.getProfile(), info.provider, options);
+    public boolean bindAppWidgetIdIfAllowed(int appWidgetId, AppWidgetProviderInfo info, Bundle options) {
+        return mAppWidgetManager.bindAppWidgetIdIfAllowed(appWidgetId, info.getProfile(), info.provider, options);
     }
 
     @Override
-    public void startConfigActivity(AppWidgetProviderInfo info, int widgetId, Activity activity,
-            AppWidgetHost host, int requestCode) {
+    public void startConfigActivity(AppWidgetProviderInfo info, int widgetId, Activity activity, AppWidgetHost host, int requestCode) {
         try {
             host.startAppWidgetConfigureActivityForResult(activity, widgetId, 0, requestCode, null);
         } catch (ActivityNotFoundException | SecurityException e) {
@@ -88,8 +84,7 @@ class AppWidgetManagerCompatVL extends AppWidgetManagerCompat {
 
     @Override
     public LauncherAppWidgetProviderInfo findProvider(ComponentName provider, UserHandle user) {
-        for (AppWidgetProviderInfo info : mAppWidgetManager
-                .getInstalledProvidersForProfile(user)) {
+        for (AppWidgetProviderInfo info : mAppWidgetManager.getInstalledProvidersForProfile(user)) {
             if (info.provider.equals(provider)) {
                 return LauncherAppWidgetProviderInfo.fromProviderInfo(mContext, info);
             }
@@ -101,8 +96,7 @@ class AppWidgetManagerCompatVL extends AppWidgetManagerCompat {
     public HashMap<ComponentKey, AppWidgetProviderInfo> getAllProvidersMap() {
         HashMap<ComponentKey, AppWidgetProviderInfo> result = new HashMap<>();
         for (UserHandle user : mUserManager.getUserProfiles()) {
-            for (AppWidgetProviderInfo info :
-                    mAppWidgetManager.getInstalledProvidersForProfile(user)) {
+            for (AppWidgetProviderInfo info : mAppWidgetManager.getInstalledProvidersForProfile(user)) {
                 result.put(new ComponentKey(info.provider, user), info);
             }
         }

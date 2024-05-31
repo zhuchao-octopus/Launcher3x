@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!-- 
+<?xml version="1.0" encoding="UTF-8"?><!--
 /*
 * Copyright (C) 2008 The Android Open Source Project
 *
@@ -17,8 +16,7 @@
 */
  -->
 
-<resources xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_name" msgid="649227358658669779">"Launcher3"</string>
     <string name="folder_name" msgid="7371454440695724752"></string>
     <string name="work_folder_name" msgid="3753320833950115786">"工作"</string>
@@ -123,18 +121,18 @@
     <string name="shortcuts_menu_with_notifications_description" msgid="8985659504915468840">"「<xliff:g id="APP_NAME">%3$s</xliff:g>」嘅 <xliff:g id="NUMBER_OF_SHORTCUTS">%1$d</xliff:g> 個捷徑同 <xliff:g id="NUMBER_OF_NOTIFICATIONS">%2$d</xliff:g> 個通知"</string>
     <string name="action_dismiss_notification" msgid="5909461085055959187">"關閉"</string>
     <string name="notification_dismissed" msgid="6002233469409822874">"關閉咗通知"</string>
-    
-      <string name="month1" >一月</string>
-     <string name="month2" >二月</string>
-     <string name="month3" >三月</string>
-     <string name="month4" >四月</string>
-     <string name="month5" >五月</string>
-     <string name="month6" >六月</string>
-     <string name="month7" >七月</string>
-     <string name="month8" >八月</string>
-     <string name="month9" >九月</string>
-     <string name="montha" >十月</string>
-     <string name="monthb" >十一月</string>
-     <string name="monthc" >十二月</string>
+
+    <string name="month1">一月</string>
+    <string name="month2">二月</string>
+    <string name="month3">三月</string>
+    <string name="month4">四月</string>
+    <string name="month5">五月</string>
+    <string name="month6">六月</string>
+    <string name="month7">七月</string>
+    <string name="month8">八月</string>
+    <string name="month9">九月</string>
+    <string name="montha">十月</string>
+    <string name="monthb">十一月</string>
+    <string name="monthc">十二月</string>
     <string name="f_camera_alternative_7451">前攝像頭</string>
 </resources>

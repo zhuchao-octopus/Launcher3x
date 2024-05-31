@@ -35,10 +35,10 @@ public class ShadowGenerator {
 
     // Percent of actual icon size
     private static final float HALF_DISTANCE = 0.5f;
-    public static final float BLUR_FACTOR = 0.5f/48;
+    public static final float BLUR_FACTOR = 0.5f / 48;
 
     // Percent of actual icon size
-    private static final float KEY_SHADOW_DISTANCE = 1f/48;
+    private static final float KEY_SHADOW_DISTANCE = 1f / 48;
     public static final int KEY_SHADOW_ALPHA = 61;
 
     public static final int AMBIENT_SHADOW_ALPHA = 30;
@@ -112,8 +112,7 @@ public class ShadowGenerator {
 
         // Draw key shadow, bottom aligned within size
         blurPaint.setAlpha(KEY_SHADOW_ALPHA);
-        canvas.drawRoundRect(left, top + shadowYOffset, right, bottom + shadowYOffset,
-                radius, radius, blurPaint);
+        canvas.drawRoundRect(left, top + shadowYOffset, right, bottom + shadowYOffset, radius, radius, blurPaint);
 
         // Draw the circle
         Paint drawPaint = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG);

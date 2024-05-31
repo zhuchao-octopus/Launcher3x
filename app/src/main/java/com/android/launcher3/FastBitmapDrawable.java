@@ -36,7 +36,7 @@ import com.android.launcher3.graphics.IconPalette;
 
 public class FastBitmapDrawable extends Drawable {
 
-    private static final int[] STATE_PRESSED = new int[] {android.R.attr.state_pressed};
+    private static final int[] STATE_PRESSED = new int[]{android.R.attr.state_pressed};
 
     private static final float PRESSED_BRIGHTNESS = 100f / 255f;
     private static final float DISABLED_DESATURATION = 1f;
@@ -48,7 +48,7 @@ public class FastBitmapDrawable extends Drawable {
         public float getInterpolation(float input) {
             if (input < 0.05f) {
                 return input / 0.05f;
-            } else if (input < 0.3f){
+            } else if (input < 0.3f) {
                 return 1;
             } else {
                 return (1 - input) / 0.7f;
@@ -77,8 +77,7 @@ public class FastBitmapDrawable extends Drawable {
 
     private IconPalette mIconPalette;
 
-    private static final Property<FastBitmapDrawable, Float> BRIGHTNESS
-            = new Property<FastBitmapDrawable, Float>(Float.TYPE, "brightness") {
+    private static final Property<FastBitmapDrawable, Float> BRIGHTNESS = new Property<FastBitmapDrawable, Float>(Float.TYPE, "brightness") {
         @Override
         public Float get(FastBitmapDrawable fastBitmapDrawable) {
             return fastBitmapDrawable.getBrightness();
@@ -123,8 +122,7 @@ public class FastBitmapDrawable extends Drawable {
 
     public IconPalette getIconPalette() {
         if (mIconPalette == null) {
-            mIconPalette = IconPalette.fromDominantColor(Utilities
-                    .findDominantColorByHue(mBitmap, 20), true /* desaturateBackground */);
+            mIconPalette = IconPalette.fromDominantColor(Utilities.findDominantColorByHue(mBitmap, 20), true /* desaturateBackground */);
         }
         return mIconPalette;
     }
@@ -202,8 +200,7 @@ public class FastBitmapDrawable extends Drawable {
 
             if (mIsPressed) {
                 // Animate when going to pressed state
-                mBrightnessAnimator = ObjectAnimator.ofFloat(
-                        this, BRIGHTNESS, getExpectedBrightness());
+                mBrightnessAnimator = ObjectAnimator.ofFloat(this, BRIGHTNESS, getExpectedBrightness());
                 mBrightnessAnimator.setDuration(CLICK_FEEDBACK_DURATION);
                 mBrightnessAnimator.setInterpolator(CLICK_FEEDBACK_INTERPOLATOR);
                 mBrightnessAnimator.start();
@@ -221,8 +218,7 @@ public class FastBitmapDrawable extends Drawable {
     }
 
     private float getExpectedBrightness() {
-        return mIsDisabled ? DISABLED_BRIGHTNESS :
-                (mIsPressed ? PRESSED_BRIGHTNESS : 0);
+        return mIsDisabled ? DISABLED_BRIGHTNESS : (mIsPressed ? PRESSED_BRIGHTNESS : 0);
     }
 
     public void setIsDisabled(boolean isDisabled) {
@@ -291,8 +287,7 @@ public class FastBitmapDrawable extends Drawable {
                 float brightnessF = getBrightness();
                 int brightnessI = (int) (255 * brightnessF);
                 if (usePorterDuffFilter) {
-                    filter = new PorterDuffColorFilter(Color.argb(brightnessI, 255, 255, 255),
-                            PorterDuff.Mode.SRC_ATOP);
+                    filter = new PorterDuffColorFilter(Color.argb(brightnessI, 255, 255, 255), PorterDuff.Mode.SRC_ATOP);
                 } else {
                     float saturationF = 1f - getDesaturation();
                     sTempFilterMatrix.setSaturation(saturationF);

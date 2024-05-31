@@ -16,7 +16,6 @@
 package com.android.launcher3.allapps;
 
 import android.os.Handler;
-import android.util.Log;
 
 import com.android.launcher3.AppInfo;
 import com.android.launcher3.util.ComponentKey;
@@ -30,7 +29,7 @@ import java.util.regex.Pattern;
  * The default search implementation.
  */
 public class DefaultAppSearchAlgorithm {
-    private static final String TAG="DefaultAppSearchAlgorithm";
+    private static final String TAG = "DefaultAppSearchAlgorithm";
     private final List<AppInfo> mApps;
     protected final Handler mResultHandler;
 
@@ -45,8 +44,7 @@ public class DefaultAppSearchAlgorithm {
         }
     }
 
-    public void doSearch(final String query,
-            final AllAppsSearchBarController.Callbacks callback) {
+    public void doSearch(final String query, final AllAppsSearchBarController.Callbacks callback) {
         final ArrayList<ComponentKey> result = getTitleMatchResult(query);
         mResultHandler.post(new Runnable() {
 
@@ -88,18 +86,14 @@ public class DefaultAppSearchAlgorithm {
         for (int i = 0; i <= end; i++) {
             lastType = thisType;
             thisType = nextType;
-            nextType = i < (titleLength - 1) ?
-                    Character.getType(title.codePointAt(i + 1)) : Character.UNASSIGNED;
-            if (isBreak(thisType, lastType, nextType) &&
-                    title.substring(i, i + queryLength).equalsIgnoreCase(query)) {
+            nextType = i < (titleLength - 1) ? Character.getType(title.codePointAt(i + 1)) : Character.UNASSIGNED;
+            if (isBreak(thisType, lastType, nextType) && title.substring(i, i + queryLength).equalsIgnoreCase(query)) {
                 return true;
             }
         }
         //for Chinese search
-        if(isContainChinese(query))
-        {
-            if(title.contains(query))
-            {
+        if (isContainChinese(query)) {
+            if (title.contains(query)) {
                 return true;
             }
         }
@@ -109,10 +103,10 @@ public class DefaultAppSearchAlgorithm {
     /**
      * Returns true if the current point should be a break point. Following cases
      * are considered as break points:
-     *      1) Any non space character after a space character
-     *      2) Any digit after a non-digit character
-     *      3) Any capital character after a digit or small character
-     *      4) Any capital character before a small character
+     * 1) Any non space character after a space character
+     * 2) Any digit after a non-digit character
+     * 3) Any capital character after a digit or small character
+     * 4) Any capital character before a small character
      */
     protected boolean isBreak(int thisType, int prevType, int nextType) {
         switch (thisType) {
@@ -131,9 +125,7 @@ public class DefaultAppSearchAlgorithm {
             case Character.LETTER_NUMBER:
             case Character.OTHER_NUMBER:
                 // Break point if previous was not a number
-                return !(prevType == Character.DECIMAL_DIGIT_NUMBER
-                        || prevType == Character.LETTER_NUMBER
-                        || prevType == Character.OTHER_NUMBER);
+                return !(prevType == Character.DECIMAL_DIGIT_NUMBER || prevType == Character.LETTER_NUMBER || prevType == Character.OTHER_NUMBER);
             case Character.MATH_SYMBOL:
             case Character.CURRENCY_SYMBOL:
             case Character.OTHER_PUNCTUATION:
@@ -145,7 +137,7 @@ public class DefaultAppSearchAlgorithm {
         }
     }
 
-    protected  boolean isContainChinese(String str) {
+    protected boolean isContainChinese(String str) {
 
         Pattern p = Pattern.compile("[\u4e00-\u9fa5]");
         Matcher m = p.matcher(str);

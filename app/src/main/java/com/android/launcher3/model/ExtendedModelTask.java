@@ -31,15 +31,11 @@ import java.util.ArrayList;
  */
 public abstract class ExtendedModelTask extends BaseModelUpdateTask {
 
-    public void bindUpdatedShortcuts(
-            ArrayList<ShortcutInfo> updatedShortcuts, UserHandle user) {
+    public void bindUpdatedShortcuts(ArrayList<ShortcutInfo> updatedShortcuts, UserHandle user) {
         bindUpdatedShortcuts(updatedShortcuts, new ArrayList<ShortcutInfo>(), user);
     }
 
-    public void bindUpdatedShortcuts(
-            final ArrayList<ShortcutInfo> updatedShortcuts,
-            final ArrayList<ShortcutInfo> removedShortcuts,
-            final UserHandle user) {
+    public void bindUpdatedShortcuts(final ArrayList<ShortcutInfo> updatedShortcuts, final ArrayList<ShortcutInfo> removedShortcuts, final UserHandle user) {
         if (!updatedShortcuts.isEmpty() || !removedShortcuts.isEmpty()) {
             scheduleCallbackTask(new CallbackTask() {
                 @Override

@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
      Copyright (C) 2016 The Android Open Source Project
 
      Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,105 +14,104 @@
      limitations under the License.
 -->
 
-<profiles xmlns:launcher="http://schemas.android.com/apk/res-auto/com.android.launcher3" >
+<profiles xmlns:launcher="http://schemas.android.com/apk/res-auto/com.android.launcher3">
 
-<!--     <profile -->
-<!--         launcher:name="Super Short Stubby" -->
-<!--         launcher:minWidthDps="255" -->
-<!--         launcher:minHeightDps="300" -->
-<!--         launcher:numRows="2" -->
-<!--         launcher:numColumns="3" -->
-<!--         launcher:numFolderRows="2" -->
-<!--         launcher:numFolderColumns="3" -->
-<!--         launcher:minAllAppsPredictionColumns="3" -->
-<!--         launcher:iconSize="48" -->
-<!--         launcher:iconTextSize="13.0" -->
-<!--         launcher:numHotseatIcons="3" -->
-<!--         launcher:hotseatIconSize="48" -->
-<!--         launcher:defaultLayoutId="@xml/default_workspace_3x3" -->
-<!--         /> -->
+    <!--     <profile -->
+    <!--         launcher:name="Super Short Stubby" -->
+    <!--         launcher:minWidthDps="255" -->
+    <!--         launcher:minHeightDps="300" -->
+    <!--         launcher:numRows="2" -->
+    <!--         launcher:numColumns="3" -->
+    <!--         launcher:numFolderRows="2" -->
+    <!--         launcher:numFolderColumns="3" -->
+    <!--         launcher:minAllAppsPredictionColumns="3" -->
+    <!--         launcher:iconSize="48" -->
+    <!--         launcher:iconTextSize="13.0" -->
+    <!--         launcher:numHotseatIcons="3" -->
+    <!--         launcher:hotseatIconSize="48" -->
+    <!--         launcher:defaultLayoutId="@xml/default_workspace_3x3" -->
+    <!--         /> -->
 
-<!--     <profile -->
-<!--         launcher:name="Shorter Stubby" -->
-<!--         launcher:minWidthDps="255" -->
-<!--         launcher:minHeightDps="400" -->
-<!--         launcher:numRows="3" -->
-<!--         launcher:numColumns="3" -->
-<!--         launcher:numFolderRows="3" -->
-<!--         launcher:numFolderColumns="3" -->
-<!--         launcher:minAllAppsPredictionColumns="3" -->
-<!--         launcher:iconSize="48" -->
-<!--         launcher:iconTextSize="13.0" -->
-<!--         launcher:numHotseatIcons="3" -->
-<!--         launcher:hotseatIconSize="48" -->
-<!--         launcher:defaultLayoutId="@xml/default_workspace_3x3" -->
-<!--         /> -->
+    <!--     <profile -->
+    <!--         launcher:name="Shorter Stubby" -->
+    <!--         launcher:minWidthDps="255" -->
+    <!--         launcher:minHeightDps="400" -->
+    <!--         launcher:numRows="3" -->
+    <!--         launcher:numColumns="3" -->
+    <!--         launcher:numFolderRows="3" -->
+    <!--         launcher:numFolderColumns="3" -->
+    <!--         launcher:minAllAppsPredictionColumns="3" -->
+    <!--         launcher:iconSize="48" -->
+    <!--         launcher:iconTextSize="13.0" -->
+    <!--         launcher:numHotseatIcons="3" -->
+    <!--         launcher:hotseatIconSize="48" -->
+    <!--         launcher:defaultLayoutId="@xml/default_workspace_3x3" -->
+    <!--         /> -->
 
-<!--     <profile -->
-<!--         launcher:name="Short Stubby" -->
-<!--         launcher:minWidthDps="275" -->
-<!--         launcher:minHeightDps="420" -->
-<!--         launcher:numRows="3" -->
-<!--         launcher:numColumns="4" -->
-<!--         launcher:numFolderRows="3" -->
-<!--         launcher:numFolderColumns="4" -->
-<!--         launcher:minAllAppsPredictionColumns="4" -->
-<!--         launcher:iconSize="48" -->
-<!--         launcher:iconTextSize="13.0" -->
-<!--         launcher:numHotseatIcons="5" -->
-<!--         launcher:hotseatIconSize="48" -->
-<!--         launcher:defaultLayoutId="@xml/default_workspace_4x4" -->
-<!--         /> -->
+    <!--     <profile -->
+    <!--         launcher:name="Short Stubby" -->
+    <!--         launcher:minWidthDps="275" -->
+    <!--         launcher:minHeightDps="420" -->
+    <!--         launcher:numRows="3" -->
+    <!--         launcher:numColumns="4" -->
+    <!--         launcher:numFolderRows="3" -->
+    <!--         launcher:numFolderColumns="4" -->
+    <!--         launcher:minAllAppsPredictionColumns="4" -->
+    <!--         launcher:iconSize="48" -->
+    <!--         launcher:iconTextSize="13.0" -->
+    <!--         launcher:numHotseatIcons="5" -->
+    <!--         launcher:hotseatIconSize="48" -->
+    <!--         launcher:defaultLayoutId="@xml/default_workspace_4x4" -->
+    <!--         /> -->
 
-<!--     <profile -->
-<!--         launcher:name="Stubby" -->
-<!--         launcher:minWidthDps="255" -->
-<!--         launcher:minHeightDps="450" -->
-<!--         launcher:numRows="3" -->
-<!--         launcher:numColumns="4" -->
-<!--         launcher:numFolderRows="3" -->
-<!--         launcher:numFolderColumns="4" -->
-<!--         launcher:minAllAppsPredictionColumns="4" -->
-<!--         launcher:iconSize="48" -->
-<!--         launcher:iconTextSize="13.0" -->
-<!--         launcher:numHotseatIcons="5" -->
-<!--         launcher:hotseatIconSize="48" -->
-<!--         launcher:defaultLayoutId="@xml/default_workspace_4x4" -->
-<!--         /> -->
+    <!--     <profile -->
+    <!--         launcher:name="Stubby" -->
+    <!--         launcher:minWidthDps="255" -->
+    <!--         launcher:minHeightDps="450" -->
+    <!--         launcher:numRows="3" -->
+    <!--         launcher:numColumns="4" -->
+    <!--         launcher:numFolderRows="3" -->
+    <!--         launcher:numFolderColumns="4" -->
+    <!--         launcher:minAllAppsPredictionColumns="4" -->
+    <!--         launcher:iconSize="48" -->
+    <!--         launcher:iconTextSize="13.0" -->
+    <!--         launcher:numHotseatIcons="5" -->
+    <!--         launcher:hotseatIconSize="48" -->
+    <!--         launcher:defaultLayoutId="@xml/default_workspace_4x4" -->
+    <!--         /> -->
 
 
+    <!--     <profile -->
+    <!--         launcher:name="Nexus 4" -->
+    <!--         launcher:minWidthDps="359" -->
+    <!--         launcher:minHeightDps="567" -->
+    <!--         launcher:numRows="1" -->
+    <!--         launcher:numColumns="4" -->
+    <!--         launcher:numFolderRows="4" -->
+    <!--         launcher:numFolderColumns="4" -->
+    <!--         launcher:minAllAppsPredictionColumns="4" -->
+    <!--         launcher:iconSize="60" -->
+    <!--         launcher:iconTextSize="13.0" -->
+    <!--         launcher:numHotseatIcons="5" -->
+    <!--         launcher:hotseatIconSize="56" -->
+    <!--         launcher:defaultLayoutId="@xml/default_workspace_4x4" -->
+    <!--         /> -->
 
-<!--     <profile -->
-<!--         launcher:name="Nexus 4" -->
-<!--         launcher:minWidthDps="359" -->
-<!--         launcher:minHeightDps="567" -->
-<!--         launcher:numRows="1" -->
-<!--         launcher:numColumns="4" -->
-<!--         launcher:numFolderRows="4" -->
-<!--         launcher:numFolderColumns="4" -->
-<!--         launcher:minAllAppsPredictionColumns="4" -->
-<!--         launcher:iconSize="60" -->
-<!--         launcher:iconTextSize="13.0" -->
-<!--         launcher:numHotseatIcons="5" -->
-<!--         launcher:hotseatIconSize="56" -->
-<!--         launcher:defaultLayoutId="@xml/default_workspace_4x4" -->
-<!--         /> -->
-
-<!--     <profile -->
-<!--         launcher:name="Nexus 5" -->
-<!--         launcher:minWidthDps="335" -->
-<!--         launcher:minHeightDps="567" -->
-<!--         launcher:numRows="2" -->
-<!--         launcher:numColumns="4" -->
-<!--         launcher:numFolderRows="4" -->
-<!--         launcher:numFolderColumns="4" -->
-<!--         launcher:minAllAppsPredictionColumns="4" -->
-<!--         launcher:iconSize="60" -->
-<!--         launcher:iconTextSize="13.0" -->
-<!--         launcher:numHotseatIcons="5" -->
-<!--         launcher:hotseatIconSize="56" -->
-<!--         launcher:defaultLayoutId="@xml/default_workspace_4x4" -->
-<!--         /> -->
+    <!--     <profile -->
+    <!--         launcher:name="Nexus 5" -->
+    <!--         launcher:minWidthDps="335" -->
+    <!--         launcher:minHeightDps="567" -->
+    <!--         launcher:numRows="2" -->
+    <!--         launcher:numColumns="4" -->
+    <!--         launcher:numFolderRows="4" -->
+    <!--         launcher:numFolderColumns="4" -->
+    <!--         launcher:minAllAppsPredictionColumns="4" -->
+    <!--         launcher:iconSize="60" -->
+    <!--         launcher:iconTextSize="13.0" -->
+    <!--         launcher:numHotseatIcons="5" -->
+    <!--         launcher:hotseatIconSize="56" -->
+    <!--         launcher:defaultLayoutId="@xml/default_workspace_4x4" -->
+    <!--         /> -->
 
     <profile
         launcher:name="Large Phone"
@@ -128,55 +126,54 @@
         launcher:iconTextSize="16"
         launcher:numHotseatIcons="5"
         launcher:hotseatIconSize="56"
-        launcher:defaultLayoutId="@xml/default_workspace_5x2"
-        />
+        launcher:defaultLayoutId="@xml/default_workspace_5x2" />
 
-<!--     <profile -->
-<!--         launcher:name="Nexus 7" -->
-<!--         launcher:minWidthDps="575" -->
-<!--         launcher:minHeightDps="904" -->
-<!--         launcher:numRows="5" -->
-<!--         launcher:numColumns="6" -->
-<!--         launcher:numFolderRows="4" -->
-<!--         launcher:numFolderColumns="5" -->
-<!--         launcher:minAllAppsPredictionColumns="4" -->
-<!--         launcher:iconSize="72" -->
-<!--         launcher:iconTextSize="14.4" -->
-<!--         launcher:numHotseatIcons="7" -->
-<!--         launcher:hotseatIconSize="60" -->
-<!--         launcher:defaultLayoutId="@xml/default_workspace_5x6" -->
-<!--         /> -->
+    <!--     <profile -->
+    <!--         launcher:name="Nexus 7" -->
+    <!--         launcher:minWidthDps="575" -->
+    <!--         launcher:minHeightDps="904" -->
+    <!--         launcher:numRows="5" -->
+    <!--         launcher:numColumns="6" -->
+    <!--         launcher:numFolderRows="4" -->
+    <!--         launcher:numFolderColumns="5" -->
+    <!--         launcher:minAllAppsPredictionColumns="4" -->
+    <!--         launcher:iconSize="72" -->
+    <!--         launcher:iconTextSize="14.4" -->
+    <!--         launcher:numHotseatIcons="7" -->
+    <!--         launcher:hotseatIconSize="60" -->
+    <!--         launcher:defaultLayoutId="@xml/default_workspace_5x6" -->
+    <!--         /> -->
 
-<!--     <profile -->
-<!--         launcher:name="Nexus 10" -->
-<!--         launcher:minWidthDps="727" -->
-<!--         launcher:minHeightDps="1207" -->
-<!--         launcher:numRows="5" -->
-<!--         launcher:numColumns="6" -->
-<!--         launcher:numFolderRows="4" -->
-<!--         launcher:numFolderColumns="5" -->
-<!--         launcher:minAllAppsPredictionColumns="4" -->
-<!--         launcher:iconSize="76" -->
-<!--         launcher:iconTextSize="14.4" -->
-<!--         launcher:numHotseatIcons="7" -->
-<!--         launcher:hotseatIconSize="76" -->
-<!--         launcher:defaultLayoutId="@xml/default_workspace_5x6" -->
-<!--         /> -->
+    <!--     <profile -->
+    <!--         launcher:name="Nexus 10" -->
+    <!--         launcher:minWidthDps="727" -->
+    <!--         launcher:minHeightDps="1207" -->
+    <!--         launcher:numRows="5" -->
+    <!--         launcher:numColumns="6" -->
+    <!--         launcher:numFolderRows="4" -->
+    <!--         launcher:numFolderColumns="5" -->
+    <!--         launcher:minAllAppsPredictionColumns="4" -->
+    <!--         launcher:iconSize="76" -->
+    <!--         launcher:iconTextSize="14.4" -->
+    <!--         launcher:numHotseatIcons="7" -->
+    <!--         launcher:hotseatIconSize="76" -->
+    <!--         launcher:defaultLayoutId="@xml/default_workspace_5x6" -->
+    <!--         /> -->
 
-<!--     <profile -->
-<!--         launcher:name="20-inch Tablet" -->
-<!--         launcher:minWidthDps="1527" -->
-<!--         launcher:minHeightDps="2527" -->
-<!--         launcher:numRows="7" -->
-<!--         launcher:numColumns="7" -->
-<!--         launcher:numFolderRows="6" -->
-<!--         launcher:numFolderColumns="6" -->
-<!--         launcher:minAllAppsPredictionColumns="4" -->
-<!--         launcher:iconSize="100" -->
-<!--         launcher:iconTextSize="20.0" -->
-<!--         launcher:numHotseatIcons="7" -->
-<!--         launcher:hotseatIconSize="72" -->
-<!--         launcher:defaultLayoutId="@xml/default_workspace_5x6" -->
-<!--         /> -->
+    <!--     <profile -->
+    <!--         launcher:name="20-inch Tablet" -->
+    <!--         launcher:minWidthDps="1527" -->
+    <!--         launcher:minHeightDps="2527" -->
+    <!--         launcher:numRows="7" -->
+    <!--         launcher:numColumns="7" -->
+    <!--         launcher:numFolderRows="6" -->
+    <!--         launcher:numFolderColumns="6" -->
+    <!--         launcher:minAllAppsPredictionColumns="4" -->
+    <!--         launcher:iconSize="100" -->
+    <!--         launcher:iconTextSize="20.0" -->
+    <!--         launcher:numHotseatIcons="7" -->
+    <!--         launcher:hotseatIconSize="72" -->
+    <!--         launcher:defaultLayoutId="@xml/default_workspace_5x6" -->
+    <!--         /> -->
 
 </profiles>

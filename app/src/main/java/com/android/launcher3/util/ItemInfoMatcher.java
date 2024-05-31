@@ -75,8 +75,7 @@ public abstract class ItemInfoMatcher {
         };
     }
 
-    public static ItemInfoMatcher ofComponents(
-            final HashSet<ComponentName> components, final UserHandle user) {
+    public static ItemInfoMatcher ofComponents(final HashSet<ComponentName> components, final UserHandle user) {
         return new ItemInfoMatcher() {
             @Override
             public boolean matches(ItemInfo info, ComponentName cn) {
@@ -85,8 +84,7 @@ public abstract class ItemInfoMatcher {
         };
     }
 
-    public static ItemInfoMatcher ofPackages(
-            final HashSet<String> packageNames, final UserHandle user) {
+    public static ItemInfoMatcher ofPackages(final HashSet<String> packageNames, final UserHandle user) {
         return new ItemInfoMatcher() {
             @Override
             public boolean matches(ItemInfo info, ComponentName cn) {
@@ -99,8 +97,7 @@ public abstract class ItemInfoMatcher {
         return new ItemInfoMatcher() {
             @Override
             public boolean matches(ItemInfo info, ComponentName cn) {
-                return info.itemType == Favorites.ITEM_TYPE_DEEP_SHORTCUT &&
-                        keys.contains(ShortcutKey.fromItemInfo(info));
+                return info.itemType == Favorites.ITEM_TYPE_DEEP_SHORTCUT && keys.contains(ShortcutKey.fromItemInfo(info));
             }
         };
     }

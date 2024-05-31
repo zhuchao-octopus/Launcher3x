@@ -20,7 +20,6 @@ import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.content.Context;
 import android.graphics.Point;
-///import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -52,8 +51,7 @@ import java.util.List;
  * A {@link PopupItemView} that contains all of the {@link DeepShortcutView}s for an app,
  * as well as the system shortcuts such as Widgets and App Info.
  */
-public class ShortcutsItemView extends PopupItemView implements View.OnLongClickListener,
-        View.OnTouchListener, LogContainerProvider {
+public class ShortcutsItemView extends PopupItemView implements View.OnLongClickListener, View.OnTouchListener, LogContainerProvider {
 
     private Launcher mLauncher;
     private LinearLayout mShortcutsLayout;
@@ -112,9 +110,7 @@ public class ShortcutsItemView extends PopupItemView implements View.OnLongClick
         mIconShift.x = mIconLastTouchPos.x - sv.getIconCenter().x;
         mIconShift.y = mIconLastTouchPos.y - mLauncher.getDeviceProfile().iconSizePx;
 
-        DragView dv = mLauncher.getWorkspace().beginDragShared(sv.getIconView(),
-                (PopupContainerWithArrow) getParent(), sv.getFinalInfo(),
-                new ShortcutDragPreviewProvider(sv.getIconView(), mIconShift), new DragOptions());
+        DragView dv = mLauncher.getWorkspace().beginDragShared(sv.getIconView(), (PopupContainerWithArrow) getParent(), sv.getFinalInfo(), new ShortcutDragPreviewProvider(sv.getIconView(), mIconShift), new DragOptions());
         dv.animateShift(-mIconShift.x, -mIconShift.y);
 
         // TODO: support dragging from within folder without having to close it
@@ -135,8 +131,7 @@ public class ShortcutsItemView extends PopupItemView implements View.OnLongClick
         if (shortcutType == PopupPopulator.Item.SYSTEM_SHORTCUT_ICON) {
             // System shortcut icons are added to a header that is separate from the full shortcuts.
             if (mSystemShortcutIcons == null) {
-                mSystemShortcutIcons = (LinearLayout) mLauncher.getLayoutInflater().inflate(
-                        R.layout.system_shortcut_icons, mShortcutsLayout, false);
+                mSystemShortcutIcons = (LinearLayout) mLauncher.getLayoutInflater().inflate(R.layout.system_shortcut_icons, mShortcutsLayout, false);
                 mShortcutsLayout.addView(mSystemShortcutIcons, 0);
             }
             mSystemShortcutIcons.addView(shortcutView, index);
@@ -181,9 +176,7 @@ public class ShortcutsItemView extends PopupItemView implements View.OnLongClick
                 break;
             }
         }
-        final PopupPopulator.Item widgetsItem = mSystemShortcutIcons == null
-                ? PopupPopulator.Item.SYSTEM_SHORTCUT
-                : PopupPopulator.Item.SYSTEM_SHORTCUT_ICON;
+        final PopupPopulator.Item widgetsItem = mSystemShortcutIcons == null ? PopupPopulator.Item.SYSTEM_SHORTCUT : PopupPopulator.Item.SYSTEM_SHORTCUT_ICON;
         if (onClickListener != null && widgetsView == null) {
             // We didn't have any widgets cached but now there are some, so enable the shortcut.
             widgetsView = mLauncher.getLayoutInflater().inflate(widgetsItem.layoutId, this, false);
@@ -223,15 +216,13 @@ public class ShortcutsItemView extends PopupItemView implements View.OnLongClick
             View deepShortcutIcon = shortcutView.getIconView();
             deepShortcutIcon.setScaleX(0);
             deepShortcutIcon.setScaleY(0);
-            openAnimation.play(LauncherAnimUtils.ofPropertyValuesHolder(
-                    deepShortcutIcon, new PropertyListBuilder().scale(1).build()));
+            openAnimation.play(LauncherAnimUtils.ofPropertyValuesHolder(deepShortcutIcon, new PropertyListBuilder().scale(1).build()));
         }
         return openAnimation;
     }
 
     @Override
-    public Animator createCloseAnimation(boolean isContainerAboveIcon, boolean pivotLeft,
-            long duration) {
+    public Animator createCloseAnimation(boolean isContainerAboveIcon, boolean pivotLeft, long duration) {
         AnimatorSet closeAnimation = LauncherAnimUtils.createAnimatorSet();
         closeAnimation.play(super.createCloseAnimation(isContainerAboveIcon, pivotLeft, duration));
         for (int i = 0; i < mShortcutsLayout.getChildCount(); i++) {
@@ -242,18 +233,14 @@ public class ShortcutsItemView extends PopupItemView implements View.OnLongClick
             View deepShortcutIcon = shortcutView.getIconView();
             deepShortcutIcon.setScaleX(1);
             deepShortcutIcon.setScaleY(1);
-            closeAnimation.play(LauncherAnimUtils.ofPropertyValuesHolder(
-                    deepShortcutIcon, new PropertyListBuilder().scale(0).build()));
+            closeAnimation.play(LauncherAnimUtils.ofPropertyValuesHolder(deepShortcutIcon, new PropertyListBuilder().scale(0).build()));
         }
         return closeAnimation;
     }
 
     @Override
     public int getArrowColor(boolean isArrowAttachedToBottom) {
-        return ContextCompat.getColor(getContext(),
-                isArrowAttachedToBottom || mSystemShortcutIcons == null
-                        ? R.color.popup_background_color
-                        : R.color.popup_header_background_color);
+        return ContextCompat.getColor(getContext(), isArrowAttachedToBottom || mSystemShortcutIcons == null ? R.color.popup_background_color : R.color.popup_header_background_color);
     }
 
     @Override

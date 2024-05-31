@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (C) 2017 The Android Open Source Project
+<?xml version="1.0" encoding="utf-8"?><!-- Copyright (C) 2017 The Android Open Source Project
 
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
@@ -13,8 +12,7 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<com.android.launcher3.discovery.AppDiscoveryItemView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<com.android.launcher3.discovery.AppDiscoveryItemView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:clickable="true"
@@ -27,7 +25,7 @@
         android:padding="8dp"
         android:scaleType="fitCenter"
         android:focusable="false"
-        android:importantForAccessibility="no"/>
+        android:importantForAccessibility="no" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -41,12 +39,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="?android:textColorSecondary"
-            android:textSize="15sp"/>
+            android:textSize="15sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
+
             <TextView
                 android:id="@+id/rating"
                 android:layout_width="wrap_content"
@@ -54,7 +53,7 @@
                 android:textColor="?android:textColorSecondary"
                 android:textSize="14sp"
                 android:layout_gravity="center_vertical"
-                android:includeFontPadding="false"/>
+                android:includeFontPadding="false" />
 
             <com.android.launcher3.discovery.RatingView
                 android:id="@+id/rating_view"
@@ -62,7 +61,7 @@
                 android:layout_height="16dp"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
-                android:layout_gravity="center_vertical"/>
+                android:layout_gravity="center_vertical" />
 
             <TextView
                 android:id="@+id/review_count"
@@ -71,12 +70,12 @@
                 android:layout_marginLeft="5dp"
                 android:textColor="?android:textColorHint"
                 android:textSize="14sp"
-                android:layout_gravity="center_vertical"/>
+                android:layout_gravity="center_vertical" />
 
             <Space
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_weight="1"/>
+                android:layout_weight="1" />
 
             <TextView
                 android:id="@+id/price"
@@ -85,7 +84,7 @@
                 android:textColor="?android:textColorHint"
                 android:textSize="14sp"
                 android:layout_marginRight="12dp"
-                android:textAllCaps="true"/>
+                android:textAllCaps="true" />
         </LinearLayout>
     </LinearLayout>
 

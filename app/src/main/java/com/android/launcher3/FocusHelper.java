@@ -54,8 +54,7 @@ class HotseatIconKeyEventListener implements View.OnKeyListener {
 class FullscreenKeyEventListener implements View.OnKeyListener {
     @Override
     public boolean onKey(View v, int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT || keyCode == KeyEvent.KEYCODE_DPAD_RIGHT
-                || keyCode == KeyEvent.KEYCODE_PAGE_DOWN || keyCode == KeyEvent.KEYCODE_PAGE_UP) {
+        if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT || keyCode == KeyEvent.KEYCODE_DPAD_RIGHT || keyCode == KeyEvent.KEYCODE_PAGE_DOWN || keyCode == KeyEvent.KEYCODE_PAGE_UP) {
             // Handle the key event just like a workspace icon would in these cases. In this case,
             // it will basically act as if there is a single icon in the top left (so you could
             // think of the fullscreen page as a focusable fullscreen widget).
@@ -88,8 +87,7 @@ public class FocusHelper {
                 return consume;
             }
             if (DEBUG) {
-                Log.v(TAG, String.format("Handle ALL Folders keyevent=[%s].",
-                        KeyEvent.keyCodeToString(keyCode)));
+                Log.v(TAG, String.format("Handle ALL Folders keyevent=[%s].", KeyEvent.keyCodeToString(keyCode)));
             }
 
             if (!(v.getParent() instanceof ShortcutAndWidgetContainer)) {
@@ -113,8 +111,7 @@ public class FocusHelper {
 
             int[][] matrix = FocusLogic.createSparseMatrix(cellLayout);
             // Process focus.
-            int newIconIndex = FocusLogic.handleKeyEvent(keyCode, matrix, iconIndex, pageIndex,
-                    pageCount, isLayoutRtl);
+            int newIconIndex = FocusLogic.handleKeyEvent(keyCode, matrix, iconIndex, pageIndex, pageCount, isLayoutRtl);
             if (newIconIndex == FocusLogic.NOOP) {
                 handleNoopKey(keyCode, v);
                 return consume;
@@ -129,10 +126,7 @@ public class FocusHelper {
                     if (newParent != null) {
                         int row = ((CellLayout.LayoutParams) v.getLayoutParams()).cellY;
                         pagedView.snapToPage(pageIndex - 1);
-                        child = newParent.getChildAt(
-                                ((newIconIndex == FocusLogic.PREVIOUS_PAGE_LEFT_COLUMN)
-                                    ^ newParent.invertLayoutHorizontally()) ? 0 : matrix.length - 1,
-                                row);
+                        child = newParent.getChildAt(((newIconIndex == FocusLogic.PREVIOUS_PAGE_LEFT_COLUMN) ^ newParent.invertLayoutHorizontally()) ? 0 : matrix.length - 1, row);
                     }
                     break;
                 case FocusLogic.PREVIOUS_PAGE_FIRST_ITEM:
@@ -161,8 +155,7 @@ public class FocusHelper {
                     newParent = getCellLayoutChildrenForIndex(pagedView, pageIndex + 1);
                     if (newParent != null) {
                         pagedView.snapToPage(pageIndex + 1);
-                        child = FocusLogic.getAdjacentChildInNextFolderPage(
-                                newParent, v, newIconIndex);
+                        child = FocusLogic.getAdjacentChildInNextFolderPage(newParent, v, newIconIndex);
                     }
                     break;
                 case FocusLogic.CURRENT_PAGE_FIRST_ITEM:
@@ -208,9 +201,7 @@ public class FocusHelper {
         final DeviceProfile profile = launcher.getDeviceProfile();
 
         if (DEBUG) {
-            Log.v(TAG, String.format(
-                    "Handle HOTSEAT BUTTONS keyevent=[%s] on hotseat buttons, isVertical=%s",
-                    KeyEvent.keyCodeToString(keyCode), profile.isVerticalBarLayout()));
+            Log.v(TAG, String.format("Handle HOTSEAT BUTTONS keyevent=[%s] on hotseat buttons, isVertical=%s", KeyEvent.keyCodeToString(keyCode), profile.isVerticalBarLayout()));
         }
 
         // Initialize the variables.
@@ -222,8 +213,7 @@ public class FocusHelper {
         int pageIndex = workspace.getNextPage();
         int pageCount = workspace.getChildCount();
         int iconIndex = hotseatParent.indexOfChild(v);
-        int iconRank = ((CellLayout.LayoutParams) hotseatLayout.getShortcutsAndWidgets()
-                .getChildAt(iconIndex).getLayoutParams()).cellX;
+        int iconRank = ((CellLayout.LayoutParams) hotseatLayout.getShortcutsAndWidgets().getChildAt(iconIndex).getLayoutParams()).cellX;
 
         final CellLayout iconLayout = (CellLayout) workspace.getChildAt(pageIndex);
         if (iconLayout == null) {
@@ -237,18 +227,15 @@ public class FocusHelper {
         ViewGroup parent = null;
         int[][] matrix = null;
 
-        if (keyCode == KeyEvent.KEYCODE_DPAD_UP &&
-                !profile.isVerticalBarLayout()) {
+        if (keyCode == KeyEvent.KEYCODE_DPAD_UP && !profile.isVerticalBarLayout()) {
             matrix = FocusLogic.createSparseMatrixWithHotseat(iconLayout, hotseatLayout, profile);
             iconIndex += iconParent.getChildCount();
             parent = iconParent;
-        } else if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT &&
-                profile.isVerticalBarLayout()) {
+        } else if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT && profile.isVerticalBarLayout()) {
             matrix = FocusLogic.createSparseMatrixWithHotseat(iconLayout, hotseatLayout, profile);
             iconIndex += iconParent.getChildCount();
             parent = iconParent;
-        } else if (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT &&
-                profile.isVerticalBarLayout()) {
+        } else if (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT && profile.isVerticalBarLayout()) {
             keyCode = KeyEvent.KEYCODE_PAGE_DOWN;
         } else {
             // For other KEYCODE_DPAD_LEFT and KEYCODE_DPAD_RIGHT navigation, do not use the
@@ -258,8 +245,7 @@ public class FocusHelper {
         }
 
         // Process the focus.
-        int newIconIndex = FocusLogic.handleKeyEvent(keyCode, matrix, iconIndex, pageIndex,
-                pageCount, Utilities.isRtl(v.getResources()));
+        int newIconIndex = FocusLogic.handleKeyEvent(keyCode, matrix, iconIndex, pageIndex, pageCount, Utilities.isRtl(v.getResources()));
 
         View newIcon = null;
         switch (newIconIndex) {
@@ -290,8 +276,7 @@ public class FocusHelper {
                 workspace.snapToPage(pageIndex - 1);
                 // If the page we are going to is fullscreen, have it take the focus from hotseat.
                 CellLayout prevPage = (CellLayout) workspace.getPageAt(pageIndex - 1);
-                boolean isPrevPageFullscreen = ((CellLayout.LayoutParams) prevPage
-                        .getShortcutsAndWidgets().getChildAt(0).getLayoutParams()).isFullscreen;
+                boolean isPrevPageFullscreen = ((CellLayout.LayoutParams) prevPage.getShortcutsAndWidgets().getChildAt(0).getLayoutParams()).isFullscreen;
                 if (isPrevPageFullscreen) {
                     workspace.getPageAt(pageIndex - 1).requestFocus();
                 }
@@ -302,8 +287,7 @@ public class FocusHelper {
                 workspace.snapToPage(pageIndex + 1);
                 // If the page we are going to is fullscreen, have it take the focus from hotseat.
                 CellLayout nextPage = (CellLayout) workspace.getPageAt(pageIndex + 1);
-                boolean isNextPageFullscreen = ((CellLayout.LayoutParams) nextPage
-                        .getShortcutsAndWidgets().getChildAt(0).getLayoutParams()).isFullscreen;
+                boolean isNextPageFullscreen = ((CellLayout.LayoutParams) nextPage.getShortcutsAndWidgets().getChildAt(0).getLayoutParams()).isFullscreen;
                 if (isNextPageFullscreen) {
                     workspace.getPageAt(pageIndex + 1).requestFocus();
                 }
@@ -337,8 +321,7 @@ public class FocusHelper {
         DeviceProfile profile = launcher.getDeviceProfile();
 
         if (DEBUG) {
-            Log.v(TAG, String.format("Handle WORKSPACE ICONS keyevent=[%s] isVerticalBar=%s",
-                    KeyEvent.keyCodeToString(keyCode), profile.isVerticalBarLayout()));
+            Log.v(TAG, String.format("Handle WORKSPACE ICONS keyevent=[%s] isVerticalBar=%s", KeyEvent.keyCodeToString(keyCode), profile.isVerticalBarLayout()));
         }
 
         // Initialize the variables.
@@ -363,16 +346,14 @@ public class FocusHelper {
         // with the hotseat.
         if (keyCode == KeyEvent.KEYCODE_DPAD_DOWN && !profile.isVerticalBarLayout()) {
             matrix = FocusLogic.createSparseMatrixWithHotseat(iconLayout, hotseatLayout, profile);
-        } else if (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT &&
-                profile.isVerticalBarLayout()) {
+        } else if (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT && profile.isVerticalBarLayout()) {
             matrix = FocusLogic.createSparseMatrixWithHotseat(iconLayout, hotseatLayout, profile);
         } else {
             matrix = FocusLogic.createSparseMatrix(iconLayout);
         }
 
         // Process the focus.
-        int newIconIndex = FocusLogic.handleKeyEvent(keyCode, matrix, iconIndex, pageIndex,
-                pageCount, Utilities.isRtl(v.getResources()));
+        int newIconIndex = FocusLogic.handleKeyEvent(keyCode, matrix, iconIndex, pageIndex, pageCount, Utilities.isRtl(v.getResources()));
         boolean isRtl = Utilities.isRtl(v.getResources());
         View newIcon = null;
         CellLayout workspaceLayout = (CellLayout) workspace.getChildAt(pageIndex);
@@ -392,16 +373,12 @@ public class FocusHelper {
                 parent = getCellLayoutChildrenForIndex(workspace, newPageIndex);
                 if (parent != null) {
                     iconLayout = (CellLayout) parent.getParent();
-                    matrix = FocusLogic.createSparseMatrixWithPivotColumn(iconLayout,
-                            iconLayout.getCountX(), row);
-                    newIconIndex = FocusLogic.handleKeyEvent(keyCode, matrix, FocusLogic.PIVOT,
-                            newPageIndex, pageCount, Utilities.isRtl(v.getResources()));
+                    matrix = FocusLogic.createSparseMatrixWithPivotColumn(iconLayout, iconLayout.getCountX(), row);
+                    newIconIndex = FocusLogic.handleKeyEvent(keyCode, matrix, FocusLogic.PIVOT, newPageIndex, pageCount, Utilities.isRtl(v.getResources()));
                     if (newIconIndex == FocusLogic.NEXT_PAGE_FIRST_ITEM) {
-                        newIcon = handleNextPageFirstItem(workspace, hotseatLayout, pageIndex,
-                                isRtl);
+                        newIcon = handleNextPageFirstItem(workspace, hotseatLayout, pageIndex, isRtl);
                     } else if (newIconIndex == FocusLogic.PREVIOUS_PAGE_LAST_ITEM) {
-                        newIcon = handlePreviousPageLastItem(workspace, hotseatLayout, pageIndex,
-                                isRtl);
+                        newIcon = handlePreviousPageLastItem(workspace, hotseatLayout, pageIndex, isRtl);
                     } else {
                         newIcon = parent.getChildAt(newIconIndex);
                     }
@@ -433,14 +410,11 @@ public class FocusHelper {
                 if (parent != null) {
                     iconLayout = (CellLayout) parent.getParent();
                     matrix = FocusLogic.createSparseMatrixWithPivotColumn(iconLayout, -1, row);
-                    newIconIndex = FocusLogic.handleKeyEvent(keyCode, matrix, FocusLogic.PIVOT,
-                            newPageIndex, pageCount, Utilities.isRtl(v.getResources()));
+                    newIconIndex = FocusLogic.handleKeyEvent(keyCode, matrix, FocusLogic.PIVOT, newPageIndex, pageCount, Utilities.isRtl(v.getResources()));
                     if (newIconIndex == FocusLogic.NEXT_PAGE_FIRST_ITEM) {
-                        newIcon = handleNextPageFirstItem(workspace, hotseatLayout, pageIndex,
-                                isRtl);
+                        newIcon = handleNextPageFirstItem(workspace, hotseatLayout, pageIndex, isRtl);
                     } else if (newIconIndex == FocusLogic.PREVIOUS_PAGE_LAST_ITEM) {
-                        newIcon = handlePreviousPageLastItem(workspace, hotseatLayout, pageIndex,
-                                isRtl);
+                        newIcon = handlePreviousPageLastItem(workspace, hotseatLayout, pageIndex, isRtl);
                     } else {
                         newIcon = parent.getChildAt(newIconIndex);
                     }
@@ -464,8 +438,7 @@ public class FocusHelper {
                 // current page, some item.
                 if (0 <= newIconIndex && newIconIndex < parent.getChildCount()) {
                     newIcon = parent.getChildAt(newIconIndex);
-                } else if (parent.getChildCount() <= newIconIndex &&
-                        newIconIndex < parent.getChildCount() + hotseatParent.getChildCount()) {
+                } else if (parent.getChildCount() <= newIconIndex && newIconIndex < parent.getChildCount() + hotseatParent.getChildCount()) {
                     newIcon = hotseatParent.getChildAt(newIconIndex - parent.getChildCount());
                 }
                 break;
@@ -484,8 +457,8 @@ public class FocusHelper {
     /**
      * Private helper method to get the CellLayoutChildren given a CellLayout index.
      */
-    @Thunk static ShortcutAndWidgetContainer getCellLayoutChildrenForIndex(
-            ViewGroup container, int i) {
+    @Thunk
+    static ShortcutAndWidgetContainer getCellLayoutChildrenForIndex(ViewGroup container, int i) {
         CellLayout parent = (CellLayout) container.getChildAt(i);
         return parent.getShortcutsAndWidgets();
     }
@@ -493,7 +466,8 @@ public class FocusHelper {
     /**
      * Helper method to be used for playing sound effects.
      */
-    @Thunk static void playSoundEffect(int keyCode, View v) {
+    @Thunk
+    static void playSoundEffect(int keyCode, View v) {
         switch (keyCode) {
             case KeyEvent.KEYCODE_DPAD_LEFT:
                 v.playSoundEffect(SoundEffectConstants.NAVIGATION_LEFT);
@@ -516,8 +490,7 @@ public class FocusHelper {
         }
     }
 
-    private static View handlePreviousPageLastItem(Workspace workspace, CellLayout hotseatLayout,
-            int pageIndex, boolean isRtl) {
+    private static View handlePreviousPageLastItem(Workspace workspace, CellLayout hotseatLayout, int pageIndex, boolean isRtl) {
         if (pageIndex - 1 < 0) {
             return null;
         }
@@ -525,14 +498,13 @@ public class FocusHelper {
         View newIcon = getFirstFocusableIconInReverseReadingOrder(workspaceLayout, isRtl);
         if (newIcon == null) {
             // Check the hotseat if no focusable item was found on the workspace.
-            newIcon = getFirstFocusableIconInReverseReadingOrder(hotseatLayout,isRtl);
+            newIcon = getFirstFocusableIconInReverseReadingOrder(hotseatLayout, isRtl);
             workspace.snapToPage(pageIndex - 1);
         }
         return newIcon;
     }
 
-    private static View handleNextPageFirstItem(Workspace workspace, CellLayout hotseatLayout,
-            int pageIndex, boolean isRtl) {
+    private static View handleNextPageFirstItem(Workspace workspace, CellLayout hotseatLayout, int pageIndex, boolean isRtl) {
         if (pageIndex + 1 >= workspace.getPageCount()) {
             return null;
         }
@@ -560,8 +532,7 @@ public class FocusHelper {
         return null;
     }
 
-    private static View getFirstFocusableIconInReverseReadingOrder(CellLayout cellLayout,
-            boolean isRtl) {
+    private static View getFirstFocusableIconInReverseReadingOrder(CellLayout cellLayout, boolean isRtl) {
         View icon;
         int countX = cellLayout.getCountX();
         for (int y = cellLayout.getCountY() - 1; y >= 0; y--) {

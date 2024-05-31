@@ -1,7 +1,5 @@
 package com.android.launcher3.allapps;
 
-import com.android.launcher3.Launcher;
-
 import android.content.Context;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -44,8 +42,7 @@ public class VerticalPullDetector {
     private ScrollState mState = ScrollState.IDLE;
 
     enum ScrollState {
-        IDLE,
-        DRAGGING,      // onDragStart, onDrag
+        IDLE, DRAGGING,      // onDragStart, onDrag
         SETTLING       // onDragEnd
     }
 
@@ -111,8 +108,7 @@ public class VerticalPullDetector {
     private float mSubtractDisplacement;
     private boolean mIgnoreSlopWhenSettling;
 
-    /* Client of this gesture detector can register a callback. */
-    Listener mListener;
+    /* Client of this gesture detector can register a callback. */ Listener mListener;
 
     public void setListener(Listener l) {
         mListener = l;
@@ -148,23 +144,22 @@ public class VerticalPullDetector {
             return false;
         }
         // Check if the client is interested in scroll in current direction.
-        if (((mScrollConditions & DIRECTION_DOWN) > 0 && mDisplacementY > 0) ||
-                ((mScrollConditions & DIRECTION_UP) > 0 && mDisplacementY < 0)) {
+        if (((mScrollConditions & DIRECTION_DOWN) > 0 && mDisplacementY > 0) || ((mScrollConditions & DIRECTION_UP) > 0 && mDisplacementY < 0)) {
             return true;
         }
         return false;
     }
 
     public boolean onTouchEvent(MotionEvent ev) {
-//    	if (Launcher.mMultiPointIgnore) { //ww+,disable pull out the allapp view from the bottom when 3-fingers-touched
-//    		if (mState == ScrollState.DRAGGING) {
-//    			mLastDisplacement = 0;
-//                mDisplacementY = 0;
-//                mVelocity = 0;
-//                setState(ScrollState.SETTLING);
-//            }
-//    		return true;
-//    	}
+        //    	if (Launcher.mMultiPointIgnore) { //ww+,disable pull out the allapp view from the bottom when 3-fingers-touched
+        //    		if (mState == ScrollState.DRAGGING) {
+        //    			mLastDisplacement = 0;
+        //                mDisplacementY = 0;
+        //                mVelocity = 0;
+        //                setState(ScrollState.SETTLING);
+        //            }
+        //    		return true;
+        //    	}
         switch (ev.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 mDownX = ev.getX();
@@ -234,8 +229,7 @@ public class VerticalPullDetector {
         float delta = mDisplacementY - mLastDisplacement;
         if (delta != 0) {
             if (DBG) {
-                Log.d(TAG, String.format("onDrag disp=%.1f, velocity=%.1f",
-                        mDisplacementY, mVelocity));
+                Log.d(TAG, String.format("onDrag disp=%.1f, velocity=%.1f", mDisplacementY, mVelocity));
             }
 
             return mListener.onDrag(mDisplacementY - mSubtractDisplacement, mVelocity);
@@ -245,8 +239,7 @@ public class VerticalPullDetector {
 
     private void reportDragEnd() {
         if (DBG) {
-            Log.d(TAG, String.format("onScrollEnd disp=%.1f, velocity=%.1f",
-                    mDisplacementY, mVelocity));
+            Log.d(TAG, String.format("onScrollEnd disp=%.1f, velocity=%.1f", mDisplacementY, mVelocity));
         }
         mListener.onDragEnd(mVelocity, Math.abs(mVelocity) > RELEASE_VELOCITY_PX_MS);
 

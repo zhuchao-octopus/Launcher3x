@@ -83,8 +83,7 @@ public class IconCacheUpdateHandler {
 
     private void createPackageInfoMap() {
         PackageManager pm = mIconCache.mPackageManager;
-        for (PackageInfo info :
-                pm.getInstalledPackages(PackageManager.MATCH_UNINSTALLED_PACKAGES)) {
+        for (PackageInfo info : pm.getInstalledPackages(PackageManager.MATCH_UNINSTALLED_PACKAGES)) {
             mPkgInfoMap.put(info.packageName, info);
         }
     }
@@ -92,10 +91,10 @@ public class IconCacheUpdateHandler {
     /**
      * Updates the persistent DB, such that only entries corresponding to {@param apps} remain in
      * the DB and are updated.
+     *
      * @return The set of packages for which icons have updated.
      */
-    public <T> void updateIcons(List<T> apps, CachingLogic<T> cachingLogic,
-            OnUpdateCallback onUpdateCallback) {
+    public <T> void updateIcons(List<T> apps, CachingLogic<T> cachingLogic, OnUpdateCallback onUpdateCallback) {
         // Filter the list per user
         HashMap<UserHandle, HashMap<ComponentName, T>> userComponentMap = new HashMap<>();
         int count = apps.size();
@@ -121,11 +120,11 @@ public class IconCacheUpdateHandler {
     /**
      * Updates the persistent DB, such that only entries corresponding to {@param apps} remain in
      * the DB and are updated.
+     *
      * @return The set of packages for which icons have updated.
      */
     @SuppressWarnings("unchecked")
-    private <T> void updateIconsPerUser(UserHandle user, HashMap<ComponentName, T> componentMap,
-            CachingLogic<T> cachingLogic, OnUpdateCallback onUpdateCallback) {
+    private <T> void updateIconsPerUser(UserHandle user, HashMap<ComponentName, T> componentMap, CachingLogic<T> cachingLogic, OnUpdateCallback onUpdateCallback) {
         Set<String> ignorePackages = mPackagesToIgnore.get(user);
         if (ignorePackages == null) {
             ignorePackages = Collections.emptySet();
@@ -134,12 +133,9 @@ public class IconCacheUpdateHandler {
 
         Stack<T> appsToUpdate = new Stack<>();
 
-        try (Cursor c = mIconCache.mIconDb.query(
-                new String[]{IconDB.COLUMN_ROWID, IconDB.COLUMN_COMPONENT,
-                        IconDB.COLUMN_LAST_UPDATED, IconDB.COLUMN_VERSION,
-                        IconDB.COLUMN_SYSTEM_STATE},
-                IconDB.COLUMN_USER + " = ? ",
-                new String[]{Long.toString(userSerial)})) {
+        try (Cursor c = mIconCache.mIconDb.query(new String[]{
+                IconDB.COLUMN_ROWID, IconDB.COLUMN_COMPONENT, IconDB.COLUMN_LAST_UPDATED, IconDB.COLUMN_VERSION, IconDB.COLUMN_SYSTEM_STATE
+        }, IconDB.COLUMN_USER + " = ? ", new String[]{Long.toString(userSerial)})) {
 
             final int indexComponent = c.getColumnIndex(IconDB.COLUMN_COMPONENT);
             final int indexLastUpdate = c.getColumnIndex(IconDB.COLUMN_LAST_UPDATED);
@@ -171,9 +167,7 @@ public class IconCacheUpdateHandler {
                 long updateTime = c.getLong(indexLastUpdate);
                 int version = c.getInt(indexVersion);
                 T app = componentMap.remove(component);
-                if (version == info.versionCode && updateTime == info.lastUpdateTime &&
-                        TextUtils.equals(c.getString(systemStateIndex),
-                                mIconCache.getIconSystemState(info.packageName))) {
+                if (version == info.versionCode && updateTime == info.lastUpdateTime && TextUtils.equals(c.getString(systemStateIndex), mIconCache.getIconSystemState(info.packageName))) {
 
                     if (mFilterMode == MODE_CLEAR_VALID_ITEMS) {
                         mItemsToDelete.put(rowId, false);
@@ -198,8 +192,7 @@ public class IconCacheUpdateHandler {
         if (!componentMap.isEmpty() || !appsToUpdate.isEmpty()) {
             Stack<T> appsToAdd = new Stack<>();
             appsToAdd.addAll(componentMap.values());
-            new SerializedIconUpdateTask(userSerial, user, appsToAdd, appsToUpdate, cachingLogic,
-                    onUpdateCallback).scheduleNext();
+            new SerializedIconUpdateTask(userSerial, user, appsToAdd, appsToUpdate, cachingLogic, onUpdateCallback).scheduleNext();
         }
     }
 
@@ -210,12 +203,10 @@ public class IconCacheUpdateHandler {
     public void finish() {
         // Commit all deletes
         int deleteCount = 0;
-        StringBuilder queryBuilder = new StringBuilder()
-                .append(IconDB.COLUMN_ROWID)
-                .append(" IN (");
+        StringBuilder queryBuilder = new StringBuilder().append(IconDB.COLUMN_ROWID).append(" IN (");
 
         int count = mItemsToDelete.size();
-        for (int i = 0;  i < count; i++) {
+        for (int i = 0; i < count; i++) {
             if (mItemsToDelete.valueAt(i)) {
                 if (deleteCount > 0) {
                     queryBuilder.append(", ");
@@ -246,9 +237,7 @@ public class IconCacheUpdateHandler {
         private final HashSet<String> mUpdatedPackages = new HashSet<>();
         private final OnUpdateCallback mOnUpdateCallback;
 
-        SerializedIconUpdateTask(long userSerial, UserHandle userHandle,
-                Stack<T> appsToAdd, Stack<T> appsToUpdate, CachingLogic<T> cachingLogic,
-                OnUpdateCallback onUpdateCallback) {
+        SerializedIconUpdateTask(long userSerial, UserHandle userHandle, Stack<T> appsToAdd, Stack<T> appsToUpdate, CachingLogic<T> cachingLogic, OnUpdateCallback onUpdateCallback) {
             mUserHandle = userHandle;
             mUserSerial = userSerial;
             mAppsToAdd = appsToAdd;
@@ -263,8 +252,7 @@ public class IconCacheUpdateHandler {
                 T app = mAppsToUpdate.pop();
                 String pkg = mCachingLogic.getComponent(app).getPackageName();
                 PackageInfo info = mPkgInfoMap.get(pkg);
-                mIconCache.addIconToDBAndMemCache(
-                        app, mCachingLogic, info, mUserSerial, true /*replace existing*/);
+                mIconCache.addIconToDBAndMemCache(app, mCachingLogic, info, mUserSerial, true /*replace existing*/);
                 mUpdatedPackages.add(pkg);
 
                 if (mAppsToUpdate.isEmpty() && !mUpdatedPackages.isEmpty()) {
@@ -280,8 +268,7 @@ public class IconCacheUpdateHandler {
                 // We do not check the mPkgInfoMap when generating the mAppsToAdd. Although every
                 // app should have package info, this is not guaranteed by the api
                 if (info != null) {
-                    mIconCache.addIconToDBAndMemCache(app, mCachingLogic, info,
-                            mUserSerial, false /*replace existing*/);
+                    mIconCache.addIconToDBAndMemCache(app, mCachingLogic, info, mUserSerial, false /*replace existing*/);
                 }
 
                 if (!mAppsToAdd.isEmpty()) {
@@ -291,8 +278,7 @@ public class IconCacheUpdateHandler {
         }
 
         public void scheduleNext() {
-            mIconCache.mWorkerHandler.postAtTime(this, ICON_UPDATE_TOKEN,
-                    SystemClock.uptimeMillis() + 1);
+            mIconCache.mWorkerHandler.postAtTime(this, ICON_UPDATE_TOKEN, SystemClock.uptimeMillis() + 1);
         }
     }
 

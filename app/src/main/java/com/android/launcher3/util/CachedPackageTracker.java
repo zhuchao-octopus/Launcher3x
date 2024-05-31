@@ -71,8 +71,7 @@ public abstract class CachedPackageTracker implements OnAppsChangedCallbackCompa
 
             if (!oldPackageSet.contains(packageName)) {
                 oldPackageSet.add(packageName);
-                packagesAdded.add(new LauncherActivityInstallInfo(
-                        info, info.getFirstInstallTime()));
+                packagesAdded.add(new LauncherActivityInstallInfo(info, info.getFirstInstallTime()));
             }
         }
 
@@ -94,6 +93,7 @@ public abstract class CachedPackageTracker implements OnAppsChangedCallbackCompa
 
     /**
      * Reads the list of user apps which have already been processed.
+     *
      * @return false if the list didn't exist, true otherwise
      */
     private boolean getUserApps(HashSet<String> outExistingApps, String prefKey) {
@@ -123,55 +123,54 @@ public abstract class CachedPackageTracker implements OnAppsChangedCallbackCompa
         HashSet<String> packageSet = new HashSet<>();
         final boolean userAppsExisted = getUserApps(packageSet, prefKey);
         if (!packageSet.contains(packageName)) {
-            List<LauncherActivityInfo> activities =
-                    mLauncherApps.getActivityList(packageName, user);
+            List<LauncherActivityInfo> activities = mLauncherApps.getActivityList(packageName, user);
             if (!activities.isEmpty()) {
                 LauncherActivityInfo activityInfo = activities.get(0);
 
                 packageSet.add(packageName);
                 mPrefs.edit().putStringSet(prefKey, packageSet).apply();
-                onLauncherAppsAdded(Arrays.asList(
-                        new LauncherActivityInstallInfo(activityInfo, System.currentTimeMillis())),
-                        user, userAppsExisted);
+                onLauncherAppsAdded(Arrays.asList(new LauncherActivityInstallInfo(activityInfo, System.currentTimeMillis())), user, userAppsExisted);
             }
         }
     }
 
     @Override
-    public void onPackageChanged(String packageName, UserHandle user) { }
+    public void onPackageChanged(String packageName, UserHandle user) {
+    }
 
     @Override
-    public void onPackagesAvailable(
-            String[] packageNames, UserHandle user, boolean replacing) { }
+    public void onPackagesAvailable(String[] packageNames, UserHandle user, boolean replacing) {
+    }
 
     @Override
-    public void onPackagesUnavailable(
-            String[] packageNames, UserHandle user, boolean replacing) { }
+    public void onPackagesUnavailable(String[] packageNames, UserHandle user, boolean replacing) {
+    }
 
     @Override
-    public void onPackagesSuspended(String[] packageNames, UserHandle user) { }
+    public void onPackagesSuspended(String[] packageNames, UserHandle user) {
+    }
 
     @Override
-    public void onPackagesUnsuspended(String[] packageNames, UserHandle user) { }
+    public void onPackagesUnsuspended(String[] packageNames, UserHandle user) {
+    }
 
     /**
      * Called when new launcher apps are added.
-     * @param apps list of newly added activities. Only one entry per package is sent.
-     * @param user the user for this event. All activities in {@param apps} will belong to
-     *             the same user.
+     *
+     * @param apps            list of newly added activities. Only one entry per package is sent.
+     * @param user            the user for this event. All activities in {@param apps} will belong to
+     *                        the same user.
      * @param userAppsExisted false if the list was processed for the first time, like in case
      *                        when Launcher was newly installed or a new user was added.
      */
-    protected abstract void onLauncherAppsAdded(List<LauncherActivityInstallInfo> apps,
-            UserHandle user, boolean userAppsExisted);
+    protected abstract void onLauncherAppsAdded(List<LauncherActivityInstallInfo> apps, UserHandle user, boolean userAppsExisted);
 
     /**
      * Called when apps are removed from the system.
      */
     protected abstract void onLauncherPackageRemoved(String packageName, UserHandle user);
 
-    public static class LauncherActivityInstallInfo
-            implements Comparable<LauncherActivityInstallInfo> {
+    public static class LauncherActivityInstallInfo implements Comparable<LauncherActivityInstallInfo> {
         public final LauncherActivityInfo info;
         public final long installTime;
 

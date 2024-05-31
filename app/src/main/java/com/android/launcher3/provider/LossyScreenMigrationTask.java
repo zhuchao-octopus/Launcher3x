@@ -21,7 +21,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Point;
-import android.util.Log;
 
 import com.android.launcher3.InvariantDeviceProfile;
 import com.android.launcher3.LauncherSettings.Favorites;
@@ -31,7 +30,6 @@ import com.android.launcher3.model.GridSizeMigrationTask;
 import com.android.launcher3.util.LongArrayMap;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * An extension of {@link GridSizeMigrationTask} which migrates only one screen and
@@ -44,12 +42,9 @@ public class LossyScreenMigrationTask extends GridSizeMigrationTask {
     private final LongArrayMap<DbEntry> mOriginalItems;
     private final LongArrayMap<DbEntry> mUpdates;
 
-    protected LossyScreenMigrationTask(
-            Context context, InvariantDeviceProfile idp, SQLiteDatabase db) {
+    protected LossyScreenMigrationTask(Context context, InvariantDeviceProfile idp, SQLiteDatabase db) {
         // Decrease the rows count by 1
-        super(context, idp, getValidPackages(context),
-                new Point(idp.numColumns, idp.numRows + 1),
-                new Point(idp.numColumns, idp.numRows));
+        super(context, idp, getValidPackages(context), new Point(idp.numColumns, idp.numRows + 1), new Point(idp.numColumns, idp.numRows));
 
         mDb = db;
         mOriginalItems = new LongArrayMap<>();
@@ -87,12 +82,10 @@ public class LossyScreenMigrationTask extends GridSizeMigrationTask {
         for (DbEntry update : mUpdates) {
             DbEntry org = mOriginalItems.get(update.id);
 
-            if (org.cellX != update.cellX || org.cellY != update.cellY
-                    || org.spanX != update.spanX || org.spanY != update.spanY) {
+            if (org.cellX != update.cellX || org.cellY != update.cellY || org.spanX != update.spanX || org.spanY != update.spanY) {
                 tempValues.clear();
                 update.addToContentValues(tempValues);
-                mDb.update(Favorites.TABLE_NAME, tempValues, "_id = ?",
-                        new String[] {Long.toString(update.id)});
+                mDb.update(Favorites.TABLE_NAME, tempValues, "_id = ?", new String[]{Long.toString(update.id)});
             }
         }
 
@@ -102,8 +95,7 @@ public class LossyScreenMigrationTask extends GridSizeMigrationTask {
         }
 
         if (!mEntryToRemove.isEmpty()) {
-            mDb.delete(Favorites.TABLE_NAME,
-                    Utilities.createDbSelectionQuery(Favorites._ID, mEntryToRemove), null);
+            mDb.delete(Favorites.TABLE_NAME, Utilities.createDbSelectionQuery(Favorites._ID, mEntryToRemove), null);
         }
     }
 }

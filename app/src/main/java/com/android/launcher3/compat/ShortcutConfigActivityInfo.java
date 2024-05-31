@@ -79,8 +79,7 @@ public abstract class ShortcutConfigActivityInfo {
     }
 
     public boolean startConfigActivity(Activity activity, int requestCode) {
-        Intent intent = new Intent(Intent.ACTION_CREATE_SHORTCUT)
-                .setComponent(getComponent());
+        Intent intent = new Intent(Intent.ACTION_CREATE_SHORTCUT).setComponent(getComponent());
         try {
             activity.startActivityForResult(intent, requestCode);
             return true;
@@ -88,9 +87,7 @@ public abstract class ShortcutConfigActivityInfo {
             Toast.makeText(activity, R.string.activity_not_found, Toast.LENGTH_SHORT).show();
         } catch (SecurityException e) {
             Toast.makeText(activity, R.string.activity_not_found, Toast.LENGTH_SHORT).show();
-            Log.e(TAG, "Launcher does not have the permission to launch " + intent +
-                    ". Make sure to create a MAIN intent-filter for the corresponding activity " +
-                    "or use the exported attribute for this activity.", e);
+            Log.e(TAG, "Launcher does not have the permission to launch " + intent + ". Make sure to create a MAIN intent-filter for the corresponding activity " + "or use the exported attribute for this activity.", e);
         }
         return false;
     }
@@ -152,10 +149,8 @@ public abstract class ShortcutConfigActivityInfo {
                 return super.startConfigActivity(activity, requestCode);
             }
             try {
-                Method m = LauncherApps.class.getDeclaredMethod(
-                        "getShortcutConfigActivityIntent", LauncherActivityInfo.class);
-                IntentSender is = (IntentSender) m.invoke(
-                        activity.getSystemService(LauncherApps.class), mInfo);
+                Method m = LauncherApps.class.getDeclaredMethod("getShortcutConfigActivityIntent", LauncherActivityInfo.class);
+                IntentSender is = (IntentSender) m.invoke(activity.getSystemService(LauncherApps.class), mInfo);
                 activity.startIntentSenderForResult(is, requestCode, null, 0, 0, 0);
                 return true;
             } catch (Exception e) {

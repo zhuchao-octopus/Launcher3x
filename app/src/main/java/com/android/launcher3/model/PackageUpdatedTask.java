@@ -138,16 +138,12 @@ public class PackageUpdatedTask extends ExtendedModelTask {
                 break;
             case OP_SUSPEND:
             case OP_UNSUSPEND:
-                flagOp = mOp == OP_SUSPEND ?
-                        FlagOp.addFlag(ShortcutInfo.FLAG_DISABLED_SUSPENDED) :
-                        FlagOp.removeFlag(ShortcutInfo.FLAG_DISABLED_SUSPENDED);
+                flagOp = mOp == OP_SUSPEND ? FlagOp.addFlag(ShortcutInfo.FLAG_DISABLED_SUSPENDED) : FlagOp.removeFlag(ShortcutInfo.FLAG_DISABLED_SUSPENDED);
                 if (DEBUG) Log.d(TAG, "mAllAppsList.(un)suspend " + N);
                 appsList.updateDisabledFlags(matcher, flagOp);
                 break;
             case OP_USER_AVAILABILITY_CHANGE:
-                flagOp = UserManagerCompat.getInstance(context).isQuietModeEnabled(mUser)
-                        ? FlagOp.addFlag(ShortcutInfo.FLAG_DISABLED_QUIET_USER)
-                        : FlagOp.removeFlag(ShortcutInfo.FLAG_DISABLED_QUIET_USER);
+                flagOp = UserManagerCompat.getInstance(context).isQuietModeEnabled(mUser) ? FlagOp.addFlag(ShortcutInfo.FLAG_DISABLED_QUIET_USER) : FlagOp.removeFlag(ShortcutInfo.FLAG_DISABLED_QUIET_USER);
                 // We want to update all packages for this user.
                 matcher = ItemInfoMatcher.ofUser(mUser);
                 appsList.updateDisabledFlags(matcher, flagOp);
@@ -158,29 +154,29 @@ public class PackageUpdatedTask extends ExtendedModelTask {
         ArrayList<AppInfo> modified = null;
         final ArrayList<AppInfo> removedApps = new ArrayList<AppInfo>();
 
-		//add by allen start
-		final List<UserHandle> profiles = UserManagerCompat.getInstance(context).getUserProfiles();
-		ArrayList<PendingInstallShortcutInfo> added2 = new ArrayList<PendingInstallShortcutInfo>();
-		for (UserHandle user : profiles) {
-			final List<LauncherActivityInfo> apps = LauncherAppsCompat.getInstance(context).getActivityList(null, user);
-			
-			
-			synchronized (this) {
-				for (LauncherActivityInfo info : apps) {
-						for (AppInfo appInfo : appsList.added) {
-							if(info.getComponentName().equals(appInfo.componentName)){
-								PendingInstallShortcutInfo mPendingInstallShortcutInfo =  new PendingInstallShortcutInfo(info,context);
-								added2.add(mPendingInstallShortcutInfo);
-							}
-						}
-				}
-			}
-		}
-		
+        //add by allen start
+        final List<UserHandle> profiles = UserManagerCompat.getInstance(context).getUserProfiles();
+        ArrayList<PendingInstallShortcutInfo> added2 = new ArrayList<PendingInstallShortcutInfo>();
+        for (UserHandle user : profiles) {
+            final List<LauncherActivityInfo> apps = LauncherAppsCompat.getInstance(context).getActivityList(null, user);
+
+
+            synchronized (this) {
+                for (LauncherActivityInfo info : apps) {
+                    for (AppInfo appInfo : appsList.added) {
+                        if (info.getComponentName().equals(appInfo.componentName)) {
+                            PendingInstallShortcutInfo mPendingInstallShortcutInfo = new PendingInstallShortcutInfo(info, context);
+                            added2.add(mPendingInstallShortcutInfo);
+                        }
+                    }
+                }
+            }
+        }
+
         if (!added2.isEmpty()) {
             app.getModel().addAndBindAddedWorkspaceItems(new LazyShortcutsProvider(context.getApplicationContext(), added2));
         }
-		//add by allen end
+        //add by allen end
 
         if (appsList.added.size() > 0) {
             added = new ArrayList<>(appsList.added);
@@ -237,8 +233,7 @@ public class PackageUpdatedTask extends ExtendedModelTask {
                         boolean shortcutUpdated = false;
 
                         // Update shortcuts which use iconResource.
-                        if ((si.iconResource != null)
-                                && packageSet.contains(si.iconResource.packageName)) {
+                        if ((si.iconResource != null) && packageSet.contains(si.iconResource.packageName)) {
                             Bitmap icon = LauncherIcons.createIconBitmap(si.iconResource, context);
                             if (icon != null) {
                                 si.iconBitmap = icon;
@@ -254,14 +249,10 @@ public class PackageUpdatedTask extends ExtendedModelTask {
                                 if (si.hasStatusFlag(ShortcutInfo.FLAG_AUTOINTALL_ICON)) {
                                     // Auto install icon
                                     PackageManager pm = context.getPackageManager();
-                                    ResolveInfo matched = pm.resolveActivity(
-                                            new Intent(Intent.ACTION_MAIN)
-                                                    .setComponent(cn).addCategory(Intent.CATEGORY_LAUNCHER),
-                                            PackageManager.MATCH_DEFAULT_ONLY);
+                                    ResolveInfo matched = pm.resolveActivity(new Intent(Intent.ACTION_MAIN).setComponent(cn).addCategory(Intent.CATEGORY_LAUNCHER), PackageManager.MATCH_DEFAULT_ONLY);
                                     if (matched == null) {
                                         // Try to find the best match activity.
-                                        Intent intent = pm.getLaunchIntentForPackage(
-                                                cn.getPackageName());
+                                        Intent intent = pm.getLaunchIntentForPackage(cn.getPackageName());
                                         if (intent != null) {
                                             cn = intent.getComponent();
                                             appInfo = addedOrUpdatedApps.get(cn);
@@ -282,8 +273,7 @@ public class PackageUpdatedTask extends ExtendedModelTask {
                                 }
                             }
 
-                            if (appInfo != null && Intent.ACTION_MAIN.equals(si.intent.getAction())
-                                    && si.itemType == LauncherSettings.Favorites.ITEM_TYPE_APPLICATION) {
+                            if (appInfo != null && Intent.ACTION_MAIN.equals(si.intent.getAction()) && si.itemType == LauncherSettings.Favorites.ITEM_TYPE_APPLICATION) {
                                 iconCache.getTitleAndIcon(si, si.usingLowResIcon);
                                 infoUpdated = true;
                             }
@@ -303,12 +293,8 @@ public class PackageUpdatedTask extends ExtendedModelTask {
                         }
                     } else if (info instanceof LauncherAppWidgetInfo && mOp == OP_ADD) {
                         LauncherAppWidgetInfo widgetInfo = (LauncherAppWidgetInfo) info;
-                        if (mUser.equals(widgetInfo.user)
-                                && widgetInfo.hasRestoreFlag(LauncherAppWidgetInfo.FLAG_PROVIDER_NOT_READY)
-                                && packageSet.contains(widgetInfo.providerName.getPackageName())) {
-                            widgetInfo.restoreStatus &=
-                                    ~LauncherAppWidgetInfo.FLAG_PROVIDER_NOT_READY &
-                                            ~LauncherAppWidgetInfo.FLAG_RESTORE_STARTED;
+                        if (mUser.equals(widgetInfo.user) && widgetInfo.hasRestoreFlag(LauncherAppWidgetInfo.FLAG_PROVIDER_NOT_READY) && packageSet.contains(widgetInfo.providerName.getPackageName())) {
+                            widgetInfo.restoreStatus &= ~LauncherAppWidgetInfo.FLAG_PROVIDER_NOT_READY & ~LauncherAppWidgetInfo.FLAG_RESTORE_STARTED;
 
                             // adding this flag ensures that launcher shows 'click to setup'
                             // if the widget has a config activity. In case there is no config
@@ -348,7 +334,7 @@ public class PackageUpdatedTask extends ExtendedModelTask {
         } else if (mOp == OP_UPDATE) {
             // Mark disabled packages in the broadcast to be removed
             final LauncherAppsCompat launcherApps = LauncherAppsCompat.getInstance(context);
-            for (int i=0; i<N; i++) {
+            for (int i = 0; i < N; i++) {
                 if (!launcherApps.isPackageEnabledForProfile(packages[i], mUser)) {
                     removedPackages.add(packages[i]);
                 }
@@ -361,10 +347,8 @@ public class PackageUpdatedTask extends ExtendedModelTask {
         }
 
         if (!removedPackages.isEmpty() || !removedComponents.isEmpty()) {
-            getModelWriter().deleteItemsFromDatabase(
-                    ItemInfoMatcher.ofPackages(removedPackages, mUser));
-            getModelWriter().deleteItemsFromDatabase(
-                    ItemInfoMatcher.ofComponents(removedComponents, mUser));
+            getModelWriter().deleteItemsFromDatabase(ItemInfoMatcher.ofPackages(removedPackages, mUser));
+            getModelWriter().deleteItemsFromDatabase(ItemInfoMatcher.ofComponents(removedComponents, mUser));
 
             // Remove any queued items from the install queue
             InstallShortcutReceiver.removeFromInstallQueue(context, removedPackages, mUser);
@@ -373,8 +357,7 @@ public class PackageUpdatedTask extends ExtendedModelTask {
             scheduleCallbackTask(new CallbackTask() {
                 @Override
                 public void execute(Callbacks callbacks) {
-                    callbacks.bindWorkspaceComponentsRemoved(
-                            removedPackages, removedComponents, mUser);
+                    callbacks.bindWorkspaceComponentsRemoved(removedPackages, removedComponents, mUser);
                 }
             });
         }
@@ -391,8 +374,7 @@ public class PackageUpdatedTask extends ExtendedModelTask {
 
         // Notify launcher of widget update. From marshmallow onwards we use AppWidgetHost to
         // get widget update signals.
-        if (!Utilities.ATLEAST_MARSHMALLOW &&
-                (mOp == OP_ADD || mOp == OP_REMOVE || mOp == OP_UPDATE)) {
+        if (!Utilities.ATLEAST_MARSHMALLOW && (mOp == OP_ADD || mOp == OP_REMOVE || mOp == OP_UPDATE)) {
             scheduleCallbackTask(new CallbackTask() {
                 @Override
                 public void execute(Callbacks callbacks) {
@@ -403,9 +385,7 @@ public class PackageUpdatedTask extends ExtendedModelTask {
             // Load widgets for the new package.
             for (int i = 0; i < N; i++) {
                 LauncherModel model = app.getModel();
-                model.refreshAndBindWidgetsAndShortcuts(
-                        model.getCallback(), false /* bindFirst */,
-                        new PackageUserKey(packages[i], mUser) /* packageUser */);
+                model.refreshAndBindWidgetsAndShortcuts(model.getCallback(), false /* bindFirst */, new PackageUserKey(packages[i], mUser) /* packageUser */);
             }
         }
     }

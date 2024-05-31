@@ -53,8 +53,7 @@ public class PackageInstallStateChangedTask extends ExtendedModelTask {
                 if (info instanceof ShortcutInfo) {
                     ShortcutInfo si = (ShortcutInfo) info;
                     ComponentName cn = si.getTargetComponent();
-                    if (si.isPromise() && (cn != null)
-                            && mInstallInfo.packageName.equals(cn.getPackageName())) {
+                    if (si.isPromise() && (cn != null) && mInstallInfo.packageName.equals(cn.getPackageName())) {
                         si.setInstallProgress(mInstallInfo.progress);
 
                         if (mInstallInfo.state == PackageInstallerCompat.STATUS_FAILED) {

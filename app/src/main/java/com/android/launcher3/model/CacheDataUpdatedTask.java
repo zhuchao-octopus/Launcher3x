@@ -26,7 +26,6 @@ import com.android.launcher3.LauncherAppState;
 import com.android.launcher3.LauncherModel.CallbackTask;
 import com.android.launcher3.LauncherModel.Callbacks;
 import com.android.launcher3.LauncherSettings;
-import com.android.launcher3.LauncherSettings.Favorites;
 import com.android.launcher3.ShortcutInfo;
 
 import java.util.ArrayList;
@@ -62,9 +61,7 @@ public class CacheDataUpdatedTask extends ExtendedModelTask {
                 if (info instanceof ShortcutInfo && mUser.equals(info.user)) {
                     ShortcutInfo si = (ShortcutInfo) info;
                     ComponentName cn = si.getTargetComponent();
-                    if (si.itemType == LauncherSettings.Favorites.ITEM_TYPE_APPLICATION
-                            && isValidShortcut(si) && cn != null
-                            && mPackages.contains(cn.getPackageName())) {
+                    if (si.itemType == LauncherSettings.Favorites.ITEM_TYPE_APPLICATION && isValidShortcut(si) && cn != null && mPackages.contains(cn.getPackageName())) {
                         iconCache.getTitleAndIcon(si, si.usingLowResIcon);
                         updatedShortcuts.add(si);
                     }

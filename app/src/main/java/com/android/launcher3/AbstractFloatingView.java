@@ -18,7 +18,6 @@ package com.android.launcher3;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-///import android.support.annotation.IntDef;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -37,12 +36,12 @@ import java.lang.annotation.RetentionPolicy;
 public abstract class AbstractFloatingView extends LinearLayout {
 
     @IntDef(flag = true, value = {
-            TYPE_FOLDER,
-            TYPE_POPUP_CONTAINER_WITH_ARROW,
-            TYPE_WIDGETS_BOTTOM_SHEET
+            TYPE_FOLDER, TYPE_POPUP_CONTAINER_WITH_ARROW, TYPE_WIDGETS_BOTTOM_SHEET
     })
     @Retention(RetentionPolicy.SOURCE)
-    public @interface FloatingViewType {}
+    public @interface FloatingViewType {
+    }
+
     public static final int TYPE_FOLDER = 1 << 0;
     public static final int TYPE_POPUP_CONTAINER_WITH_ARROW = 1 << 1;
     public static final int TYPE_WIDGETS_BOTTOM_SHEET = 1 << 2;
@@ -99,8 +98,7 @@ public abstract class AbstractFloatingView extends LinearLayout {
 
     protected abstract boolean isOfType(@FloatingViewType int type);
 
-    protected static <T extends AbstractFloatingView> T getOpenView(
-            Launcher launcher, @FloatingViewType int type) {
+    protected static <T extends AbstractFloatingView> T getOpenView(Launcher launcher, @FloatingViewType int type) {
         DragLayer dragLayer = launcher.getDragLayer();
         // Iterate in reverse order. AbstractFloatingView is added later to the dragLayer,
         // and will be one of the last views.
@@ -140,8 +138,7 @@ public abstract class AbstractFloatingView extends LinearLayout {
     }
 
     public static AbstractFloatingView getTopOpenView(Launcher launcher) {
-        return getOpenView(launcher, TYPE_FOLDER | TYPE_POPUP_CONTAINER_WITH_ARROW
-                | TYPE_WIDGETS_BOTTOM_SHEET);
+        return getOpenView(launcher, TYPE_FOLDER | TYPE_POPUP_CONTAINER_WITH_ARROW | TYPE_WIDGETS_BOTTOM_SHEET);
     }
 
     public abstract int getLogContainerType();

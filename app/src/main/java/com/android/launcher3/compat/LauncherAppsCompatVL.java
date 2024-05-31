@@ -64,8 +64,7 @@ public class LauncherAppsCompatVL extends LauncherAppsCompat {
     }
 
     @Override
-    public void startActivityForProfile(ComponentName component, UserHandle user,
-            Rect sourceBounds, Bundle opts) {
+    public void startActivityForProfile(ComponentName component, UserHandle user, Rect sourceBounds, Bundle opts) {
         mLauncherApps.startMainActivity(component, user, sourceBounds, opts);
     }
 
@@ -75,17 +74,14 @@ public class LauncherAppsCompatVL extends LauncherAppsCompat {
         if (!isPrimaryUser && (flags == 0)) {
             // We are looking for an installed app on a secondary profile. Prior to O, the only
             // entry point for work profiles is through the LauncherActivity.
-            List<LauncherActivityInfo> activityList =
-                    mLauncherApps.getActivityList(packageName, user);
+            List<LauncherActivityInfo> activityList = mLauncherApps.getActivityList(packageName, user);
             return activityList.size() > 0 ? activityList.get(0).getApplicationInfo() : null;
         }
         try {
-            ApplicationInfo info =
-                    mContext.getPackageManager().getApplicationInfo(packageName, flags);
+            ApplicationInfo info = mContext.getPackageManager().getApplicationInfo(packageName, flags);
             // There is no way to check if the app is installed for managed profile. But for
             // primary profile, we can still have this check.
-            if (isPrimaryUser && ((info.flags & ApplicationInfo.FLAG_INSTALLED) == 0)
-                    || !info.enabled) {
+            if (isPrimaryUser && ((info.flags & ApplicationInfo.FLAG_INSTALLED) == 0) || !info.enabled) {
                 return null;
             }
             return info;
@@ -96,8 +92,7 @@ public class LauncherAppsCompatVL extends LauncherAppsCompat {
     }
 
     @Override
-    public void showAppDetailsForProfile(ComponentName component, UserHandle user,
-            Rect sourceBounds, Bundle opts) {
+    public void showAppDetailsForProfile(ComponentName component, UserHandle user, Rect sourceBounds, Bundle opts) {
         mLauncherApps.startAppDetailsActivity(component, user, sourceBounds, opts);
     }
 
@@ -154,8 +149,7 @@ public class LauncherAppsCompatVL extends LauncherAppsCompat {
             mCallback.onPackagesAvailable(packageNames, user, replacing);
         }
 
-        public void onPackagesUnavailable(String[] packageNames, UserHandle user,
-                boolean replacing) {
+        public void onPackagesUnavailable(String[] packageNames, UserHandle user, boolean replacing) {
             mCallback.onPackagesUnavailable(packageNames, user, replacing);
         }
 
@@ -167,8 +161,7 @@ public class LauncherAppsCompatVL extends LauncherAppsCompat {
             mCallback.onPackagesUnsuspended(packageNames, user);
         }
 
-        public void onShortcutsChanged(String packageName, List<ShortcutInfo> shortcuts,
-                UserHandle user) {
+        public void onShortcutsChanged(String packageName, List<ShortcutInfo> shortcuts, UserHandle user) {
             List<ShortcutInfoCompat> shortcutInfoCompats = new ArrayList<>(shortcuts.size());
             for (ShortcutInfo shortcutInfo : shortcuts) {
                 shortcutInfoCompats.add(new ShortcutInfoCompat(shortcutInfo));
@@ -179,17 +172,14 @@ public class LauncherAppsCompatVL extends LauncherAppsCompat {
     }
 
     @Override
-    public List<ShortcutConfigActivityInfo> getCustomShortcutActivityList(
-            @Nullable PackageUserKey packageUser) {
+    public List<ShortcutConfigActivityInfo> getCustomShortcutActivityList(@Nullable PackageUserKey packageUser) {
         List<ShortcutConfigActivityInfo> result = new ArrayList<>();
         if (packageUser != null && !packageUser.mUser.equals(Process.myUserHandle())) {
             return result;
         }
         PackageManager pm = mContext.getPackageManager();
-        for (ResolveInfo info :
-                pm.queryIntentActivities(new Intent(Intent.ACTION_CREATE_SHORTCUT), 0)) {
-            if (packageUser == null || packageUser.mPackageName
-                    .equals(info.activityInfo.packageName)) {
+        for (ResolveInfo info : pm.queryIntentActivities(new Intent(Intent.ACTION_CREATE_SHORTCUT), 0)) {
+            if (packageUser == null || packageUser.mPackageName.equals(info.activityInfo.packageName)) {
                 result.add(new ShortcutConfigActivityInfoVL(info.activityInfo, pm));
             }
         }

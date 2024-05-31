@@ -57,8 +57,7 @@ public class VerticalFlingDetector implements View.OnTouchListener {
                 if (mShouldCheckFling) {
                     break;
                 }
-                if (Math.abs(ev.getY() - mDownY) > mCustomTouchSlop &&
-                        Math.abs(ev.getY() - mDownY) > Math.abs(ev.getX() - mDownX)) {
+                if (Math.abs(ev.getY() - mDownY) > mCustomTouchSlop && Math.abs(ev.getY() - mDownY) > Math.abs(ev.getX() - mDownX)) {
                     mShouldCheckFling = true;
                 }
                 break;

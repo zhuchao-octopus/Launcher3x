@@ -29,8 +29,7 @@ public class WidgetItem extends ComponentKey implements Comparable<WidgetItem> {
     public final String label;
     public final int spanX, spanY;
 
-    public WidgetItem(LauncherAppWidgetProviderInfo info, PackageManager pm,
-            InvariantDeviceProfile idp) {
+    public WidgetItem(LauncherAppWidgetProviderInfo info, PackageManager pm, InvariantDeviceProfile idp) {
         super(info.provider, info.getProfile());
 
         label = Utilities.trim(info.getLabel(pm));
@@ -74,8 +73,6 @@ public class WidgetItem extends ComponentKey implements Comparable<WidgetItem> {
         // also same, put the widget with smaller height before.
         int thisArea = spanX * spanY;
         int otherArea = another.spanX * another.spanY;
-        return thisArea == otherArea
-                ? Integer.compare(spanY, another.spanY)
-                : Integer.compare(thisArea, otherArea);
+        return thisArea == otherArea ? Integer.compare(spanY, another.spanY) : Integer.compare(thisArea, otherArea);
     }
 }

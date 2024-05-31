@@ -52,21 +52,18 @@ public class InfoDropTarget extends UninstallDropTarget {
 
     @Override
     public void completeDrop(DragObject d) {
-        DropTargetResultCallback callback = d.dragSource instanceof DropTargetResultCallback
-                ? (DropTargetResultCallback) d.dragSource : null;
+        DropTargetResultCallback callback = d.dragSource instanceof DropTargetResultCallback ? (DropTargetResultCallback) d.dragSource : null;
         startDetailsActivityForInfo(d.dragInfo, mLauncher, callback);
     }
 
     /**
      * @return Whether the activity was started.
      */
-    public static boolean startDetailsActivityForInfo(
-            ItemInfo info, Launcher launcher, DropTargetResultCallback callback) {
+    public static boolean startDetailsActivityForInfo(ItemInfo info, Launcher launcher, DropTargetResultCallback callback) {
         return startDetailsActivityForInfo(info, launcher, callback, null, null);
     }
 
-    public static boolean startDetailsActivityForInfo(ItemInfo info, Launcher launcher,
-            DropTargetResultCallback callback, Rect sourceBounds, Bundle opts) {
+    public static boolean startDetailsActivityForInfo(ItemInfo info, Launcher launcher, DropTargetResultCallback callback, Rect sourceBounds, Bundle opts) {
         boolean result = false;
         ComponentName componentName = null;
         if (info instanceof AppInfo) {
@@ -80,8 +77,7 @@ public class InfoDropTarget extends UninstallDropTarget {
         }
         if (componentName != null) {
             try {
-                LauncherAppsCompat.getInstance(launcher)
-                        .showAppDetailsForProfile(componentName, info.user, sourceBounds, opts);
+                LauncherAppsCompat.getInstance(launcher).showAppDetailsForProfile(componentName, info.user, sourceBounds, opts);
                 result = true;
             } catch (SecurityException | ActivityNotFoundException e) {
                 Toast.makeText(launcher, R.string.activity_not_found, Toast.LENGTH_SHORT).show();
@@ -102,16 +98,10 @@ public class InfoDropTarget extends UninstallDropTarget {
 
     public static boolean supportsDrop(Context context, ItemInfo info) {
         // Only show the App Info drop target if developer settings are enabled.
-        boolean developmentSettingsEnabled = Settings.Global.getInt(context.getContentResolver(),
-                Settings.Global.DEVELOPMENT_SETTINGS_ENABLED, 0) == 1;
+        boolean developmentSettingsEnabled = Settings.Global.getInt(context.getContentResolver(), Settings.Global.DEVELOPMENT_SETTINGS_ENABLED, 0) == 1;
         if (!developmentSettingsEnabled) {
             return false;
         }
-        return info.itemType != LauncherSettings.Favorites.ITEM_TYPE_SHORTCUT &&
-                (info instanceof AppInfo ||
-                (info instanceof ShortcutInfo && !((ShortcutInfo) info).isPromise()) ||
-                (info instanceof LauncherAppWidgetInfo &&
-                        ((LauncherAppWidgetInfo) info).restoreStatus == 0) ||
-                info instanceof PendingAddItemInfo);
+        return info.itemType != LauncherSettings.Favorites.ITEM_TYPE_SHORTCUT && (info instanceof AppInfo || (info instanceof ShortcutInfo && !((ShortcutInfo) info).isPromise()) || (info instanceof LauncherAppWidgetInfo && ((LauncherAppWidgetInfo) info).restoreStatus == 0) || info instanceof PendingAddItemInfo);
     }
 }

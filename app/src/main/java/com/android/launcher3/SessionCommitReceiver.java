@@ -54,8 +54,7 @@ public class SessionCommitReceiver extends BroadcastReceiver {
 
     // Preference key for automatically adding icon to homescreen.
     public static final String ADD_ICON_PREFERENCE_KEY = "pref_add_icon_to_home";
-    public static final String ADD_ICON_PREFERENCE_INITIALIZED_KEY =
-            "pref_add_icon_to_home_initialized";
+    public static final String ADD_ICON_PREFERENCE_INITIALIZED_KEY = "pref_add_icon_to_home_initialized";
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -67,8 +66,7 @@ public class SessionCommitReceiver extends BroadcastReceiver {
         SessionInfo info = intent.getParcelableExtra(PackageInstaller.EXTRA_SESSION);
         UserHandle user = intent.getParcelableExtra(Intent.EXTRA_USER);
 
-        if (TextUtils.isEmpty(info.getAppPackageName()) ||
-                info.getInstallReason() != PackageManager.INSTALL_REASON_USER) {
+        if (TextUtils.isEmpty(info.getAppPackageName()) || info.getInstallReason() != PackageManager.INSTALL_REASON_USER) {
             return;
         }
 
@@ -77,8 +75,7 @@ public class SessionCommitReceiver extends BroadcastReceiver {
             return;
         }
 
-        List<LauncherActivityInfo> activities = LauncherAppsCompat.getInstance(context)
-                .getActivityList(info.getAppPackageName(), user);
+        List<LauncherActivityInfo> activities = LauncherAppsCompat.getInstance(context).getActivityList(info.getAppPackageName(), user);
         if (activities == null || activities.isEmpty()) {
             // no activity found
             return;
@@ -118,28 +115,20 @@ public class SessionCommitReceiver extends BroadcastReceiver {
         @Override
         protected Void doInBackground(Void... voids) {
             boolean addIconToHomeScreenEnabled = readValueFromMarketApp();
-            Utilities.getPrefs(mContext).edit()
-                    .putBoolean(ADD_ICON_PREFERENCE_KEY, addIconToHomeScreenEnabled)
-                    .putBoolean(ADD_ICON_PREFERENCE_INITIALIZED_KEY, true)
-                    .apply();
+            Utilities.getPrefs(mContext).edit().putBoolean(ADD_ICON_PREFERENCE_KEY, addIconToHomeScreenEnabled).putBoolean(ADD_ICON_PREFERENCE_INITIALIZED_KEY, true).apply();
             return null;
         }
 
         public boolean readValueFromMarketApp() {
             // Get the marget package
-            ResolveInfo ri = mContext.getPackageManager().resolveActivity(
-                    new Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_APP_MARKET),
-                    PackageManager.MATCH_DEFAULT_ONLY | PackageManager.MATCH_SYSTEM_ONLY);
+            ResolveInfo ri = mContext.getPackageManager().resolveActivity(new Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_APP_MARKET), PackageManager.MATCH_DEFAULT_ONLY | PackageManager.MATCH_SYSTEM_ONLY);
             if (ri == null) {
                 return true;
             }
 
             Cursor c = null;
             try {
-                c = mContext.getContentResolver().query(
-                        Uri.parse("content://" + ri.activityInfo.packageName
-                                + MARKER_PROVIDER_PREFIX),
-                        null, null, null, null);
+                c = mContext.getContentResolver().query(Uri.parse("content://" + ri.activityInfo.packageName + MARKER_PROVIDER_PREFIX), null, null, null, null);
                 if (c.moveToNext()) {
                     return c.getInt(c.getColumnIndexOrThrow(Settings.NameValueTable.VALUE)) != 0;
                 }

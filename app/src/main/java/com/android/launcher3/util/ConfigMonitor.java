@@ -2,13 +2,13 @@ package com.android.launcher3.util;
 
 /**
  * Copyright (C) 2015 The Android Open Source Project
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -16,15 +16,14 @@ package com.android.launcher3.util;
  * limitations under the License.
  */
 
-import com.android.launcher3.Launcher;
-import com.android.launcher3.ResourceUtil;
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.util.Log;
+
+import com.android.launcher3.Launcher;
 
 /**
  * {@link BroadcastReceiver} which watches configuration changes and
@@ -48,14 +47,14 @@ public class ConfigMonitor extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         Configuration config = context.getResources().getConfiguration();
         Log.d("ConfigMonitor", "Configuration22 changed, restarting launcher");
-//        ResourceUtil.updateUi(context);
+        //        ResourceUtil.updateUi(context);
         Launcher.updateUI();
         if (mFontScale != config.fontScale || mDensity != config.densityDpi) {
             Log.d("ConfigMonitor", "Configuration changed, restarting launcher");
             mContext.unregisterReceiver(this);
             android.os.Process.killProcess(android.os.Process.myPid());
         }
-        
+
     }
 
     public void register() {

@@ -19,8 +19,6 @@ package com.android.launcher3.accessibility;
 import android.content.Context;
 import android.graphics.Rect;
 import android.os.Bundle;
-///import android.support.v4.view.accessibility.AccessibilityNodeInfoCompat;
-///import android.support.v4.widget.ExploreByTouchHelper;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.accessibility.AccessibilityEvent;
@@ -37,8 +35,7 @@ import java.util.List;
 /**
  * Helper class to make drag-and-drop in a {@link CellLayout} accessible.
  */
-public abstract class DragAndDropAccessibilityDelegate extends ExploreByTouchHelper
-        implements OnClickListener {
+public abstract class DragAndDropAccessibilityDelegate extends ExploreByTouchHelper implements OnClickListener {
     protected static final int INVALID_POSITION = -1;
 
     private static final int[] sTempArray = new int[2];
@@ -99,8 +96,7 @@ public abstract class DragAndDropAccessibilityDelegate extends ExploreByTouchHel
 
     @Override
     public void onClick(View v) {
-        onPerformActionForVirtualView(getFocusedVirtualView(),
-                AccessibilityNodeInfoCompat.ACTION_CLICK, null);
+        onPerformActionForVirtualView(getFocusedVirtualView(), AccessibilityNodeInfoCompat.ACTION_CLICK, null);
     }
 
     @Override

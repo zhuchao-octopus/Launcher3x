@@ -66,9 +66,7 @@ public class NotificationMainView extends FrameLayout implements SwipeHelper.Cal
         mTextAndBackground = (ViewGroup) findViewById(R.id.text_and_background);
         ColorDrawable colorBackground = (ColorDrawable) mTextAndBackground.getBackground();
         mBackgroundColor = colorBackground.getColor();
-        RippleDrawable rippleBackground = new RippleDrawable(ColorStateList.valueOf(
-                Themes.getAttrColor(getContext(), android.R.attr.colorControlHighlight)),
-                colorBackground, null);
+        RippleDrawable rippleBackground = new RippleDrawable(ColorStateList.valueOf(Themes.getAttrColor(getContext(), android.R.attr.colorControlHighlight)), colorBackground, null);
         mTextAndBackground.setBackground(rippleBackground);
         mTitleView = (TextView) mTextAndBackground.findViewById(R.id.title);
         mTextView = (TextView) mTextAndBackground.findViewById(R.id.text);
@@ -81,8 +79,7 @@ public class NotificationMainView extends FrameLayout implements SwipeHelper.Cal
     /**
      * Sets the content of this view, animating it after a new icon shifts up if necessary.
      */
-    public void applyNotificationInfo(NotificationInfo mainNotification, View iconView,
-           boolean animate) {
+    public void applyNotificationInfo(NotificationInfo mainNotification, View iconView, boolean animate) {
         mNotificationInfo = mainNotification;
         CharSequence title = mNotificationInfo.title;
         CharSequence text = mNotificationInfo.text;
@@ -94,8 +91,7 @@ public class NotificationMainView extends FrameLayout implements SwipeHelper.Cal
             mTitleView.setText(TextUtils.isEmpty(title) ? text : title);
             mTextView.setVisibility(GONE);
         }
-        iconView.setBackground(mNotificationInfo.getIconForBackground(getContext(),
-                mBackgroundColor));
+        iconView.setBackground(mNotificationInfo.getIconForBackground(getContext(), mBackgroundColor));
         if (mNotificationInfo.intent != null) {
             setOnClickListener(mNotificationInfo);
         }
@@ -137,11 +133,8 @@ public class NotificationMainView extends FrameLayout implements SwipeHelper.Cal
     @Override
     public void onChildDismissed(View v) {
         Launcher launcher = Launcher.getLauncher(getContext());
-        launcher.getPopupDataProvider().cancelNotification(
-                mNotificationInfo.notificationKey);
-        launcher.getUserEventDispatcher().logActionOnItem(
-                LauncherLogProto.Action.Touch.SWIPE.getNumber(),
-                LauncherLogProto.Action.Direction.RIGHT.getNumber(), // Assume all swipes are right for logging.
+        launcher.getPopupDataProvider().cancelNotification(mNotificationInfo.notificationKey);
+        launcher.getUserEventDispatcher().logActionOnItem(LauncherLogProto.Action.Touch.SWIPE.getNumber(), LauncherLogProto.Action.Direction.RIGHT.getNumber(), // Assume all swipes are right for logging.
                 LauncherLogProto.ItemType.NOTIFICATION.getNumber());
     }
 

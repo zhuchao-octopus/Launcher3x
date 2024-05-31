@@ -80,15 +80,12 @@ public class ImportDataTask {
 
     private ImportDataTask(Context context, String sourceAuthority) {
         mContext = context;
-        mOtherScreensUri = Uri.parse("content://" +
-                sourceAuthority + "/" + WorkspaceScreens.TABLE_NAME);
+        mOtherScreensUri = Uri.parse("content://" + sourceAuthority + "/" + WorkspaceScreens.TABLE_NAME);
         mOtherFavoritesUri = Uri.parse("content://" + sourceAuthority + "/" + Favorites.TABLE_NAME);
     }
 
     public boolean importWorkspace() throws Exception {
-        ArrayList<Long> allScreens = LauncherDbUtils.getScreenIdsFromCursor(
-                mContext.getContentResolver().query(mOtherScreensUri, null, null, null,
-                        LauncherSettings.WorkspaceScreens.SCREEN_RANK));
+        ArrayList<Long> allScreens = LauncherDbUtils.getScreenIdsFromCursor(mContext.getContentResolver().query(mOtherScreensUri, null, null, null, LauncherSettings.WorkspaceScreens.SCREEN_RANK));
         FileLog.d(TAG, "Importing DB from " + mOtherFavoritesUri);
 
         // During import we reset the screen IDs to 0-indexed values.
@@ -109,8 +106,7 @@ public class ImportDataTask {
             v.put(LauncherSettings.WorkspaceScreens._ID, i);
             v.put(LauncherSettings.WorkspaceScreens.SCREEN_RANK, i);
             screenIdMap.put(allScreens.get(i), (long) i);
-            screenOps.add(ContentProviderOperation.newInsert(
-                    LauncherSettings.WorkspaceScreens.CONTENT_URI).withValues(v).build());
+            screenOps.add(ContentProviderOperation.newInsert(LauncherSettings.WorkspaceScreens.CONTENT_URI).withValues(v).build());
         }
         mContext.getContentResolver().applyBatch(ProviderConfig.AUTHORITY, screenOps);
         importWorkspaceItems(allScreens.get(0), screenIdMap);
@@ -118,8 +114,7 @@ public class ImportDataTask {
         GridSizeMigrationTask.markForMigration(mContext, mMaxGridSizeX, mMaxGridSizeY, mHotseatSize);
 
         // Create empty DB flag.
-        LauncherSettings.Settings.call(mContext.getContentResolver(),
-                LauncherSettings.Settings.METHOD_CLEAR_EMPTY_DB_FLAG);
+        LauncherSettings.Settings.call(mContext.getContentResolver(), LauncherSettings.Settings.METHOD_CLEAR_EMPTY_DB_FLAG);
         return true;
     }
 
@@ -128,18 +123,14 @@ public class ImportDataTask {
      * 2) For home screen entries, maps the screen id based on {@param screenIdMap}
      * 3) In the end fills any holes in hotseat with items from default hotseat layout.
      */
-    private void importWorkspaceItems(
-            long firsetScreenId, LongSparseArray<Long> screenIdMap) throws Exception {
-        String profileId = Long.toString(UserManagerCompat.getInstance(mContext)
-                .getSerialNumberForUser(Process.myUserHandle()));
+    private void importWorkspaceItems(long firsetScreenId, LongSparseArray<Long> screenIdMap) throws Exception {
+        String profileId = Long.toString(UserManagerCompat.getInstance(mContext).getSerialNumberForUser(Process.myUserHandle()));
 
         boolean createEmptyRowOnFirstScreen = false;
         if (FeatureFlags.QSB_ON_FIRST_SCREEN) {
             try (Cursor c = mContext.getContentResolver().query(mOtherFavoritesUri, null,
                     // get items on the first row of the first screen
-                    "profileId = ? AND container = -100 AND screen = ? AND cellY = 0",
-                    new String[]{profileId, Long.toString(firsetScreenId)},
-                    null)) {
+                    "profileId = ? AND container = -100 AND screen = ? AND cellY = 0", new String[]{profileId, Long.toString(firsetScreenId)}, null)) {
                 // First row of first screen is not empty
                 createEmptyRowOnFirstScreen = c.moveToNext();
             }
@@ -154,13 +145,12 @@ public class ImportDataTask {
         // Number of imported items on workspace and hotseat
         int totalItemsOnWorkspace = 0;
 
-        try (Cursor c = mContext.getContentResolver()
-                .query(mOtherFavoritesUri, null,
-                        // Only migrate the primary user
-                        Favorites.PROFILE_ID + " = ?", new String[]{profileId},
-                        // Get the items sorted by container, so that the folders are loaded
-                        // before the corresponding items.
-                        Favorites.CONTAINER)) {
+        try (Cursor c = mContext.getContentResolver().query(mOtherFavoritesUri, null,
+                // Only migrate the primary user
+                Favorites.PROFILE_ID + " = ?", new String[]{profileId},
+                // Get the items sorted by container, so that the folders are loaded
+                // before the corresponding items.
+                Favorites.CONTAINER)) {
 
             // various columns we expect to exist.
             final int idIndex = c.getColumnIndexOrThrow(Favorites._ID);
@@ -234,10 +224,7 @@ public class ImportDataTask {
                         break;
                     }
                     case Favorites.ITEM_TYPE_APPWIDGET: {
-                        values.put(Favorites.RESTORED,
-                                LauncherAppWidgetInfo.FLAG_ID_NOT_VALID |
-                                        LauncherAppWidgetInfo.FLAG_PROVIDER_NOT_READY |
-                                        LauncherAppWidgetInfo.FLAG_UI_NOT_READY);
+                        values.put(Favorites.RESTORED, LauncherAppWidgetInfo.FLAG_ID_NOT_VALID | LauncherAppWidgetInfo.FLAG_PROVIDER_NOT_READY | LauncherAppWidgetInfo.FLAG_UI_NOT_READY);
                         values.put(Favorites.APPWIDGET_PROVIDER, c.getString(widgetProviderIndex));
                         break;
                     }
@@ -250,7 +237,7 @@ public class ImportDataTask {
                             values.put(Favorites.ICON_PACKAGE, c.getString(iconPackageIndex));
                             values.put(Favorites.ICON_RESOURCE, c.getString(iconResourceIndex));
                         }
-                        values.put(Favorites.ICON,  c.getBlob(iconIndex));
+                        values.put(Favorites.ICON, c.getBlob(iconIndex));
                         values.put(Favorites.INTENT, intent.toUri(0));
                         values.put(Favorites.RANK, c.getInt(rankIndex));
 
@@ -282,15 +269,13 @@ public class ImportDataTask {
                 values.put(Favorites.SPANX, spanX);
                 values.put(Favorites.SPANY, spanY);
                 values.put(Favorites.TITLE, c.getString(titleIndex));
-                insertOperations.add(ContentProviderOperation
-                        .newInsert(Favorites.CONTENT_URI).withValues(values).build());
+                insertOperations.add(ContentProviderOperation.newInsert(Favorites.CONTENT_URI).withValues(values).build());
                 if (container < 0) {
                     totalItemsOnWorkspace++;
                 }
 
                 if (insertOperations.size() >= BATCH_INSERT_SIZE) {
-                    mContext.getContentResolver().applyBatch(ProviderConfig.AUTHORITY,
-                            insertOperations);
+                    mContext.getContentResolver().applyBatch(ProviderConfig.AUTHORITY, insertOperations);
                     insertOperations.clear();
                 }
             }
@@ -300,8 +285,7 @@ public class ImportDataTask {
             throw new Exception("Insufficient data");
         }
         if (!insertOperations.isEmpty()) {
-            mContext.getContentResolver().applyBatch(ProviderConfig.AUTHORITY,
-                    insertOperations);
+            mContext.getContentResolver().applyBatch(ProviderConfig.AUTHORITY, insertOperations);
             insertOperations.clear();
         }
 
@@ -312,26 +296,23 @@ public class ImportDataTask {
         }
         if (hotseatItems.size() < myHotseatCount) {
             // Insufficient hotseat items. Add a few more.
-            HotseatParserCallback parserCallback = new HotseatParserCallback(
-                    hotseatTargetApps, hotseatItems, insertOperations, maxId + 1, myHotseatCount);
-            new HotseatLayoutParser(mContext,
-                    parserCallback).loadLayout(null, new ArrayList<Long>());
+            HotseatParserCallback parserCallback = new HotseatParserCallback(hotseatTargetApps, hotseatItems, insertOperations, maxId + 1, myHotseatCount);
+            new HotseatLayoutParser(mContext, parserCallback).loadLayout(null, new ArrayList<Long>());
             mHotseatSize = (int) hotseatItems.keyAt(hotseatItems.size() - 1) + 1;
 
             if (!insertOperations.isEmpty()) {
-                mContext.getContentResolver().applyBatch(ProviderConfig.AUTHORITY,
-                        insertOperations);
+                mContext.getContentResolver().applyBatch(ProviderConfig.AUTHORITY, insertOperations);
             }
         }
     }
 
     private static final String getPackage(Intent intent) {
-        return intent.getComponent() != null ? intent.getComponent().getPackageName()
-                : intent.getPackage();
+        return intent.getComponent() != null ? intent.getComponent().getPackageName() : intent.getPackage();
     }
 
     /**
      * Performs data import if possible.
+     *
      * @return true on successful data import, false if it was not available
      * @throws Exception if the import failed
      */
@@ -348,14 +329,12 @@ public class ImportDataTask {
         // again and thus prevents potential crash loops due to migration failure.
         devicePrefs.edit().remove(KEY_DATA_IMPORT_SRC_PKG).remove(KEY_DATA_IMPORT_SRC_AUTHORITY).commit();
 
-        if (!Settings.call(context.getContentResolver(), Settings.METHOD_WAS_EMPTY_DB_CREATED)
-                .getBoolean(Settings.EXTRA_VALUE, false)) {
+        if (!Settings.call(context.getContentResolver(), Settings.METHOD_WAS_EMPTY_DB_CREATED).getBoolean(Settings.EXTRA_VALUE, false)) {
             // Only migration if a new DB was created.
             return false;
         }
 
-        for (ProviderInfo info : context.getPackageManager().queryContentProviders(
-                null, context.getApplicationInfo().uid, 0)) {
+        for (ProviderInfo info : context.getPackageManager().queryContentProviders(null, context.getApplicationInfo().uid, 0)) {
 
             if (sourcePackage.equals(info.packageName)) {
                 if ((info.applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) == 0) {
@@ -365,9 +344,7 @@ public class ImportDataTask {
 
                 // Wait until we found a provider with matching authority.
                 if (sourceAuthority.equals(info.authority)) {
-                    if (TextUtils.isEmpty(info.readPermission) ||
-                            context.checkPermission(info.readPermission, Process.myPid(),
-                                    Process.myUid()) == PackageManager.PERMISSION_GRANTED) {
+                    if (TextUtils.isEmpty(info.readPermission) || context.checkPermission(info.readPermission, Process.myPid(), Process.myUid()) == PackageManager.PERMISSION_GRANTED) {
                         // All checks passed, run the import task.
                         return new ImportDataTask(context, sourceAuthority).importWorkspace();
                     }
@@ -382,9 +359,7 @@ public class ImportDataTask {
     }
 
     private static final int getMyHotseatLayoutId(Context context) {
-        return LauncherAppState.getIDP(context).numHotseatIcons <= 5
-                ? R.xml.dw_phone_hotseat
-                : R.xml.dw_tablet_hotseat;
+        return LauncherAppState.getIDP(context).numHotseatIcons <= 5 ? R.xml.dw_phone_hotseat : R.xml.dw_tablet_hotseat;
     }
 
     /**
@@ -416,9 +391,7 @@ public class ImportDataTask {
         private final int mRequiredSize;
         private int mStartItemId;
 
-        HotseatParserCallback(
-                HashSet<String> existingApps, LongArrayMap<Object> existingItems,
-                ArrayList<ContentProviderOperation> outOps, int startItemId, int requiredSize) {
+        HotseatParserCallback(HashSet<String> existingApps, LongArrayMap<Object> existingItems, ArrayList<ContentProviderOperation> outOps, int startItemId, int requiredSize) {
             mExisitingApps = existingApps;
             mExistingItems = existingItems;
             mOutOps = outOps;

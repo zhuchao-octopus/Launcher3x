@@ -19,7 +19,6 @@ package com.android.launcher3.dragndrop;
 import static com.android.launcher3.logging.LoggerUtils.newCommandAction;
 import static com.android.launcher3.logging.LoggerUtils.newContainerTarget;
 import static com.android.launcher3.logging.LoggerUtils.newItemTarget;
-import static com.android.launcher3.logging.LoggerUtils.newLauncherEvent;
 import static com.android.launcher3.logging.LoggerUtils.newLauncherEventBuild;
 
 import android.annotation.SuppressLint;
@@ -147,25 +146,16 @@ public class AddItemActivity extends BaseActivity implements OnLongClickListener
         bounds.offset(img.getLeft() - (int) mLastTouchPos.x, img.getTop() - (int) mLastTouchPos.y);
 
         // Start home and pass the draw request params
-        PinItemDragListener listener = new PinItemDragListener(mRequest, bounds,
-                img.getBitmap().getWidth(), img.getWidth());
-        Intent homeIntent = new Intent(Intent.ACTION_MAIN)
-                .addCategory(Intent.CATEGORY_HOME)
-                .setPackage(getPackageName())
-                .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                .putExtra(PinItemDragListener.EXTRA_PIN_ITEM_DRAG_LISTENER, listener);
+        PinItemDragListener listener = new PinItemDragListener(mRequest, bounds, img.getBitmap().getWidth(), img.getWidth());
+        Intent homeIntent = new Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_HOME).setPackage(getPackageName()).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK).putExtra(PinItemDragListener.EXTRA_PIN_ITEM_DRAG_LISTENER, listener);
 
-        if (!getResources().getBoolean(R.bool.allow_rotation) &&
-                !Utilities.isAllowRotationPrefEnabled(this) &&
-                (getResources().getConfiguration().orientation ==
-                        Configuration.ORIENTATION_LANDSCAPE && !isInMultiWindowMode())) {
+        if (!getResources().getBoolean(R.bool.allow_rotation) && !Utilities.isAllowRotationPrefEnabled(this) && (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE && !isInMultiWindowMode())) {
             // If we are starting the drag in landscape even though home is locked in portrait,
             // restart the home activity to temporarily allow rotation.
             homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         }
 
-        startActivity(homeIntent,
-                ActivityOptions.makeCustomAnimation(this, 0, android.R.anim.fade_out).toBundle());
+        startActivity(homeIntent, ActivityOptions.makeCustomAnimation(this, 0, android.R.anim.fade_out).toBundle());
 
         // Start a system drag and drop. We use a transparent bitmap as preview for system drag
         // as the preview is handled internally by launcher.
@@ -174,7 +164,8 @@ public class AddItemActivity extends BaseActivity implements OnLongClickListener
         view.startDragAndDrop(data, new DragShadowBuilder(view) {
 
             @Override
-            public void onDrawShadow(Canvas canvas) { }
+            public void onDrawShadow(Canvas canvas) {
+            }
 
             @Override
             public void onProvideShadowMetrics(Point outShadowSize, Point outShadowTouchPoint) {
@@ -186,8 +177,7 @@ public class AddItemActivity extends BaseActivity implements OnLongClickListener
     }
 
     private void setupShortcut() {
-        PinShortcutRequestActivityInfo shortcutInfo =
-                new PinShortcutRequestActivityInfo(mRequest, this);
+        PinShortcutRequestActivityInfo shortcutInfo = new PinShortcutRequestActivityInfo(mRequest, this);
         WidgetItem item = new WidgetItem(shortcutInfo);
         mWidgetCell.getWidgetView().setTag(new PendingAddShortcutInfo(shortcutInfo));
         mWidgetCell.applyFromCellItem(item, mApp.getWidgetCache());
@@ -195,8 +185,7 @@ public class AddItemActivity extends BaseActivity implements OnLongClickListener
     }
 
     private boolean setupWidget() {
-        LauncherAppWidgetProviderInfo widgetInfo = LauncherAppWidgetProviderInfo
-                .fromProviderInfo(this, mRequest.getAppWidgetProviderInfo(this));
+        LauncherAppWidgetProviderInfo widgetInfo = LauncherAppWidgetProviderInfo.fromProviderInfo(this, mRequest.getAppWidgetProviderInfo(this));
         if (widgetInfo.minSpanX > mIdp.numColumns || widgetInfo.minSpanY > mIdp.numRows) {
             // Cannot add widget
             return false;
@@ -231,8 +220,7 @@ public class AddItemActivity extends BaseActivity implements OnLongClickListener
      */
     public void onPlaceAutomaticallyClick(View v) {
         if (mRequest.getRequestType() == PinItemRequestCompat.REQUEST_TYPE_SHORTCUT) {
-            InstallShortcutReceiver.queueShortcut(
-                    new ShortcutInfoCompat(mRequest.getShortcutInfo()), this);
+            InstallShortcutReceiver.queueShortcut(new ShortcutInfoCompat(mRequest.getShortcutInfo()), this);
             logCommand(Action.Command.CONFIRM.getNumber());
             mRequest.accept();
             finish();
@@ -240,8 +228,7 @@ public class AddItemActivity extends BaseActivity implements OnLongClickListener
         }
 
         mPendingBindWidgetId = mAppWidgetHost.allocateAppWidgetId();
-        boolean success = mAppWidgetManager.bindAppWidgetIdIfAllowed(
-                mPendingBindWidgetId, mRequest.getAppWidgetProviderInfo(this), mWidgetOptions);
+        boolean success = mAppWidgetManager.bindAppWidgetIdIfAllowed(mPendingBindWidgetId, mRequest.getAppWidgetProviderInfo(this), mWidgetOptions);
         if (success) {
             acceptWidget(mPendingBindWidgetId);
             return;
@@ -250,10 +237,8 @@ public class AddItemActivity extends BaseActivity implements OnLongClickListener
         // request bind widget
         Intent intent = new Intent(AppWidgetManager.ACTION_APPWIDGET_BIND);
         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mPendingBindWidgetId);
-        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_PROVIDER,
-                mPendingWidgetInfo.componentName);
-        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_PROVIDER_PROFILE,
-                mRequest.getAppWidgetProviderInfo(this).getProfile());
+        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_PROVIDER, mPendingWidgetInfo.componentName);
+        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_PROVIDER_PROFILE, mRequest.getAppWidgetProviderInfo(this).getProfile());
         startActivityForResult(intent, REQUEST_BIND_APPWIDGET);
     }
 
@@ -274,9 +259,7 @@ public class AddItemActivity extends BaseActivity implements OnLongClickListener
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_BIND_APPWIDGET) {
-            int widgetId = data != null
-                    ? data.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mPendingBindWidgetId)
-                    : mPendingBindWidgetId;
+            int widgetId = data != null ? data.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mPendingBindWidgetId) : mPendingBindWidgetId;
             if (resultCode == RESULT_OK) {
                 acceptWidget(widgetId);
             } else {
@@ -298,12 +281,11 @@ public class AddItemActivity extends BaseActivity implements OnLongClickListener
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        mPendingBindWidgetId = savedInstanceState
-                .getInt(STATE_EXTRA_WIDGET_ID, mPendingBindWidgetId);
+        mPendingBindWidgetId = savedInstanceState.getInt(STATE_EXTRA_WIDGET_ID, mPendingBindWidgetId);
     }
 
     private void logCommand(int command) {
-        LauncherLogProto.LauncherEvent.Builder builder = newLauncherEventBuild(newCommandAction(command),newItemTarget(mWidgetCell.getWidgetView()),newContainerTarget(ContainerType.PINITEM.getNumber()));
+        LauncherLogProto.LauncherEvent.Builder builder = newLauncherEventBuild(newCommandAction(command), newItemTarget(mWidgetCell.getWidgetView()), newContainerTarget(ContainerType.PINITEM.getNumber()));
         getUserEventDispatcher().dispatchUserEvent(builder, null);
     }
 }

@@ -19,7 +19,6 @@ package com.android.launcher3;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.Configuration;
-import android.content.res.TypedArray;
 import android.content.res.XmlResourceParser;
 import android.graphics.Point;
 import android.util.AttributeSet;
@@ -100,14 +99,10 @@ public class InvariantDeviceProfile {
     }
 
     public InvariantDeviceProfile(InvariantDeviceProfile p) {
-        this(p.name, p.minWidthDps, p.minHeightDps, p.numRows, p.numColumns,
-                p.numFolderRows, p.numFolderColumns, p.minAllAppsPredictionColumns,
-                p.iconSize, p.iconTextSize, p.numHotseatIcons, p.hotseatIconSize,
-                p.defaultLayoutId);
+        this(p.name, p.minWidthDps, p.minHeightDps, p.numRows, p.numColumns, p.numFolderRows, p.numFolderColumns, p.minAllAppsPredictionColumns, p.iconSize, p.iconTextSize, p.numHotseatIcons, p.hotseatIconSize, p.defaultLayoutId);
     }
 
-    InvariantDeviceProfile(String n, float w, float h, int r, int c, int fr, int fc, int maapc,
-            float is, float its, int hs, float his, int dlId) {
+    InvariantDeviceProfile(String n, float w, float h, int r, int c, int fr, int fc, int maapc, float is, float its, int hs, float his, int dlId) {
         name = n;
         minWidthDps = w;
         minHeightDps = h;
@@ -127,7 +122,7 @@ public class InvariantDeviceProfile {
 
     @TargetApi(23)
     InvariantDeviceProfile(Context context) {
-    	Log.d("abcd", "InvariantDeviceProfile");
+        Log.d("abcd", "InvariantDeviceProfile");
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         Display display = wm.getDefaultDisplay();
         DisplayMetrics dm = new DisplayMetrics();
@@ -141,10 +136,8 @@ public class InvariantDeviceProfile {
         minWidthDps = Utilities.dpiFromPx(Math.min(smallestSize.x, smallestSize.y), dm);
         minHeightDps = Utilities.dpiFromPx(Math.min(largestSize.x, largestSize.y), dm);
 
-        ArrayList<InvariantDeviceProfile> closestProfiles = findClosestDeviceProfiles(
-                minWidthDps, minHeightDps, getPredefinedDeviceProfiles(context));
-        InvariantDeviceProfile interpolatedDeviceProfileOut =
-                invDistWeightedInterpolate(minWidthDps,  minHeightDps, closestProfiles);
+        ArrayList<InvariantDeviceProfile> closestProfiles = findClosestDeviceProfiles(minWidthDps, minHeightDps, getPredefinedDeviceProfiles(context));
+        InvariantDeviceProfile interpolatedDeviceProfileOut = invDistWeightedInterpolate(minWidthDps, minHeightDps, closestProfiles);
 
         InvariantDeviceProfile closestProfile = closestProfiles.get(0);
         numRows = closestProfile.numRows;
@@ -174,76 +167,72 @@ public class InvariantDeviceProfile {
         int smallSide = Math.min(realSize.x, realSize.y);
         int largeSide = Math.max(realSize.x, realSize.y);
 
-        landscapeProfile = new DeviceProfile(context, this, smallestSize, largestSize,
-                largeSide, smallSide, true /* isLandscape */);
-        portraitProfile = new DeviceProfile(context, this, smallestSize, largestSize,
-                smallSide, largeSide, false /* isLandscape */);
+        landscapeProfile = new DeviceProfile(context, this, smallestSize, largestSize, largeSide, smallSide, true /* isLandscape */);
+        portraitProfile = new DeviceProfile(context, this, smallestSize, largestSize, smallSide, largeSide, false /* isLandscape */);
 
         // We need to ensure that there is enough extra space in the wallpaper
         // for the intended parallax effects
         if (context.getResources().getConfiguration().smallestScreenWidthDp >= 720) {
-            defaultWallpaperSize = new Point(
-                    (int) (largeSide * wallpaperTravelToScreenWidthRatio(largeSide, smallSide)),
-                    largeSide);
+            defaultWallpaperSize = new Point((int) (largeSide * wallpaperTravelToScreenWidthRatio(largeSide, smallSide)), largeSide);
         } else {
             defaultWallpaperSize = new Point(Math.max(smallSide * 2, largeSide), largeSide);
         }
     }
-    
+
     private String getAttributeString(AttributeSet attributeSet, String attrName) {
-    	if (attributeSet != null) {
-    		for (int i = 0; i < attributeSet.getAttributeCount(); i++) {
-    			String name = attributeSet.getAttributeName(i);
-    			if (name != null && name.equals(attrName)) {
-    				return attributeSet.getAttributeValue(i);
-    			}
+        if (attributeSet != null) {
+            for (int i = 0; i < attributeSet.getAttributeCount(); i++) {
+                String name = attributeSet.getAttributeName(i);
+                if (name != null && name.equals(attrName)) {
+                    return attributeSet.getAttributeValue(i);
+                }
             }
-    	}
-    	return null;
+        }
+        return null;
     }
-    
+
     private float getAttributeFloat(AttributeSet attributeSet, String attrName, float defaultValue) {
-    	if (attributeSet != null) {
-    		for (int i = 0; i < attributeSet.getAttributeCount(); i++) {
-    			String name = attributeSet.getAttributeName(i);
-    			if (name != null && name.equals(attrName)) {
-//    				return attributeSet.getAttributeFloatValue(i, defaultValue);
-    				String value = attributeSet.getAttributeValue(i);
-    				if (value != null) {
-    					return Float.valueOf(value);
-    				}
-    			}
+        if (attributeSet != null) {
+            for (int i = 0; i < attributeSet.getAttributeCount(); i++) {
+                String name = attributeSet.getAttributeName(i);
+                if (name != null && name.equals(attrName)) {
+                    //    				return attributeSet.getAttributeFloatValue(i, defaultValue);
+                    String value = attributeSet.getAttributeValue(i);
+                    if (value != null) {
+                        return Float.valueOf(value);
+                    }
+                }
             }
-    	}
-    	return defaultValue;
+        }
+        return defaultValue;
     }
-    
+
     private int getAttributeInt(AttributeSet attributeSet, String attrName, int defaultValue) {
-    	if (attributeSet != null) {
-    		for (int i = 0; i < attributeSet.getAttributeCount(); i++) {
-    			String name = attributeSet.getAttributeName(i);
-    			if (name != null && name.equals(attrName)) {
-//    				return attributeSet.getAttributeIntValue(i, defaultValue);
-    				String value = attributeSet.getAttributeValue(i);
-    				if (value != null) {
-    					return Integer.valueOf(value);
-    				}
-    			}
+        if (attributeSet != null) {
+            for (int i = 0; i < attributeSet.getAttributeCount(); i++) {
+                String name = attributeSet.getAttributeName(i);
+                if (name != null && name.equals(attrName)) {
+                    //    				return attributeSet.getAttributeIntValue(i, defaultValue);
+                    String value = attributeSet.getAttributeValue(i);
+                    if (value != null) {
+                        return Integer.valueOf(value);
+                    }
+                }
             }
-    	}
-    	return defaultValue;
+        }
+        return defaultValue;
     }
-    
+
     private int getAttributeResId(AttributeSet attributeSet, String attrName, int defaultValue) {
-    	if (attributeSet != null) {
-    		for (int i = 0; i < attributeSet.getAttributeCount(); i++) {
-    			String name = attributeSet.getAttributeName(i);
-    			if (name != null && name.equals(attrName)) {
-    				return attributeSet.getAttributeResourceValue(i, defaultValue);
-    			}
+        if (attributeSet != null) {
+            for (int i = 0; i < attributeSet.getAttributeCount(); i++) {
+                String name = attributeSet.getAttributeName(i);
+                if (name != null && name.equals(attrName)) {
+                    return attributeSet.getAttributeResourceValue(i, defaultValue);
+                }
             }
-    	}
-    	return defaultValue;
+        }
+        return defaultValue;
     }
 
     ArrayList<InvariantDeviceProfile> getPredefinedDeviceProfiles(Context context) {
@@ -252,31 +241,17 @@ public class InvariantDeviceProfile {
             final int depth = parser.getDepth();
             int type;
 
-            while (((type = parser.next()) != XmlPullParser.END_TAG ||
-                    parser.getDepth() > depth) && type != XmlPullParser.END_DOCUMENT) {
+            while (((type = parser.next()) != XmlPullParser.END_TAG || parser.getDepth() > depth) && type != XmlPullParser.END_DOCUMENT) {
                 if ((type == XmlPullParser.START_TAG) && "profile".equals(parser.getName())) {
-                	//ww+ to fix android-q crash
-                	AttributeSet attributeSet = Xml.asAttributeSet(parser);
+                    //ww+ to fix android-q crash
+                    AttributeSet attributeSet = Xml.asAttributeSet(parser);
                 	/*for (int i = 0; i < attributeSet.getAttributeCount(); i++) {
 						Log.i("px610", "as:name=" + attributeSet.getAttributeName(i) + " as:value=" + attributeSet.getAttributeValue(i));                    	
                     }*/
-                	int numRows = getAttributeInt(attributeSet, "numRows", 0);
+                    int numRows = getAttributeInt(attributeSet, "numRows", 0);
                     int numColumns = getAttributeInt(attributeSet, "numColumns", 0);
                     float iconSize = getAttributeFloat(attributeSet, "iconSize", 0);
-                	profiles.add(new InvariantDeviceProfile(
-                			getAttributeString(attributeSet, "name"),
-                			getAttributeFloat(attributeSet, "minWidthDps", 0),
-                			getAttributeFloat(attributeSet, "minHeightDps", 0),
-                            numRows,
-                            numColumns,
-                            getAttributeInt(attributeSet, "numFolderRows", numRows),
-                            getAttributeInt(attributeSet, "numFolderColumns", numColumns),
-                            getAttributeInt(attributeSet, "minAllAppsPredictionColumns", numColumns),
-                            iconSize,
-                            getAttributeFloat(attributeSet, "iconTextSize", 0),
-                            getAttributeInt(attributeSet, "numHotseatIcons", numColumns),
-                            getAttributeFloat(attributeSet, "hotseatIconSize", iconSize),
-                            getAttributeResId(attributeSet, "defaultLayoutId", 0)));
+                    profiles.add(new InvariantDeviceProfile(getAttributeString(attributeSet, "name"), getAttributeFloat(attributeSet, "minWidthDps", 0), getAttributeFloat(attributeSet, "minHeightDps", 0), numRows, numColumns, getAttributeInt(attributeSet, "numFolderRows", numRows), getAttributeInt(attributeSet, "numFolderColumns", numColumns), getAttributeInt(attributeSet, "minAllAppsPredictionColumns", numColumns), iconSize, getAttributeFloat(attributeSet, "iconTextSize", 0), getAttributeInt(attributeSet, "numHotseatIcons", numColumns), getAttributeFloat(attributeSet, "hotseatIconSize", iconSize), getAttributeResId(attributeSet, "defaultLayoutId", 0)));
                     /*TypedArray a = context.obtainStyledAttributes(
                             Xml.asAttributeSet(parser), R.styleable.InvariantDeviceProfile);
                     int numRows = a.getInt(R.styleable.InvariantDeviceProfile_numRows, 0);
@@ -299,7 +274,7 @@ public class InvariantDeviceProfile {
                     a.recycle();*/
                 }
             }
-        } catch (IOException|XmlPullParserException e) {
+        } catch (IOException | XmlPullParserException e) {
             throw new RuntimeException(e);
         }
         return profiles;
@@ -307,20 +282,14 @@ public class InvariantDeviceProfile {
 
     private int getLauncherIconDensity(int requiredSize) {
         // Densities typically defined by an app.
-        int[] densityBuckets = new int[] {
-                DisplayMetrics.DENSITY_LOW,
-                DisplayMetrics.DENSITY_MEDIUM,
-                DisplayMetrics.DENSITY_TV,
-                DisplayMetrics.DENSITY_HIGH,
-                DisplayMetrics.DENSITY_XHIGH,
-                DisplayMetrics.DENSITY_XXHIGH,
+        int[] densityBuckets = new int[]{
+                DisplayMetrics.DENSITY_LOW, DisplayMetrics.DENSITY_MEDIUM, DisplayMetrics.DENSITY_TV, DisplayMetrics.DENSITY_HIGH, DisplayMetrics.DENSITY_XHIGH, DisplayMetrics.DENSITY_XXHIGH,
                 DisplayMetrics.DENSITY_XXXHIGH
         };
 
         int density = DisplayMetrics.DENSITY_XXXHIGH;
         for (int i = densityBuckets.length - 1; i >= 0; i--) {
-            float expectedSize = ICON_SIZE_DEFINED_IN_APP_DP * densityBuckets[i]
-                    / DisplayMetrics.DENSITY_DEFAULT;
+            float expectedSize = ICON_SIZE_DEFINED_IN_APP_DP * densityBuckets[i] / DisplayMetrics.DENSITY_DEFAULT;
             if (expectedSize >= requiredSize) {
                 density = densityBuckets[i];
             }
@@ -331,7 +300,7 @@ public class InvariantDeviceProfile {
 
     /**
      * Apply any Partner customization grid overrides.
-     *
+     * <p>
      * Currently we support: all apps row / column count.
      */
     private void applyPartnerDeviceProfileOverrides(Context context, DisplayMetrics dm) {
@@ -341,7 +310,8 @@ public class InvariantDeviceProfile {
         }
     }
 
-    @Thunk float dist(float x0, float y0, float x1, float y1) {
+    @Thunk
+    float dist(float x0, float y0, float x1, float y1) {
         return (float) Math.hypot(x1 - x0, y1 - y0);
     }
 
@@ -349,15 +319,13 @@ public class InvariantDeviceProfile {
      * Returns the closest device profiles ordered by closeness to the specified width and height
      */
     // Package private visibility for testing.
-    ArrayList<InvariantDeviceProfile> findClosestDeviceProfiles(
-            final float width, final float height, ArrayList<InvariantDeviceProfile> points) {
+    ArrayList<InvariantDeviceProfile> findClosestDeviceProfiles(final float width, final float height, ArrayList<InvariantDeviceProfile> points) {
 
         // Sort the profiles by their closeness to the dimensions
         ArrayList<InvariantDeviceProfile> pointsByNearness = points;
         Collections.sort(pointsByNearness, new Comparator<InvariantDeviceProfile>() {
             public int compare(InvariantDeviceProfile a, InvariantDeviceProfile b) {
-                return Float.compare(dist(width, height, a.minWidthDps, a.minHeightDps),
-                        dist(width, height, b.minWidthDps, b.minHeightDps));
+                return Float.compare(dist(width, height, a.minWidthDps, a.minHeightDps), dist(width, height, b.minWidthDps, b.minHeightDps));
             }
         });
 
@@ -365,8 +333,7 @@ public class InvariantDeviceProfile {
     }
 
     // Package private visibility for testing.
-    InvariantDeviceProfile invDistWeightedInterpolate(float width, float height,
-                ArrayList<InvariantDeviceProfile> points) {
+    InvariantDeviceProfile invDistWeightedInterpolate(float width, float height, ArrayList<InvariantDeviceProfile> points) {
         float weights = 0;
 
         InvariantDeviceProfile p = points.get(0);
@@ -381,7 +348,7 @@ public class InvariantDeviceProfile {
             weights += w;
             out.add(p.multiply(w));
         }
-        return out.multiply(1.0f/weights);
+        return out.multiply(1.0f / weights);
     }
 
     private void add(InvariantDeviceProfile p) {
@@ -409,8 +376,7 @@ public class InvariantDeviceProfile {
     }
 
     public DeviceProfile getDeviceProfile(Context context) {
-        return context.getResources().getConfiguration().orientation
-                == Configuration.ORIENTATION_LANDSCAPE ? landscapeProfile : portraitProfile;
+        return context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE ? landscapeProfile : portraitProfile;
     }
 
     private float weight(float x0, float y0, float x1, float y1, float pow) {
@@ -433,8 +399,8 @@ public class InvariantDeviceProfile {
         // We will use these two data points to extrapolate how much the wallpaper parallax effect
         // to span (ie travel) at any aspect ratio:
 
-        final float ASPECT_RATIO_LANDSCAPE = 16/10f;
-        final float ASPECT_RATIO_PORTRAIT = 10/16f;
+        final float ASPECT_RATIO_LANDSCAPE = 16 / 10f;
+        final float ASPECT_RATIO_PORTRAIT = 10 / 16f;
         final float WALLPAPER_WIDTH_TO_SCREEN_RATIO_LANDSCAPE = 1.5f;
         final float WALLPAPER_WIDTH_TO_SCREEN_RATIO_PORTRAIT = 1.2f;
 
@@ -443,9 +409,7 @@ public class InvariantDeviceProfile {
         //   (16/10)x + y = 1.5
         //   (10/16)x + y = 1.2
         // We solve for x and y and end up with a final formula:
-        final float x =
-                (WALLPAPER_WIDTH_TO_SCREEN_RATIO_LANDSCAPE - WALLPAPER_WIDTH_TO_SCREEN_RATIO_PORTRAIT) /
-                        (ASPECT_RATIO_LANDSCAPE - ASPECT_RATIO_PORTRAIT);
+        final float x = (WALLPAPER_WIDTH_TO_SCREEN_RATIO_LANDSCAPE - WALLPAPER_WIDTH_TO_SCREEN_RATIO_PORTRAIT) / (ASPECT_RATIO_LANDSCAPE - ASPECT_RATIO_PORTRAIT);
         final float y = WALLPAPER_WIDTH_TO_SCREEN_RATIO_PORTRAIT - x * ASPECT_RATIO_PORTRAIT;
         return x * aspectRatio + y;
     }

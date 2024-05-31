@@ -1,4 +1,3 @@
-
 package com.android.launcher3.model;
 
 import android.appwidget.AppWidgetProviderInfo;
@@ -73,13 +72,11 @@ public class WidgetsModel {
             // Widgets
             AppWidgetManagerCompat widgetManager = AppWidgetManagerCompat.getInstance(context);
             for (AppWidgetProviderInfo widgetInfo : widgetManager.getAllProviders(packageUser)) {
-                widgetsAndShortcuts.add(new WidgetItem(LauncherAppWidgetProviderInfo
-                        .fromProviderInfo(context, widgetInfo), pm, idp));
+                widgetsAndShortcuts.add(new WidgetItem(LauncherAppWidgetProviderInfo.fromProviderInfo(context, widgetInfo), pm, idp));
             }
 
             // Shortcuts
-            for (ShortcutConfigActivityInfo info : LauncherAppsCompat.getInstance(context)
-                    .getCustomShortcutActivityList(packageUser)) {
+            for (ShortcutConfigActivityInfo info : LauncherAppsCompat.getInstance(context).getCustomShortcutActivityList(packageUser)) {
                 widgetsAndShortcuts.add(new WidgetItem(info));
             }
             setWidgetsAndShortcuts(widgetsAndShortcuts, context, packageUser);
@@ -96,8 +93,7 @@ public class WidgetsModel {
         return widgetsAndShortcuts;
     }
 
-    private void setWidgetsAndShortcuts(ArrayList<WidgetItem> rawWidgetsShortcuts,
-            Context context, @Nullable PackageUserKey packageUser) {
+    private void setWidgetsAndShortcuts(ArrayList<WidgetItem> rawWidgetsShortcuts, Context context, @Nullable PackageUserKey packageUser) {
         if (DEBUG) {
             Log.d(TAG, "addWidgetsAndShortcuts, widgetsShortcuts#=" + rawWidgetsShortcuts.size());
         }
@@ -126,8 +122,7 @@ public class WidgetsModel {
                 Iterator<WidgetItem> widgetItemIterator = mWidgetsList.get(packageItem).iterator();
                 while (widgetItemIterator.hasNext()) {
                     WidgetItem nextWidget = widgetItemIterator.next();
-                    if (nextWidget.componentName.getPackageName().equals(packageUser.mPackageName)
-                            && nextWidget.user.equals(packageUser.mUser)) {
+                    if (nextWidget.componentName.getPackageName().equals(packageUser.mPackageName) && nextWidget.user.equals(packageUser.mUser)) {
                         widgetItemIterator.remove();
                     }
                 }
@@ -145,9 +140,7 @@ public class WidgetsModel {
                 int minSpanY = Math.min(item.widgetInfo.spanY, item.widgetInfo.minSpanY);
                 if (minSpanX > idp.numColumns || minSpanY > idp.numRows) {
                     if (DEBUG) {
-                        Log.d(TAG, String.format(
-                                "Widget %s : (%d X %d) can't fit on this device",
-                                item.componentName, minSpanX, minSpanY));
+                        Log.d(TAG, String.format("Widget %s : (%d X %d) can't fit on this device", item.componentName, minSpanX, minSpanY));
                     }
                     continue;
                 }
@@ -155,8 +148,7 @@ public class WidgetsModel {
 
             if (!mAppFilter.shouldShowApp(item.componentName)) {
                 if (DEBUG) {
-                    Log.d(TAG, String.format("%s is filtered and not added to the widget tray.",
-                            item.componentName));
+                    Log.d(TAG, String.format("%s is filtered and not added to the widget tray.", item.componentName));
                 }
                 continue;
             }
@@ -166,7 +158,7 @@ public class WidgetsModel {
             if (pInfo == null) {
                 pInfo = new PackageItemInfo(packageName);
                 pInfo.user = item.user;
-                tmpPackageItemInfos.put(packageName,  pInfo);
+                tmpPackageItemInfos.put(packageName, pInfo);
             } else if (!myUser.equals(pInfo.user)) {
                 // Keep updating the user, until we get the primary user.
                 pInfo.user = item.user;

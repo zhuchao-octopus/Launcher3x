@@ -32,17 +32,19 @@ public abstract class PageIndicator extends FrameLayout {
     public PageIndicator(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         setWillNotDraw(false);
-        setVisibility(GONE);	//force to gone. ww+
+        setVisibility(GONE);    //force to gone. ww+
     }
 
     @Override
-	public void setVisibility(int visibility) {
-		super.setVisibility(GONE);	//force to gone. ww+
-	}
+    public void setVisibility(int visibility) {
+        super.setVisibility(GONE);    //force to gone. ww+
+    }
 
-	public void setScroll(int currentScroll, int totalScroll) {}
+    public void setScroll(int currentScroll, int totalScroll) {
+    }
 
-    public void setActiveMarker(int activePage) {}
+    public void setActiveMarker(int activePage) {
+    }
 
     public void addMarker() {
         mNumPages++;
@@ -75,11 +77,14 @@ public abstract class PageIndicator extends FrameLayout {
         }
     }
 
-    protected void onPageCountChanged() {}
+    protected void onPageCountChanged() {
+    }
 
-    public void setShouldAutoHide(boolean shouldAutoHide) {}
+    public void setShouldAutoHide(boolean shouldAutoHide) {
+    }
 
-    public void updateColor(ExtractedColors extractedColors) {}
+    public void updateColor(ExtractedColors extractedColors) {
+    }
 
     @Override
     protected boolean verifyDrawable(Drawable who) {

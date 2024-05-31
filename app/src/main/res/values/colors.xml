@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
 /* //device/apps/common/assets/res/any/colors.xml
 **
 ** Copyright 2008, The Android Open Source Project
@@ -49,8 +48,8 @@
 
     <color name="legacy_icon_background">#FFFFFF</color>
     <color name="icon_background">#E0E0E0</color> <!-- Gray 300 -->
-    
-            <color name="def_wheel_color">#7b8186</color>
+
+    <color name="def_wheel_color">#7b8186</color>
     <color name="def_reached_color">#0c8afa</color>
     <color name="def_pointer_color">#FFFFFF</color>
 </resources>

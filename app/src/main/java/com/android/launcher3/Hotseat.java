@@ -25,7 +25,6 @@ import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-///import android.support.v4.graphics.ColorUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -44,8 +43,7 @@ import com.android.launcher3.userevent.LauncherLogProto.ContainerType;
 import com.android.launcher3.userevent.LauncherLogProto.Target;
 import com.android.launcher3.util.Themes;
 
-public class Hotseat extends FrameLayout
-        implements UserEventDispatcher.LogContainerProvider {
+public class Hotseat extends FrameLayout implements UserEventDispatcher.LogContainerProvider {
 
     private CellLayout mContent;
 
@@ -72,8 +70,7 @@ public class Hotseat extends FrameLayout
         super(context, attrs, defStyle);
         mLauncher = Launcher.getLauncher(context);
         mHasVerticalHotseat = mLauncher.getDeviceProfile().isVerticalBarLayout();
-        mBackgroundColor = ColorUtils.setAlphaComponent(
-                Themes.getAttrColor(context, android.R.attr.colorPrimary), 0);
+        mBackgroundColor = ColorUtils.setAlphaComponent(Themes.getAttrColor(context, android.R.attr.colorPrimary), 0);
         mBackground = new ColorDrawable(mBackgroundColor);
         setBackground(mBackground);
     }
@@ -135,15 +132,13 @@ public class Hotseat extends FrameLayout
             int allAppsButtonRank = grid.inv.getAllAppsButtonRank();
 
             LayoutInflater inflater = LayoutInflater.from(context);
-            TextView allAppsButton = (TextView)
-                    inflater.inflate(R.layout.all_apps_button, mContent, false);
+            TextView allAppsButton = (TextView) inflater.inflate(R.layout.all_apps_button, mContent, false);
             Drawable d = context.getResources().getDrawable(R.drawable.all_apps_button_icon);
             d.setBounds(0, 0, grid.iconSizePx, grid.iconSizePx);
 
             int scaleDownPx = getResources().getDimensionPixelSize(R.dimen.all_apps_button_scale_down);
             Rect bounds = d.getBounds();
-            d.setBounds(bounds.left, bounds.top + scaleDownPx / 2, bounds.right - scaleDownPx,
-                    bounds.bottom - scaleDownPx / 2);
+            d.setBounds(bounds.left, bounds.top + scaleDownPx / 2, bounds.right - scaleDownPx, bounds.bottom - scaleDownPx / 2);
             allAppsButton.setCompoundDrawables(null, d, null, null);
 
             allAppsButton.setContentDescription(context.getString(R.string.all_apps_button_label));
@@ -170,8 +165,7 @@ public class Hotseat extends FrameLayout
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         // We don't want any clicks to go through to the hotseat unless the workspace is in
         // the normal state or an accessible drag is in progress.
-        return !mLauncher.getWorkspace().workspaceIconsCanBeDragged() &&
-                !mLauncher.getAccessibilityDelegate().isInAccessibleDrag();
+        return !mLauncher.getWorkspace().workspaceIconsCanBeDragged() && !mLauncher.getAccessibilityDelegate().isInAccessibleDrag();
     }
 
     @Override

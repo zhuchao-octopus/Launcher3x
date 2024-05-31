@@ -22,13 +22,11 @@ public class ShortcutKey extends ComponentKey {
     }
 
     public static ShortcutKey fromInfo(ShortcutInfoCompat shortcutInfo) {
-        return new ShortcutKey(shortcutInfo.getPackage(), shortcutInfo.getUserHandle(),
-                shortcutInfo.getId());
+        return new ShortcutKey(shortcutInfo.getPackage(), shortcutInfo.getUserHandle(), shortcutInfo.getId());
     }
 
     public static ShortcutKey fromIntent(Intent intent, UserHandle user) {
-        String shortcutId = intent.getStringExtra(
-                ShortcutInfoCompat.EXTRA_SHORTCUT_ID);
+        String shortcutId = intent.getStringExtra(ShortcutInfoCompat.EXTRA_SHORTCUT_ID);
         return new ShortcutKey(intent.getPackage(), user, shortcutId);
     }
 

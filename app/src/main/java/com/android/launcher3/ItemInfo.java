@@ -137,14 +137,7 @@ public class ItemInfo {
     }
 
     public void writeToValues(ContentWriter writer) {
-        writer.put(LauncherSettings.Favorites.ITEM_TYPE, itemType)
-                .put(LauncherSettings.Favorites.CONTAINER, container)
-                .put(LauncherSettings.Favorites.SCREEN, screenId)
-                .put(LauncherSettings.Favorites.CELLX, cellX)
-                .put(LauncherSettings.Favorites.CELLY, cellY)
-                .put(LauncherSettings.Favorites.SPANX, spanX)
-                .put(LauncherSettings.Favorites.SPANY, spanY)
-                .put(LauncherSettings.Favorites.RANK, rank);
+        writer.put(LauncherSettings.Favorites.ITEM_TYPE, itemType).put(LauncherSettings.Favorites.CONTAINER, container).put(LauncherSettings.Favorites.SCREEN, screenId).put(LauncherSettings.Favorites.CELLX, cellX).put(LauncherSettings.Favorites.CELLY, cellY).put(LauncherSettings.Favorites.SPANX, spanX).put(LauncherSettings.Favorites.SPANY, spanY).put(LauncherSettings.Favorites.RANK, rank);
     }
 
     public void readFromValues(ContentValues values) {
@@ -177,19 +170,7 @@ public class ItemInfo {
     }
 
     protected String dumpProperties() {
-        return "id=" + id
-                + " type=" + itemType
-                + " container=" + container
-                + " screen=" + screenId
-                + " cellX=" + cellX
-                + " cellY=" + cellY
-                + " spanX=" + spanX
-                + " spanY=" + spanY
-                + " minSpanX=" + minSpanX
-                + " minSpanY=" + minSpanY
-                + " rank=" + rank
-                + " user=" + user
-                + " title=" + title;
+        return "id=" + id + " type=" + itemType + " container=" + container + " screen=" + screenId + " cellX=" + cellX + " cellY=" + cellY + " spanX=" + spanX + " spanY=" + spanY + " minSpanX=" + minSpanX + " minSpanY=" + minSpanY + " rank=" + rank + " user=" + user + " title=" + title;
     }
 
     /**

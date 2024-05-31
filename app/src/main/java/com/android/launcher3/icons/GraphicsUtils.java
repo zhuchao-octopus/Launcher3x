@@ -21,10 +21,10 @@ import android.graphics.Region;
 import android.graphics.RegionIterator;
 import android.util.Log;
 
+import androidx.annotation.ColorInt;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-
-import androidx.annotation.ColorInt;
 
 public class GraphicsUtils {
 

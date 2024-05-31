@@ -1,6 +1,5 @@
 package com.my.dispaux;
 
-import android.app.ActivityManager;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -11,12 +10,9 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Shader;
 import android.hardware.display.DisplayManager;
-import android.util.Log;
 import android.view.Display;
 
 import com.zhuchao.android.fbase.TAppUtils;
-
-import java.util.ArrayList;
 
 public class Utils {
 
@@ -31,8 +27,8 @@ public class Utils {
         return taskList;
     }*/
 
-    public static boolean appIsRunning(Context context,String pkgName, String className) {
-		return TAppUtils.isProcessRunning(context,pkgName);
+    public static boolean appIsRunning(Context context, String pkgName, String className) {
+        return TAppUtils.isProcessRunning(context, pkgName);
         /*try {
             ArrayList<ActivityManager.RunningTaskInfo> listRunning = getRunningTaskList(100);
             // dumpTaskInfo("closeApp", listRunning);

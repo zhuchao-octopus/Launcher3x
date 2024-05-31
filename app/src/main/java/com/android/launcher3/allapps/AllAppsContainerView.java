@@ -20,9 +20,6 @@ import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.InsetDrawable;
-///import android.support.annotation.NonNull;
-///import android.support.annotation.Nullable;
-///import android.support.v7.widget.RecyclerView;
 import android.text.Selection;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -72,8 +69,7 @@ import java.util.Set;
 /**
  * The all apps view container.
  */
-public class AllAppsContainerView extends BaseContainerView implements DragSource,
-        View.OnLongClickListener, AllAppsSearchBarController.Callbacks, Insettable {
+public class AllAppsContainerView extends BaseContainerView implements DragSource, View.OnLongClickListener, AllAppsSearchBarController.Callbacks, Insettable {
 
     private final Launcher mLauncher;
     private final AlphabeticalAppsList mApps;
@@ -110,22 +106,17 @@ public class AllAppsContainerView extends BaseContainerView implements DragSourc
         mApps.setAdapter(mAdapter);
         mLayoutManager = mAdapter.getLayoutManager();
         mSearchQueryBuilder = new SpannableStringBuilder();
-        mSearchContainerMinHeight
-                = getResources().getDimensionPixelSize(R.dimen.all_apps_search_bar_height);
+        mSearchContainerMinHeight = getResources().getDimensionPixelSize(R.dimen.all_apps_search_bar_height);
 
         Selection.setSelection(mSearchQueryBuilder, 0);
     }
 
     @Override
-    protected void updateBackground(
-            int paddingLeft, int paddingTop, int paddingRight, int paddingBottom) {
+    protected void updateBackground(int paddingLeft, int paddingTop, int paddingRight, int paddingBottom) {
         if (FeatureFlags.LAUNCHER3_ALL_APPS_PULL_UP) {
             if (mLauncher.getDeviceProfile().isVerticalBarLayout()) {
-                getRevealView().setBackground(new InsetDrawable(mBaseDrawable,
-                        paddingLeft, paddingTop, paddingRight, paddingBottom));
-                getContentView().setBackground(
-                        new InsetDrawable(new ColorDrawable(Color.TRANSPARENT),
-                                paddingLeft, paddingTop, paddingRight, paddingBottom));
+                getRevealView().setBackground(new InsetDrawable(mBaseDrawable, paddingLeft, paddingTop, paddingRight, paddingBottom));
+                getContentView().setBackground(new InsetDrawable(new ColorDrawable(Color.TRANSPARENT), paddingLeft, paddingTop, paddingRight, paddingBottom));
             } else {
                 getRevealView().setBackground(mBaseDrawable);
             }
@@ -269,8 +260,7 @@ public class AllAppsContainerView extends BaseContainerView implements DragSourc
         // using span. The second space is used for a singe space character between the hint
         // and the icon.
         SpannableString spanned = new SpannableString("  " + mSearchInput.getHint());
-        spanned.setSpan(new TintedDrawableSpan(getContext(), R.drawable.ic_allapps_search),
-                0, 1, Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
+        spanned.setSpan(new TintedDrawableSpan(getContext(), R.drawable.ic_allapps_search), 0, 1, Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
         mSearchInput.setHint(spanned);
 
         mElevationController = new HeaderElevationController(mSearchContainer);
@@ -302,15 +292,15 @@ public class AllAppsContainerView extends BaseContainerView implements DragSourc
     }
 
     @Override
-    public void onBoundsChanged(Rect newBounds) { }
+    public void onBoundsChanged(Rect newBounds) {
+    }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         DeviceProfile grid = mLauncher.getDeviceProfile();
         grid.updateAppsViewNumCols();
         if (FeatureFlags.LAUNCHER3_ALL_APPS_PULL_UP) {
-            if (mNumAppsPerRow != grid.inv.numColumns ||
-                    mNumPredictedAppsPerRow != grid.inv.numColumns) {
+            if (mNumAppsPerRow != grid.inv.numColumns || mNumPredictedAppsPerRow != grid.inv.numColumns) {
                 mNumAppsPerRow = grid.inv.numColumns;
                 mNumPredictedAppsPerRow = grid.inv.numColumns;
 
@@ -319,11 +309,9 @@ public class AllAppsContainerView extends BaseContainerView implements DragSourc
                 mApps.setNumAppsPerRow(mNumAppsPerRow, mNumPredictedAppsPerRow);
             }
             if (!grid.isVerticalBarLayout()) {
-                MarginLayoutParams searchContainerLp =
-                        (MarginLayoutParams) mSearchContainer.getLayoutParams();
+                MarginLayoutParams searchContainerLp = (MarginLayoutParams) mSearchContainer.getLayoutParams();
 
-                searchContainerLp.height = mLauncher.getDragLayer().getInsets().top
-                        + mSearchContainerMinHeight;
+                searchContainerLp.height = mLauncher.getDragLayer().getInsets().top + mSearchContainerMinHeight;
                 mSearchContainer.setLayoutParams(searchContainerLp);
             }
             super.onMeasure(widthMeasureSpec, heightMeasureSpec);
@@ -334,8 +322,7 @@ public class AllAppsContainerView extends BaseContainerView implements DragSourc
 
         // Update the number of items in the grid before we measure the view
         grid.updateAppsViewNumCols();
-        if (mNumAppsPerRow != grid.allAppsNumCols ||
-                mNumPredictedAppsPerRow != grid.allAppsNumPredictiveCols) {
+        if (mNumAppsPerRow != grid.allAppsNumCols || mNumPredictedAppsPerRow != grid.allAppsNumPredictiveCols) {
             mNumAppsPerRow = grid.allAppsNumCols;
             mNumPredictedAppsPerRow = grid.allAppsNumPredictiveCols;
 
@@ -352,14 +339,11 @@ public class AllAppsContainerView extends BaseContainerView implements DragSourc
     public boolean dispatchKeyEvent(KeyEvent event) {
         // Determine if the key event was actual text, if so, focus the search bar and then dispatch
         // the key normally so that it can process this key event
-        if (!mSearchBarController.isSearchFieldFocused() &&
-                event.getAction() == KeyEvent.ACTION_DOWN) {
+        if (!mSearchBarController.isSearchFieldFocused() && event.getAction() == KeyEvent.ACTION_DOWN) {
             final int unicodeChar = event.getUnicodeChar();
-            final boolean isKeyNotWhitespace = unicodeChar > 0 &&
-                    !Character.isWhitespace(unicodeChar) && !Character.isSpaceChar(unicodeChar);
+            final boolean isKeyNotWhitespace = unicodeChar > 0 && !Character.isWhitespace(unicodeChar) && !Character.isSpaceChar(unicodeChar);
             if (isKeyNotWhitespace) {
-                boolean gotKey = TextKeyListener.getInstance().onKeyDown(this, mSearchQueryBuilder,
-                        event.getKeyCode(), event);
+                boolean gotKey = TextKeyListener.getInstance().onKeyDown(this, mSearchQueryBuilder, event.getKeyCode(), event);
                 if (gotKey && mSearchQueryBuilder.length() > 0) {
                     mSearchBarController.focusSearchField();
                 }
@@ -375,8 +359,7 @@ public class AllAppsContainerView extends BaseContainerView implements DragSourc
         if (!v.isInTouchMode()) return false;
         // When we have exited all apps or are in transition, disregard long clicks
 
-        if (!mLauncher.isAppsViewVisible() ||
-                mLauncher.getWorkspace().isSwitchingState()) return false;
+        if (!mLauncher.isAppsViewVisible() || mLauncher.getWorkspace().isSwitchingState()) return false;
         // Return if global dragging is not enabled or we are already dragging
         if (!mLauncher.isDraggingEnabled()) return false;
         if (mLauncher.getDragController().isDragging()) return false;
@@ -416,14 +399,11 @@ public class AllAppsContainerView extends BaseContainerView implements DragSourc
     }
 
     @Override
-    public void onDropCompleted(View target, DropTarget.DragObject d, boolean isFlingToDelete,
-            boolean success) {
-        if (isFlingToDelete || !success || (target != mLauncher.getWorkspace() &&
-                !(target instanceof DeleteDropTarget) && !(target instanceof Folder))) {
+    public void onDropCompleted(View target, DropTarget.DragObject d, boolean isFlingToDelete, boolean success) {
+        if (isFlingToDelete || !success || (target != mLauncher.getWorkspace() && !(target instanceof DeleteDropTarget) && !(target instanceof Folder))) {
             // Exit spring loaded mode if we have not successfully dropped or have not handled the
             // drop in Workspace
-            mLauncher.exitSpringLoadedDragModeDelayed(true,
-                    Launcher.EXIT_SPRINGLOADED_MODE_SHORT_TIMEOUT, null);
+            mLauncher.exitSpringLoadedDragModeDelayed(true, Launcher.EXIT_SPRINGLOADED_MODE_SHORT_TIMEOUT, null);
         }
         mLauncher.unlockScreenOrientation(false);
 
@@ -442,8 +422,7 @@ public class AllAppsContainerView extends BaseContainerView implements DragSourc
     }
 
     @Override
-    public void onAppDiscoverySearchUpdate(@Nullable AppDiscoveryItem app,
-            @NonNull AppDiscoveryUpdateState state) {
+    public void onAppDiscoverySearchUpdate(@Nullable AppDiscoveryItem app, @NonNull AppDiscoveryUpdateState state) {
         if (!mLauncher.isDestroyed()) {
             mApps.onAppDiscoverySearchUpdate(app, state);
             mAppsRecyclerView.onSearchResultsChanged();

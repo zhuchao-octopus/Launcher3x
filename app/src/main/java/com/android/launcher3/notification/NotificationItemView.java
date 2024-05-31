@@ -20,8 +20,6 @@ import android.animation.Animator;
 import android.app.Notification;
 import android.content.Context;
 import android.graphics.Rect;
-///import android.support.annotation.Nullable;
-///import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -45,6 +43,7 @@ import java.util.List;
  * A {@link FrameLayout} that contains a header, main view and a footer.
  * The main view contains the icon and text (title + subtext) of the first notification.
  * The footer contains: A list of just the icons of all the notifications past the first one.
+ *
  * @see NotificationFooterLayout
  */
 public class NotificationItemView extends PopupItemView implements LogContainerProvider {
@@ -91,17 +90,14 @@ public class NotificationItemView extends PopupItemView implements LogContainerP
 
     public Animator animateHeightRemoval(int heightToRemove) {
         final int newHeight = getHeight() - heightToRemove;
-        return new PillHeightRevealOutlineProvider(mPillRect,
-                getBackgroundRadius(), newHeight).createRevealAnimator(this, true /* isReversed */);
+        return new PillHeightRevealOutlineProvider(mPillRect, getBackgroundRadius(), newHeight).createRevealAnimator(this, true /* isReversed */);
     }
 
     public void updateHeader(int notificationCount, @Nullable IconPalette palette) {
         mHeaderCount.setText(notificationCount <= 1 ? "" : String.valueOf(notificationCount));
         if (palette != null) {
             if (mNotificationHeaderTextColor == Notification.COLOR_DEFAULT) {
-                mNotificationHeaderTextColor =
-                        IconPalette.resolveContrastColor(getContext(), palette.dominantColor,
-                            getResources().getColor(R.color.popup_header_background_color));
+                mNotificationHeaderTextColor = IconPalette.resolveContrastColor(getContext(), palette.dominantColor, getResources().getColor(R.color.popup_header_background_color));
             }
             mHeaderCount.setTextColor(mNotificationHeaderTextColor);
         }
@@ -141,16 +137,14 @@ public class NotificationItemView extends PopupItemView implements LogContainerP
     }
 
     public void trimNotifications(final List<String> notificationKeys) {
-        boolean dismissedMainNotification = !notificationKeys.contains(
-                mMainView.getNotificationInfo().notificationKey);
+        boolean dismissedMainNotification = !notificationKeys.contains(mMainView.getNotificationInfo().notificationKey);
         if (dismissedMainNotification && !mAnimatingNextIcon) {
             // Animate the next icon into place as the new main notification.
             mAnimatingNextIcon = true;
             mMainView.setVisibility(INVISIBLE);
             mMainView.setTranslationX(0);
             mIconView.getGlobalVisibleRect(sTempRect);
-            mFooter.animateFirstNotificationTo(sTempRect,
-                    new NotificationFooterLayout.IconAnimationEndListener() {
+            mFooter.animateFirstNotificationTo(sTempRect, new NotificationFooterLayout.IconAnimationEndListener() {
                 @Override
                 public void onIconAnimationEnd(NotificationInfo newMainNotification) {
                     if (newMainNotification != null) {
@@ -167,9 +161,7 @@ public class NotificationItemView extends PopupItemView implements LogContainerP
 
     @Override
     public int getArrowColor(boolean isArrowAttachedToBottom) {
-        return ContextCompat.getColor(getContext(), isArrowAttachedToBottom
-                ? R.color.popup_background_color
-                : R.color.popup_header_background_color);
+        return ContextCompat.getColor(getContext(), isArrowAttachedToBottom ? R.color.popup_background_color : R.color.popup_header_background_color);
     }
 
     @Override
