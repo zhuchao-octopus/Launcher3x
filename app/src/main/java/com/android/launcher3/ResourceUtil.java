@@ -7,20 +7,19 @@ import android.util.Log;
 
 import com.common.util.MachineConfig;
 import com.common.util.SystemConfig;
+import com.zhuchao.android.fbase.MMLog;
 
 public class ResourceUtil {
-
-    public static String mSystemUI;
-
-    public static int mScreenWidth = 0;
-    // it must call before setContentView
+    private final static String TAG = "ResourceUtil";
     private final static String LAUNCHER_UI = "launcher_ui";
-
     public final static int RESOLUTION_800X480 = 0;
     public final static int RESOLUTION_1024X600 = 1;
     public final static int RESOLUTION_1280X480 = 2;
     public final static int RESOLUTION_1280X720 = 3;
     public final static int RESOLUTION_1920X1080 = 4;
+
+    public static String mSystemUI;
+    public static int mScreenWidth = 0;
 
     public static String updateUi(Context context) { // only launcher use now
 
@@ -32,9 +31,7 @@ public class ResourceUtil {
         int dsp = SystemConfig.getIntProperty(context, SystemConfig.KEY_DSP);
         Utilities.mIsDSP = (dsp == 1);
 
-
         mSystemUI = value;
-        // if (value != null) {
         int sw = 0;
         int w = 0;
         int h = 0;
@@ -130,19 +127,17 @@ public class ResourceUtil {
 
         Log.d("ResourceUtil", value + ":????????sw:" + sw);
 
-        Configuration c = context.getResources().getConfiguration();
+        Configuration configuration = context.getResources().getConfiguration();
         if (sw != 0) {
-            c.smallestScreenWidthDp = sw;
+            configuration.smallestScreenWidthDp = sw;
         }
         if (w != 0) {
-            c.screenWidthDp = w;
+            configuration.screenWidthDp = w;
         }
         if (h != 0) {
-            c.screenHeightDp = h;
+            configuration.screenHeightDp = h;
         }
-        context.getResources().updateConfiguration(c, null);
-
-        // }
+        context.getResources().updateConfiguration(configuration, null);
 
         if (MachineConfig.VALUE_SYSTEM_UI43_3300.equals(value)) {
             try {
@@ -158,6 +153,7 @@ public class ResourceUtil {
             }
         }
 
+        MMLog.d(TAG,"configuration:"+configuration);
         return value;
     }
 
