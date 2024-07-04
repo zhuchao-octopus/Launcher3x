@@ -17,7 +17,7 @@
     android:id="@+id/celllayout_screen2"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:paddingTop="40px"
+    android:paddingTop="26dp"
     android:background="@drawable/celllayout_ex_back"
     android:hapticFeedbackEnabled="false">
 

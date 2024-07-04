@@ -90,6 +90,7 @@ import com.android.launcher3.util.WallpaperOffsetInterpolator;
 import com.android.launcher3.widget.PendingAddShortcutInfo;
 import com.android.launcher3.widget.PendingAddWidgetInfo;
 import com.common.util.MachineConfig;
+import com.zhuchao.android.fbase.MMLog;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -606,7 +607,7 @@ public class Workspace extends PagedView implements DropTarget, DragSource, View
      */
     @SuppressLint("ClickableViewAccessibility")
     public void bindAndInitFirstWorkspaceScreen(View qsb) {
-        Log.d("atest", "bindAndInitFirstWorkspaceScreen:" + qsb);
+        MMLog.d(TAG, "bindAndInitFirstWorkspaceScreen:" + qsb);
 
         if (!FeatureFlags.QSB_ON_FIRST_SCREEN) {
             return;
@@ -728,8 +729,7 @@ public class Workspace extends PagedView implements DropTarget, DragSource, View
             throw new RuntimeException("Screen id " + screenId + " already exists!");
         }
 
-        //        Log.d("atest", "insertNewWorkspaceScreen:"+screenId);
-
+        MMLog.d(TAG, "insertNewWorkspaceScreen:"+screenId);
         // Inflate the cell layout, but do not add it automatically so that we can get the newly
         // created CellLayout.
         CellLayout newScreen;
@@ -738,6 +738,7 @@ public class Workspace extends PagedView implements DropTarget, DragSource, View
         } else {
             newScreen = (CellLayout) mLauncher.getLayoutInflater().inflate(R.layout.workspace_screen, this, false /* attachToRoot */);
         }
+
         newScreen.setOnLongClickListener(mLongClickListener);
         newScreen.setOnClickListener(mLauncher);
         newScreen.setSoundEffectsEnabled(false);
@@ -759,7 +760,6 @@ public class Workspace extends PagedView implements DropTarget, DragSource, View
             customScreen = (CellLayout) mLauncher.getLayoutInflater().inflate(R.layout.workspace_screen, this, false);
         } else {
             customScreen = (CellLayout) mLauncher.getLayoutInflater().inflate(R.layout.workspace_screen_ex, this, false);
-
         }
 
         customScreen.disableDragTarget();

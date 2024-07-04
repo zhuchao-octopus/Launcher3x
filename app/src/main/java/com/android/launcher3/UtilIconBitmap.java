@@ -16,6 +16,7 @@
 
 package com.android.launcher3;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -925,6 +926,7 @@ final public class UtilIconBitmap {
 
     }
 
+    @SuppressLint("DiscouragedApi")
     public static void loadGernalAppBGs(Context context) {
         int count = 0;
         int id;
