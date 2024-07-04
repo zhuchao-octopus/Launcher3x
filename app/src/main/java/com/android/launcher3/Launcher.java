@@ -362,6 +362,7 @@ public class Launcher extends BaseActivity implements LauncherExterns, View.OnCl
 
     public static Launcher mThis;
 
+    @SuppressLint("InflateParams")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         String ui = ResourceUtil.updateUi(this);

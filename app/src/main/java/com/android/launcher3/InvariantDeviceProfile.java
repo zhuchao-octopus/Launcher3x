@@ -250,7 +250,7 @@ public class InvariantDeviceProfile {
                     }*/
                     int numRows = getAttributeInt(attributeSet, "numRows", 0);
                     int numColumns = getAttributeInt(attributeSet, "numColumns", 0);
-                    float iconSize = getAttributeFloat(attributeSet, "iconSize", 0);
+                    float iconSize = getAttributeFloat(attributeSet, "iconSize2", 0);
                     profiles.add(new InvariantDeviceProfile(getAttributeString(attributeSet, "name"), getAttributeFloat(attributeSet, "minWidthDps", 0), getAttributeFloat(attributeSet, "minHeightDps", 0), numRows, numColumns, getAttributeInt(attributeSet, "numFolderRows", numRows), getAttributeInt(attributeSet, "numFolderColumns", numColumns), getAttributeInt(attributeSet, "minAllAppsPredictionColumns", numColumns), iconSize, getAttributeFloat(attributeSet, "iconTextSize", 0), getAttributeInt(attributeSet, "numHotseatIcons", numColumns), getAttributeFloat(attributeSet, "hotseatIconSize", iconSize), getAttributeResId(attributeSet, "defaultLayoutId", 0)));
                     /*TypedArray a = context.obtainStyledAttributes(
                             Xml.asAttributeSet(parser), R.styleable.InvariantDeviceProfile);
@@ -294,7 +294,6 @@ public class InvariantDeviceProfile {
                 density = densityBuckets[i];
             }
         }
-
         return density;
     }
 

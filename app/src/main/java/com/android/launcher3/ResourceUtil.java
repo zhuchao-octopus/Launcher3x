@@ -1,5 +1,6 @@
 package com.android.launcher3;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.util.DisplayMetrics;
@@ -43,7 +44,7 @@ public class ResourceUtil {
             type = RESOLUTION_800X480;
         } else if (dm.widthPixels == 1024 && dm.heightPixels == 600) {
             type = RESOLUTION_1024X600;
-            sw = 322;
+            sw = 329;
         } else if (dm.widthPixels == 1280 && dm.heightPixels == 480) {
             type = RESOLUTION_1280X480;
             sw = 321;
@@ -52,6 +53,10 @@ public class ResourceUtil {
             sw = 323;
         } else if (dm.widthPixels == 1920 && dm.heightPixels == 1080) {
             type = RESOLUTION_1920X1080;
+        }
+        else {
+            sw = 329;
+            type = RESOLUTION_1024X600;
         }
 
         if (MachineConfig.VALUE_SYSTEM_UI19_KLD1.equals(value)) {
@@ -142,7 +147,7 @@ public class ResourceUtil {
 
         if (MachineConfig.VALUE_SYSTEM_UI43_3300.equals(value)) {
             try {
-                loadGernalAppRes(context);
+                loadGeneralAppRes(context);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -165,8 +170,8 @@ public class ResourceUtil {
     public static int mGeneralAppTextPositionX = 0;        //text draw x position
     public static int mGeneralAppTextPositionY = 0;        //text draw y position
     public static int mGeneralAppTextSize = 0;            //text size in BubbleTextView
-
-    public static void loadGernalAppRes(Context context) {
+    @SuppressLint("DiscouragedApi")
+    public static void loadGeneralAppRes(Context context) {
         int id = context.getResources().getIdentifier("app_icon_bg_width", "dimen", context.getPackageName());
         if (id > 0) mGeneralAppIconBgWidth = (int) context.getResources().getDimension(id);
 
@@ -188,6 +193,6 @@ public class ResourceUtil {
         id = context.getResources().getIdentifier("app_icon_text_size", "dimen", context.getPackageName());
         if (id > 0) mGeneralAppTextSize = (int) context.getResources().getDimension(id);
 
-        Log.d("ResourceUtil", "[" + mGeneralAppIconBgWidth + "," + mGeneralAppIconBgHeight + "][" + mGeneralAppIconOffsetLeft + "," + mGeneralAppIconOffsetTop + "][" + mGeneralAppTextPositionX + "," + mGeneralAppTextPositionY + "," + mGeneralAppTextSize + "]");
+        MMLog.d("ResourceUtil", "[" + mGeneralAppIconBgWidth + "," + mGeneralAppIconBgHeight + "][" + mGeneralAppIconOffsetLeft + "," + mGeneralAppIconOffsetTop + "][" + mGeneralAppTextPositionX + "," + mGeneralAppTextPositionY + "," + mGeneralAppTextSize + "]");
     }
 }

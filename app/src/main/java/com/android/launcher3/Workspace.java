@@ -710,7 +710,6 @@ public class Workspace extends PagedView implements DropTarget, DragSource, View
         // Find the index to insert this view into.  If the empty screen exists, then
         // insert it before that.
 
-
         Log.d("atest", "insertNewWorkspaceScreenBeforeEmptyScreen:" + screenId);
 
         int insertIndex = mScreenOrder.indexOf(EXTRA_EMPTY_SCREEN_ID);
@@ -754,9 +753,7 @@ public class Workspace extends PagedView implements DropTarget, DragSource, View
     }
 
     public void createCustomContentContainer() {
-
-        //    	Log.d("atest", "createCustomContentContainer:"+getCurrentPage());
-
+        //	Log.d("atest", "createCustomContentContainer:"+getCurrentPage());
         CellLayout customScreen;
         if (getCurrentPage() == 0) {
             customScreen = (CellLayout) mLauncher.getLayoutInflater().inflate(R.layout.workspace_screen, this, false);
