@@ -15,6 +15,7 @@
  */
 package com.android.launcher3.graphics;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -180,6 +181,7 @@ public class IconShapeOverride {
             mValue = value;
         }
 
+        @SuppressLint("ScheduleExactAlarm")
         @Override
         public void run() {
             // Synchronously write the preference.
@@ -196,7 +198,7 @@ public class IconShapeOverride {
 
             // Schedule an alarm before we kill ourself.
             Intent homeIntent = new Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_HOME).setPackage(mContext.getPackageName()).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            PendingIntent pi = PendingIntent.getActivity(mContext, RESTART_REQUEST_CODE, homeIntent, PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_ONE_SHOT);
+            PendingIntent pi = PendingIntent.getActivity(mContext, RESTART_REQUEST_CODE, homeIntent, PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE);
             mContext.getSystemService(AlarmManager.class).setExact(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime() + 50, pi);
 
             // Kill process

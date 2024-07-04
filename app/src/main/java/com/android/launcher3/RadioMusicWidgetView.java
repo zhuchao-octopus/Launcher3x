@@ -1,5 +1,6 @@
 package com.android.launcher3;
 
+import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -14,6 +15,7 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.Shader;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.text.format.DateFormat;
 import android.util.Log;
@@ -202,10 +204,11 @@ public class RadioMusicWidgetView {
             if (mSource != MyCmd.SOURCE_RADIO) {
                 BroadcastUtil.sendToCarServiceMcuRadio(mContext, ProtocolAk47.SEND_RADIO_SUB_QUERY_RADIO_INFO, 0);
             }
-            BroadcastUtil.sendKey(mContext, AppConfig.PACKAGE_CAR_UI, MyCmd.Keycode.RADIO_POWER);
+            BroadcastUtil.sendKey(mContext, AppConfig.getCarAPPPackage(mContext), MyCmd.Keycode.RADIO_POWER);
         } else if (id == R.id.radio_button_prev) {
             if (mSource == MyCmd.SOURCE_RADIO) {
-                BroadcastUtil.sendKey(mContext, AppConfig.PACKAGE_CAR_UI, MyCmd.Keycode.PREVIOUS);
+                BroadcastUtil.sendKey(mContext, AppConfig.getCarAPPPackage(mContext), MyCmd.Keycode.PREVIOUS);
+                // BroadcastUtil.sendKey(mContext, AppConfig.PACKAGE_CAR_UI, MyCmd.Keycode.PREVIOUS);
             }
 
             // BroadcastUtil.sendToCarServiceMcuRadio(mContext,
@@ -213,7 +216,7 @@ public class RadioMusicWidgetView {
         } else if (id == R.id.radio_button_next) {
             if (mSource == MyCmd.SOURCE_RADIO) {
 
-                BroadcastUtil.sendKey(mContext, AppConfig.PACKAGE_CAR_UI, MyCmd.Keycode.NEXT);
+                BroadcastUtil.sendKey(mContext, AppConfig.getCarAPPPackage(mContext), MyCmd.Keycode.NEXT);
             }
 
             // BroadcastUtil.sendToCarServiceMcuRadio(mContext,
@@ -221,16 +224,16 @@ public class RadioMusicWidgetView {
         } else if (id == R.id.music_button_prev) {// setSource(MyCmd.SOURCE_MUSIC);
 
             if (mSource == MyCmd.SOURCE_MUSIC || mSource == MyCmd.SOURCE_BT_MUSIC) {
-                BroadcastUtil.sendKey(mContext, AppConfig.PACKAGE_CAR_UI, MyCmd.Keycode.PREVIOUS);
+                BroadcastUtil.sendKey(mContext, AppConfig.getCarAPPPackage(mContext), MyCmd.Keycode.PREVIOUS);
             }
         } else if (id == R.id.music_button_play) {
             if (mSource == MyCmd.SOURCE_MUSIC || mSource == MyCmd.SOURCE_BT_MUSIC) {
-                BroadcastUtil.sendKey(mContext, AppConfig.PACKAGE_CAR_UI, MyCmd.Keycode.PLAY_PAUSE);
+                BroadcastUtil.sendKey(mContext, AppConfig.getCarAPPPackage(mContext), MyCmd.Keycode.PLAY_PAUSE);
             }
         } else if (id == R.id.music_button_next) {
             if (mSource == MyCmd.SOURCE_MUSIC || mSource == MyCmd.SOURCE_BT_MUSIC) {
 
-                BroadcastUtil.sendKey(mContext, AppConfig.PACKAGE_CAR_UI, MyCmd.Keycode.NEXT);
+                BroadcastUtil.sendKey(mContext, AppConfig.getCarAPPPackage(mContext), MyCmd.Keycode.NEXT);
             }
         } else if (id == R.id.album_art || id == R.id.entry_music || id == R.id.entry_music2) {
             if (mSource == MyCmd.SOURCE_BT_MUSIC /*&& (mPlayStatus >= 3)*/) {
@@ -248,7 +251,7 @@ public class RadioMusicWidgetView {
         }
     }
 
-    Handler mHandler = new Handler() {
+    Handler mHandler = new Handler(Looper.myLooper()) {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case 0:
@@ -392,6 +395,7 @@ public class RadioMusicWidgetView {
      * mClock.setText(String.format("%02d:%02d", h, curDate.getMinutes())); }
      */
 
+    @SuppressLint("SimpleDateFormat")
     private void setTime() { // 24
 
 
@@ -457,12 +461,9 @@ public class RadioMusicWidgetView {
             mCEDate.setText(t1);
         }
 
-
         mDate2.setText(getWeek(c));
-
         int second = c.get(Calendar.SECOND);
         mHandler.removeMessages(0);
-
         second = ((60 - second) % 60);
         if (second == 0) {
             second = 60;
@@ -473,22 +474,15 @@ public class RadioMusicWidgetView {
 
         if (mViewHour != null) {
             float rotate;
-
             rotate = ((h * 60 + m) / 720.0f) * 360.0f;// (h * 360.0f) / 12.0f;
-
             mViewHour.setRotation(rotate);
-
             rotate = (m * 360.0f) / 60.0f;
-
             mViewMinutus.setRotation(rotate);
-
             if (mViewSecond != null) {
                 rotate = (sec * 360.0f) / 60.0f;
                 mViewSecond.setRotation(rotate);
             }
-
         }
-
 
         View d3;
         d3 = mContext.findViewById(R.id.radio_music_date3);
@@ -532,19 +526,18 @@ public class RadioMusicWidgetView {
                 setNumImage(R.id.radionum4, (freq / 10) % 10);
                 setNumImage(R.id.radionum5, freq % 10);
             }
-        } catch (Exception e) {
+        } catch (Exception ignored) {
         }
     }
 
     private void setImageNumTime(String time) {
         try {
             String[] ss = time.split(":");
-            setNumImage(R.id.timehour_h, Integer.valueOf(ss[0].substring(0, 1)));
-            setNumImage(R.id.timehour_l, Integer.valueOf(ss[0].substring(1, 2)));
-            setNumImage(R.id.timeminute_h, Integer.valueOf(ss[1].substring(0, 1)));
-            setNumImage(R.id.timeminute_l, Integer.valueOf(ss[1].substring(1, 2)));
-        } catch (Exception e) {
-
+            setNumImage(R.id.timehour_h, Integer.parseInt(ss[0].substring(0, 1)));
+            setNumImage(R.id.timehour_l, Integer.parseInt(ss[0].substring(1, 2)));
+            setNumImage(R.id.timeminute_h, Integer.parseInt(ss[1].substring(0, 1)));
+            setNumImage(R.id.timeminute_l, Integer.parseInt(ss[1].substring(1, 2)));
+        } catch (Exception ignored) {
         }
     }
 
@@ -555,17 +548,14 @@ public class RadioMusicWidgetView {
                 return;
             }
             ((ImageView) v).getDrawable().setLevel(num);
-        } catch (Exception e) {
+        } catch (Exception ignored) {
         }
-
     }
 
     public static String getMonth(Calendar cal) {
         int i = cal.get(Calendar.MONTH);
 
-
         int id = R.string.month1;
-
         switch (i) {
             case 0:
                 id = R.string.month1;
@@ -608,7 +598,6 @@ public class RadioMusicWidgetView {
         //		 String s = mContext.getString(R.string.month1+(i-1));
         String s = mContext.getString(id);
         //		 Log.d("abcd", i+"::::"+s);
-
         return s;
 
     }

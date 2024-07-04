@@ -216,9 +216,33 @@
 
     <!-- Other -->
     <!-- Approximates the system status bar height. Not guaranteed to be always be correct. -->
-    <dimen name="status_bar_height">60px</dimen>
+    <dimen name="status_bar_height">40dp</dimen>
 
     <!-- add by allen from launcher2 -->
-    <dimen name="app_icon_size">110px</dimen>
-    <dimen name="app_wrap_icon_size">68px</dimen>
+    <dimen name="app_icon_size">73dp</dimen>
+    <dimen name="app_wrap_icon_size">45dp</dimen>
+
+    <item name="container_margin" format="fraction" type="fraction">12%</item>
+    <dimen name="def_wheel_width">3dp</dimen>
+    <dimen name="def_shadow_radius">2dp</dimen>
+    <dimen name="def_shadow_offset">2dp</dimen>
+
+    <!-- add by ww from launcher2 -->
+    <dimen name="ak_toolbar_width">80.0px</dimen>
+    <dimen name="ak_toolbar_icon_width">42.0px</dimen>
+    <dimen name="ak_toolbar_icon_height">42.0px</dimen>
+
+    <dimen name="ak_celllayout_padding_left">86.0px</dimen>
+    <dimen name="ak_celllayout_padding_top">32.0px</dimen>
+    <dimen name="ak_celllayout_padding_right">0.0px</dimen>
+    <dimen name="ak_celllayout_padding_bottom">70.0px</dimen>
+
+    <!-- add by allen from launcher2 -->
+    <dimen name="app_icon_bg_width">183.0px</dimen>
+    <dimen name="app_icon_bg_height">84.0px</dimen>
+    <dimen name="app_icon_offset_left">31.0px</dimen>
+    <dimen name="app_icon_offset_top">8.0px</dimen>
+    <dimen name="app_iocn_text_position_x">10.0px</dimen>
+    <dimen name="app_iocn_text_position_y">90.0px</dimen>
+    <dimen name="app_icon_text_size">18.0px</dimen>
 </resources>

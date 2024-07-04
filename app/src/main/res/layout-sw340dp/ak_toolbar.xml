@@ -1,4 +1,6 @@
-<merge xmlns:android="http://schemas.android.com/apk/res/android">
+<merge xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    tools:ignore="MissingDefaultResource">
 
     <LinearLayout
         android:id="@+id/all_apps_button_cluster"

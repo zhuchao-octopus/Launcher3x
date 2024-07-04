@@ -35,7 +35,7 @@ public class ResourceUtil {
         int sw = 0;
         int w = 0;
         int h = 0;
-        int type = RESOLUTION_1024X600; // deault 800X480
+        int type = RESOLUTION_1024X600; // default 800X480
 
         DisplayMetrics dm = context.getResources().getDisplayMetrics();
         mScreenWidth = dm.widthPixels;
@@ -125,7 +125,7 @@ public class ResourceUtil {
             }
         }
 
-        Log.d("ResourceUtil", value + ":????????sw:" + sw);
+        MMLog.d("ResourceUtil", value + ":????????sw:" + sw);
 
         Configuration configuration = context.getResources().getConfiguration();
         if (sw != 0) {
@@ -137,6 +137,7 @@ public class ResourceUtil {
         if (h != 0) {
             configuration.screenHeightDp = h;
         }
+
         context.getResources().updateConfiguration(configuration, null);
 
         if (MachineConfig.VALUE_SYSTEM_UI43_3300.equals(value)) {

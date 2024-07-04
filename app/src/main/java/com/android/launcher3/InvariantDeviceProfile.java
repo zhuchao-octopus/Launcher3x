@@ -199,7 +199,7 @@ public class InvariantDeviceProfile {
                     //    				return attributeSet.getAttributeFloatValue(i, defaultValue);
                     String value = attributeSet.getAttributeValue(i);
                     if (value != null) {
-                        return Float.valueOf(value);
+                        return Float.parseFloat(value);
                     }
                 }
             }

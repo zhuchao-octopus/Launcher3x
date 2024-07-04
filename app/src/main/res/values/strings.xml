@@ -325,4 +325,18 @@
 
     <string name="f_camera_alternative_7451">CAM</string>
     <string name="f_camera_type_1">Camera</string>
+
+    <string name="menu_save_driver">"Jazdite bezpečne"</string>
+    <string name="widget_app_setting">"Nastavenia"</string>
+    <string name="widget_app_video">"Video"</string>
+    <string name="widget_app_gallery">"Galéria"</string>
+    <string name="toolbar_text_gps">"Navigácia"</string>
+    <string name="toolbar_text_bluetooth">"Bluetooth"</string>
+    <string name="toolbar_text_radio">"Rádio"</string>
+    <string name="toolbar_text_music">"Hudba"</string>
+    <string name="toolbar_text_dvd">"DVD"</string>
+    <string name="toolbar_text_video">"Video"</string>
+
+    <string name="screen0_DVR">"DVR"</string>
+    <string name="f_camera_alternative_1050">"F-Cam"</string>
 </resources>

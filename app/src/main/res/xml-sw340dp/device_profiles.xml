@@ -14,13 +14,13 @@
      limitations under the License.
 -->
 
-<profiles xmlns:launcher="http://schemas.android.com/apk/res-auto/com.android.launcher3">
+<profiles xmlns:launcher="http://schemas.android.com/apk/res-auto">
 
     <profile
         launcher:name="Large Phone"
         launcher:defaultLayoutId="@xml/default_workspace_5x2"
         launcher:hotseatIconSize="44"
-        launcher:iconSize="156"
+        launcher:iconSize2="156"
         launcher:iconTextSize="16"
         launcher:minAllAppsPredictionColumns="4"
         launcher:minHeightDps="541"
