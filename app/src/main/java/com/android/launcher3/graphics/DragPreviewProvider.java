@@ -33,7 +33,7 @@ import com.android.launcher3.ResourceUtil;
 import com.android.launcher3.Workspace;
 import com.android.launcher3.config.ProviderConfig;
 import com.android.launcher3.folder.FolderIcon;
-import com.common.util.MachineConfig;
+import com.common.utils.MachineConfig;
 
 /**
  * A utility class to generate preview bitmap for dragging.

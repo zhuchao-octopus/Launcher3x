@@ -36,7 +36,7 @@ import android.graphics.drawable.PaintDrawable;
 import android.util.DisplayMetrics;
 import android.util.Log;
 
-import com.common.util.MachineConfig;
+import com.common.utils.MachineConfig;
 
 import java.util.Random;
 

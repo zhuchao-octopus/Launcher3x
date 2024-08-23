@@ -6,8 +6,8 @@ import android.content.res.Configuration;
 import android.util.DisplayMetrics;
 import android.util.Log;
 
-import com.common.util.MachineConfig;
-import com.common.util.SystemConfig;
+import com.common.utils.MachineConfig;
+import com.common.utils.SettingProperties;
 import com.zhuchao.android.fbase.MMLog;
 
 public class ResourceUtil {
@@ -24,7 +24,7 @@ public class ResourceUtil {
 
     public static String updateUi(Context context) { // only launcher use now
         int sw = 330;
-        int dsp = SystemConfig.getIntProperty(context, SystemConfig.KEY_DSP);
+        int dsp = SettingProperties.getIntProperty(context, SettingProperties.KEY_DSP);
         Configuration configuration = context.getResources().getConfiguration();
         DisplayMetrics dm = context.getResources().getDisplayMetrics();
         mScreenWidth = dm.widthPixels;

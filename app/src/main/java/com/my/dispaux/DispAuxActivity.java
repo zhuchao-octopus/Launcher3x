@@ -29,13 +29,13 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.android.launcher3.R;
-import com.common.util.AppConfig;
-import com.common.util.BroadcastUtil;
-import com.common.util.MachineConfig;
-import com.common.util.MyCmd;
-import com.common.util.ProtocolAk47;
-import com.common.util.SystemConfig;
-import com.common.util.Util;
+import com.common.utils.AppConfig;
+import com.common.utils.BroadcastUtil;
+import com.common.utils.MachineConfig;
+import com.common.utils.MyCmd;
+import com.common.utils.ProtocolAk47;
+import com.common.utils.SettingProperties;
+import com.common.utils.Util;
 import com.my.radio.MarkFaceView;
 
 public class DispAuxActivity extends Activity {
@@ -606,11 +606,11 @@ public class DispAuxActivity extends Activity {
 
     private void onTopActivityChanged(String s) {
         if (MachineConfig.getPropertyIntReadOnly(MachineConfig.KEY_DISPAUX_ENABLE) == 1 && s != null && !s.isEmpty()) {
-            String pkgName = SystemConfig.getProperty(DispAuxActivity.this, MachineConfig.KEY_GPS_PACKAGE);
-            String className = SystemConfig.getProperty(DispAuxActivity.this, MachineConfig.KEY_GPS_CLASS);
+            String pkgName = SettingProperties.getProperty(DispAuxActivity.this, MachineConfig.KEY_GPS_PACKAGE);
+            String className = SettingProperties.getProperty(DispAuxActivity.this, MachineConfig.KEY_GPS_CLASS);
 
             if (prevTopActivity != null && pkgName != null && prevTopActivity.startsWith(pkgName + "/") && s.startsWith("com.android.launcher")) {
-                String value = SystemConfig.getProperty(DispAuxActivity.this, MachineConfig.KEY_DISPAUX_APPAUTO_DISABLE);
+                String value = SettingProperties.getProperty(DispAuxActivity.this, MachineConfig.KEY_DISPAUX_APPAUTO_DISABLE);
                 final boolean autoDispMapToAux = (value != null && value.equals("1") ? false : true);
                 if (autoDispMapToAux && Utils.appIsRunning(this.getApplicationContext(), pkgName, className)) {
                     Log.d(TAG, pkgName + "/" + className + " is running, display to aux");
@@ -746,12 +746,12 @@ public class DispAuxActivity extends Activity {
     final private ContentObserver mDispAuxAppAutoObserver = new ContentObserver(null) {
         @Override
         public void onChange(boolean selfChange) {
-            String value = SystemConfig.getProperty(DispAuxActivity.this, MachineConfig.KEY_DISPAUX_APPAUTO_DISABLE);
+            String value = SettingProperties.getProperty(DispAuxActivity.this, MachineConfig.KEY_DISPAUX_APPAUTO_DISABLE);
             final boolean autoDispMapToAux = (value == null || !value.equals("1"));
             Log.d(TAG, "DispAuxObserver onChange: " + autoDispMapToAux);
             if (!autoDispMapToAux) {
-                String pkgName = SystemConfig.getProperty(DispAuxActivity.this, MachineConfig.KEY_GPS_PACKAGE);
-                String className = SystemConfig.getProperty(DispAuxActivity.this, MachineConfig.KEY_GPS_CLASS);
+                String pkgName = SettingProperties.getProperty(DispAuxActivity.this, MachineConfig.KEY_GPS_PACKAGE);
+                String className = SettingProperties.getProperty(DispAuxActivity.this, MachineConfig.KEY_GPS_CLASS);
                 String auxTop = AppConfig.getTopActivity(1);
                 if (auxTop != null && auxTop.startsWith(pkgName + "/")) {
                     try {

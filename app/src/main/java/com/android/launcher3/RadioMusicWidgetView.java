@@ -24,13 +24,13 @@ import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.common.util.AppConfig;
-import com.common.util.BroadcastUtil;
-import com.common.util.MachineConfig;
-import com.common.util.MyCmd;
-import com.common.util.ProtocolAk47;
-import com.common.util.SystemConfig;
-import com.common.util.UtilCarKey;
+import com.common.utils.AppConfig;
+import com.common.utils.BroadcastUtil;
+import com.common.utils.MachineConfig;
+import com.common.utils.MyCmd;
+import com.common.utils.ProtocolAk47;
+import com.common.utils.SettingProperties;
+import com.common.utils.UtilCarKey;
 import com.my.radio.MarkFaceView;
 
 import java.text.SimpleDateFormat;
@@ -204,10 +204,10 @@ public class RadioMusicWidgetView {
             if (mSource != MyCmd.SOURCE_RADIO) {
                 BroadcastUtil.sendToCarServiceMcuRadio(mContext, ProtocolAk47.SEND_RADIO_SUB_QUERY_RADIO_INFO, 0);
             }
-            BroadcastUtil.sendKey(mContext, AppConfig.getCarAPPPackage(mContext), MyCmd.Keycode.RADIO_POWER);
+            BroadcastUtil.sendKey(mContext, AppConfig.getCarAppPackageName(mContext), MyCmd.Keycode.RADIO_POWER);
         } else if (id == R.id.radio_button_prev) {
             if (mSource == MyCmd.SOURCE_RADIO) {
-                BroadcastUtil.sendKey(mContext, AppConfig.getCarAPPPackage(mContext), MyCmd.Keycode.PREVIOUS);
+                BroadcastUtil.sendKey(mContext, AppConfig.getCarAppPackageName(mContext), MyCmd.Keycode.PREVIOUS);
                 // BroadcastUtil.sendKey(mContext, AppConfig.PACKAGE_CAR_UI, MyCmd.Keycode.PREVIOUS);
             }
 
@@ -216,7 +216,7 @@ public class RadioMusicWidgetView {
         } else if (id == R.id.radio_button_next) {
             if (mSource == MyCmd.SOURCE_RADIO) {
 
-                BroadcastUtil.sendKey(mContext, AppConfig.getCarAPPPackage(mContext), MyCmd.Keycode.NEXT);
+                BroadcastUtil.sendKey(mContext, AppConfig.getCarAppPackageName(mContext), MyCmd.Keycode.NEXT);
             }
 
             // BroadcastUtil.sendToCarServiceMcuRadio(mContext,
@@ -224,16 +224,16 @@ public class RadioMusicWidgetView {
         } else if (id == R.id.music_button_prev) {// setSource(MyCmd.SOURCE_MUSIC);
 
             if (mSource == MyCmd.SOURCE_MUSIC || mSource == MyCmd.SOURCE_BT_MUSIC) {
-                BroadcastUtil.sendKey(mContext, AppConfig.getCarAPPPackage(mContext), MyCmd.Keycode.PREVIOUS);
+                BroadcastUtil.sendKey(mContext, AppConfig.getCarAppPackageName(mContext), MyCmd.Keycode.PREVIOUS);
             }
         } else if (id == R.id.music_button_play) {
             if (mSource == MyCmd.SOURCE_MUSIC || mSource == MyCmd.SOURCE_BT_MUSIC) {
-                BroadcastUtil.sendKey(mContext, AppConfig.getCarAPPPackage(mContext), MyCmd.Keycode.PLAY_PAUSE);
+                BroadcastUtil.sendKey(mContext, AppConfig.getCarAppPackageName(mContext), MyCmd.Keycode.PLAY_PAUSE);
             }
         } else if (id == R.id.music_button_next) {
             if (mSource == MyCmd.SOURCE_MUSIC || mSource == MyCmd.SOURCE_BT_MUSIC) {
 
-                BroadcastUtil.sendKey(mContext, AppConfig.getCarAPPPackage(mContext), MyCmd.Keycode.NEXT);
+                BroadcastUtil.sendKey(mContext, AppConfig.getCarAppPackageName(mContext), MyCmd.Keycode.NEXT);
             }
         } else if (id == R.id.album_art || id == R.id.entry_music || id == R.id.entry_music2) {
             if (mSource == MyCmd.SOURCE_BT_MUSIC /*&& (mPlayStatus >= 3)*/) {
@@ -420,7 +420,7 @@ public class RadioMusicWidgetView {
         //
         //		s = String.format("%02d:%02d", h, c.get(Calendar.MINUTE));
 
-        String s = SystemConfig.getProperty(mContext, SystemConfig.KEY_DATE_FORMAT);
+        String s = SettingProperties.getProperty(mContext, SettingProperties.KEY_DATE_FORMAT);
         if (s == null) {
             s = "yyyy/MM/dd";
         }

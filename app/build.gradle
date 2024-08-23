@@ -47,7 +47,7 @@ android {
             def date = new Date().format("yyyyMMddHHmm", TimeZone.getTimeZone("GMT+08"))
             if (variant.buildType.name == 'release') {
                 //outputFileName = "Launcher3_${date}.apk"
-                outputFileName = "Launcher3x.apk"
+                outputFileName = "Launcher3X.apk"
             }
         }
     }
@@ -66,11 +66,11 @@ dependencies {
     implementation 'androidx.annotation:annotation:1.6.0'
     implementation 'androidx.palette:palette:1.0.0'
 
-    implementation('com.zhuchao.android:libBaseUtils:2.2@aar')//框架基础类
+    implementation('com.zhuchao.android:libBaseUtils:2.2.1@aar')//框架基础类
     ///implementation('com.zhuchao.android:libCameraUtils:1.0@aar')//相机控制
     ///implementation('com.zhuchao.android:libDecodeCore:1.6@aar')//播放器的核心解码库
     ///implementation('com.zhuchao.android:libDNetUtils:2.1@aar')//网络接口
-    implementation('com.zhuchao.android:libFOSUtils:1.4@aar')//平台接口
+    implementation('com.zhuchao.android:libFOSUtils:1.4.2@aar')//平台接口
     ///implementation('com.zhuchao.android:libFPersistUtils:1.2:@aar')//数据存储
     ///implementation('com.zhuchao.android:libGXMediaUtils:2.0@aar')//媒体管理类
     ///implementation('com.zhuchao.android:libGXPlayerUtils:3.0@aar')//播放器
