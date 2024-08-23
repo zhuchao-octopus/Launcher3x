@@ -58,7 +58,7 @@ import com.android.launcher3.util.Provider;
 import com.android.launcher3.util.SQLiteCacheHelper;
 import com.android.launcher3.util.Themes;
 import com.android.launcher3.util.Thunk;
-import com.common.util.MachineConfig;
+import com.common.utils.MachineConfig;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -629,7 +629,7 @@ public class IconCache {
             }
         }
 
-        if (com.common.util.MachineConfig.VALUE_SYSTEM_UI28_7451.equals(ResourceUtil.mSystemUI)) {
+        if (com.common.utils.MachineConfig.VALUE_SYSTEM_UI28_7451.equals(ResourceUtil.mSystemUI)) {
             if (componentName.getClassName().equals("com.my.frontcamera.FrontCameraActivity")) {
                 entry.title = mContext.getResources().getString(R.string.f_camera_alternative_7451);
 

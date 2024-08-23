@@ -83,9 +83,9 @@ import com.android.launcher3.util.Preconditions;
 import com.android.launcher3.util.Provider;
 import com.android.launcher3.util.Thunk;
 import com.android.launcher3.util.ViewOnDrawExecutor;
-import com.common.util.AppConfig;
-import com.common.util.MachineConfig;
-import com.common.util.MyCmd;
+import com.common.utils.AppConfig;
+import com.common.utils.MachineConfig;
+import com.common.utils.MyCmd;
 
 import java.io.FileDescriptor;
 import java.io.PrintWriter;

@@ -134,10 +134,10 @@ import com.android.launcher3.widget.PendingAddWidgetInfo;
 import com.android.launcher3.widget.WidgetAddFlowHandler;
 import com.android.launcher3.widget.WidgetHostViewLoader;
 import com.android.launcher3.widget.WidgetsContainerView;
-import com.common.util.AppConfig;
-import com.common.util.MachineConfig;
-import com.common.util.SystemConfig;
-import com.common.util.UtilCarKey;
+import com.common.utils.AppConfig;
+import com.common.utils.MachineConfig;
+import com.common.utils.SettingProperties;
+import com.common.utils.UtilCarKey;
 import com.my.dispaux.DispAuxActivity;
 import com.my.dispaux.Utils;
 
@@ -1069,7 +1069,7 @@ public class Launcher extends BaseActivity implements LauncherExterns, View.OnCl
             mLauncherCallbacks.onResume();
         }
 
-        if (MachineConfig.getPropertyIntReadOnly(MachineConfig.KEY_DISPAUX_ENABLE) == 1 && com.common.util.Util.isAndroidQ() && (com.common.util.Util.isPX30() || com.common.util.Util.isPX6()) && Utils.getDispAuxInfo(this) != null) {
+        if (MachineConfig.getPropertyIntReadOnly(MachineConfig.KEY_DISPAUX_ENABLE) == 1 && com.common.utils.Util.isAndroidQ() && (com.common.utils.Util.isPX30() || com.common.utils.Util.isPX6()) && Utils.getDispAuxInfo(this) != null) {
             if (DispAuxActivity.mThis == null) {
                 mHandler.post(new Runnable() {
                     @Override
@@ -2669,7 +2669,7 @@ public class Launcher extends BaseActivity implements LauncherExterns, View.OnCl
         if (MachineConfig.getPropertyIntReadOnly(MachineConfig.KEY_DISPAUX_ENABLE) == 1 && intent != null) {
             ComponentName cn = intent.getComponent();
             String intentPkgName = (cn != null) ? cn.getPackageName() : "";
-            String naviPkgName = SystemConfig.getProperty(context, MachineConfig.KEY_GPS_PACKAGE);
+            String naviPkgName = SettingProperties.getProperty(context, MachineConfig.KEY_GPS_PACKAGE);
             if (!intentPkgName.isEmpty() && naviPkgName != null && intentPkgName.equals(naviPkgName)) {
                 String auxTop = AppConfig.getTopActivity(1);
                 //				Log.d(TAG, "auxTop=" + auxTop);

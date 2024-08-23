@@ -11,10 +11,10 @@ import android.view.View;
 
 import com.android.launcher3.R;
 import com.android.launcher3.RadioMusicWidgetView;
-import com.common.util.BroadcastUtil;
-import com.common.util.MyCmd;
-import com.common.util.ProtocolAk47;
-import com.common.util.UtilCarKey;
+import com.common.utils.BroadcastUtil;
+import com.common.utils.MyCmd;
+import com.common.utils.ProtocolAk47;
+import com.common.utils.UtilCarKey;
 
 public class MarkFaceView extends View {
     private Paint mPaint;

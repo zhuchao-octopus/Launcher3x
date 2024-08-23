@@ -3,7 +3,7 @@ package com.android.launcher3;
 import android.content.ComponentName;
 import android.content.Context;
 
-import com.common.util.MachineConfig;
+import com.common.utils.MachineConfig;
 
 import java.util.Locale;
 
@@ -64,14 +64,13 @@ public class FixScreenShortcut {
         String pkgName = cn.getPackageName();
         String className = cn.getClassName();
         if (pkgName != null && className != null && pkgName.equals("com.car.ui") && className.endsWith(".FrontCameraActivity")) {
-            if (com.common.util.MachineConfig.VALUE_SYSTEM_UI28_7451.equals(ResourceUtil.mSystemUI)) return context.getResources().getString(R.string.f_camera_alternative_7451);
+            if (com.common.utils.MachineConfig.VALUE_SYSTEM_UI28_7451.equals(ResourceUtil.mSystemUI)) return context.getResources().getString(R.string.f_camera_alternative_7451);
             if (Launcher.mFcameraType == 1) {
                 return context.getResources().getString(R.string.f_camera_type_1);
             }
 
-
-            //			else if (Utilities.mSystemUI.equals(com.common.util.MachineConfig.VALUE_SYSTEM_UI22_1050))
-            //				return context.getResources().getString(R.string.f_camera_alternative_1050);
+            ///else if (Utilities.mSystemUI.equals(com.common.util.MachineConfig.VALUE_SYSTEM_UI22_1050))
+            ///return context.getResources().getString(R.string.f_camera_alternative_1050);
         } else if ("com.google.android.maps.MapsActivity".equals(className)) {
             //for 619 custom
             String locale = Locale.getDefault().getLanguage();

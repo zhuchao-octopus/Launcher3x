@@ -6,8 +6,8 @@ import android.content.res.Configuration;
 import android.util.DisplayMetrics;
 import android.util.Log;
 
-import com.common.util.MachineConfig;
-import com.common.util.SystemConfig;
+import com.common.utils.MachineConfig;
+import com.common.utils.SettingProperties;
 import com.zhuchao.android.fbase.MMLog;
 
 public class ResourceUtil {
@@ -23,21 +23,21 @@ public class ResourceUtil {
     public static int mScreenWidth = 0;
 
     public static String updateUi(Context context) { // only launcher use now
-
         String value = MachineConfig.getPropertyReadOnly(LAUNCHER_UI);
         if (value == null) {
             value = MachineConfig.getPropertyReadOnly(MachineConfig.KEY_SYSTEM_UI);
         }
 
-        int dsp = SystemConfig.getIntProperty(context, SystemConfig.KEY_DSP);
+        int dsp = SettingProperties.getIntProperty(context, SettingProperties.KEY_DSP);
         Utilities.mIsDSP = (dsp == 1);
 
         mSystemUI = value;
         int sw = 0;
-        int w = 0;
-        int h = 0;
+        ///int w = 0;
+        ///int h = 0;
         int type = RESOLUTION_1024X600; // default 800X480
 
+        Configuration configuration = context.getResources().getConfiguration();
         DisplayMetrics dm = context.getResources().getDisplayMetrics();
         mScreenWidth = dm.widthPixels;
         if (dm.widthPixels == 800 && dm.heightPixels == 480) {
@@ -53,8 +53,7 @@ public class ResourceUtil {
             sw = 323;
         } else if (dm.widthPixels == 1920 && dm.heightPixels == 1080) {
             type = RESOLUTION_1920X1080;
-        }
-        else {
+        } else {
             sw = 329;
             type = RESOLUTION_1024X600;
         }
@@ -129,37 +128,30 @@ public class ResourceUtil {
                 sw = 360;
             }
         }
+        MMLog.d(TAG, "configuration:" + configuration);
 
-        MMLog.d("ResourceUtil", value + ":????????sw:" + sw);
-
-        Configuration configuration = context.getResources().getConfiguration();
         if (sw != 0) {
             configuration.smallestScreenWidthDp = sw;
         }
-        if (w != 0) {
-            configuration.screenWidthDp = w;
-        }
-        if (h != 0) {
-            configuration.screenHeightDp = h;
-        }
 
         context.getResources().updateConfiguration(configuration, null);
-
         if (MachineConfig.VALUE_SYSTEM_UI43_3300.equals(value)) {
             try {
                 loadGeneralAppRes(context);
             } catch (Exception e) {
-                e.printStackTrace();
+                ///e.printStackTrace();
+                MMLog.e(TAG, String.valueOf(e));
             }
 
             try {
                 UtilIconBitmap.loadGernalAppBGs(context);
             } catch (Exception e) {
-                e.printStackTrace();
+                ///e.printStackTrace();
+                MMLog.e(TAG, String.valueOf(e));
             }
         }
 
-        MMLog.d(TAG,"configuration:"+configuration);
+        MMLog.d(TAG, "configuration:" + configuration);
         return value;
     }
 
@@ -170,6 +162,7 @@ public class ResourceUtil {
     public static int mGeneralAppTextPositionX = 0;        //text draw x position
     public static int mGeneralAppTextPositionY = 0;        //text draw y position
     public static int mGeneralAppTextSize = 0;            //text size in BubbleTextView
+
     @SuppressLint("DiscouragedApi")
     public static void loadGeneralAppRes(Context context) {
         int id = context.getResources().getIdentifier("app_icon_bg_width", "dimen", context.getPackageName());

@@ -24,13 +24,13 @@ import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.common.util.AppConfig;
-import com.common.util.BroadcastUtil;
-import com.common.util.MachineConfig;
-import com.common.util.MyCmd;
-import com.common.util.ProtocolAk47;
-import com.common.util.SystemConfig;
-import com.common.util.UtilCarKey;
+import com.common.utils.AppConfig;
+import com.common.utils.BroadcastUtil;
+import com.common.utils.MachineConfig;
+import com.common.utils.MyCmd;
+import com.common.utils.ProtocolAk47;
+import com.common.utils.SettingProperties;
+import com.common.utils.UtilCarKey;
 import com.my.radio.MarkFaceView;
 
 import java.text.SimpleDateFormat;
@@ -422,7 +422,7 @@ public class RadioMusicWidgetView {
         //
         //		s = String.format("%02d:%02d", h, c.get(Calendar.MINUTE));
 
-        String s = SystemConfig.getProperty(mContext, SystemConfig.KEY_DATE_FORMAT);
+        String s = SettingProperties.getProperty(mContext, SettingProperties.KEY_DATE_FORMAT);
         if (s == null) {
             s = "yyyy/MM/dd";
         }

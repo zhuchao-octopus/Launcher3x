@@ -3,8 +3,8 @@ pluginManagement {
         google()
         mavenCentral()
         gradlePluginPortal()
-        maven { url 'https://gitee.com/zhuchao-octopus/OctopusFrameworkLibs/raw/master' }
-        ///maven { url '\\\\192.168.10.23\\smb\\OctopusFrameworkLibs'}
+        ///maven { url 'https://gitee.com/zhuchao-octopus/OctopusFrameworkLibs/raw/master' }
+        maven { url '\\\\192.168.10.93\\smb\\OctopusFrameworkLibs'}
     }
 }
 
@@ -13,10 +13,10 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-        maven { url 'https://gitee.com/zhuchao-octopus/OctopusFrameworkLibs/raw/master' }
-        ///maven { url '\\\\192.168.10.23\\smb\\OctopusFrameworkLibs'}
+        ///maven { url 'https://gitee.com/zhuchao-octopus/OctopusFrameworkLibs/raw/master' }
+        maven { url '\\\\192.168.10.93\\smb\\OctopusFrameworkLibs'}
     }
 }
 
-rootProject.name = "Launcher3x"
+rootProject.name = "Launcher3X"
 include ':app'

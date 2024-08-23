@@ -60,7 +60,7 @@ import com.android.launcher3.util.CellAndSpan;
 import com.android.launcher3.util.GridOccupancy;
 import com.android.launcher3.util.ParcelableSparseArray;
 import com.android.launcher3.util.Thunk;
-import com.common.util.MachineConfig;
+import com.common.utils.MachineConfig;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
