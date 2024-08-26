@@ -16,6 +16,7 @@
 
 package com.android.launcher3.provider;
 
+import android.annotation.SuppressLint;
 import android.content.ContentProviderOperation;
 import android.content.ContentValues;
 import android.content.Context;
@@ -123,6 +124,7 @@ public class ImportDataTask {
      * 2) For home screen entries, maps the screen id based on {@param screenIdMap}
      * 3) In the end fills any holes in hotseat with items from default hotseat layout.
      */
+    @SuppressLint("DefaultLocale")
     private void importWorkspaceItems(long firsetScreenId, LongSparseArray<Long> screenIdMap) throws Exception {
         String profileId = Long.toString(UserManagerCompat.getInstance(mContext).getSerialNumberForUser(Process.myUserHandle()));
 

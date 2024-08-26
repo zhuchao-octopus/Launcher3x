@@ -20,6 +20,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ArgbEvaluator;
 import android.animation.ValueAnimator;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Rect;
@@ -44,10 +45,8 @@ import com.android.launcher3.userevent.LauncherLogProto.Target;
 import com.android.launcher3.util.Themes;
 
 public class Hotseat extends FrameLayout implements UserEventDispatcher.LogContainerProvider {
-
     private CellLayout mContent;
-
-    private Launcher mLauncher;
+    private final Launcher mLauncher;
 
     @ViewDebug.ExportedProperty(category = "launcher")
     private final boolean mHasVerticalHotseat;
@@ -56,12 +55,11 @@ public class Hotseat extends FrameLayout implements UserEventDispatcher.LogConta
     private int mBackgroundColor;
     @ViewDebug.ExportedProperty(category = "launcher")
     private ColorDrawable mBackground;
-    private ValueAnimator mBackgroundColorAnimator;
 
+    private ValueAnimator mBackgroundColorAnimator;
     public Hotseat(Context context) {
         this(context, null);
     }
-
     public Hotseat(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
@@ -122,6 +120,7 @@ public class Hotseat extends FrameLayout implements UserEventDispatcher.LogConta
         resetLayout();
     }
 
+    @SuppressLint({"UseCompatLoadingForDrawables", "ClickableViewAccessibility"})
     void resetLayout() {
         mContent.removeAllViewsInLayout();
 
@@ -143,13 +142,11 @@ public class Hotseat extends FrameLayout implements UserEventDispatcher.LogConta
 
             allAppsButton.setContentDescription(context.getString(R.string.all_apps_button_label));
             allAppsButton.setOnKeyListener(new HotseatIconKeyEventListener());
-            if (mLauncher != null) {
-                mLauncher.setAllAppsButton(allAppsButton);
-                allAppsButton.setOnTouchListener(mLauncher.getHapticFeedbackTouchListener());
-                allAppsButton.setOnClickListener(mLauncher);
-                allAppsButton.setOnLongClickListener(mLauncher);
-                allAppsButton.setOnFocusChangeListener(mLauncher.mFocusHandler);
-            }
+            mLauncher.setAllAppsButton(allAppsButton);
+            allAppsButton.setOnTouchListener(mLauncher.getHapticFeedbackTouchListener());
+            allAppsButton.setOnClickListener(mLauncher);
+            allAppsButton.setOnLongClickListener(mLauncher);
+            allAppsButton.setOnFocusChangeListener(mLauncher.mFocusHandler);
 
             // Note: We do this to ensure that the hotseat is always laid out in the orientation of
             // the hotseat in order regardless of which orientation they were added

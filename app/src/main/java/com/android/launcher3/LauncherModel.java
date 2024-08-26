@@ -86,6 +86,7 @@ import com.android.launcher3.util.ViewOnDrawExecutor;
 import com.common.utils.AppConfig;
 import com.common.utils.MachineConfig;
 import com.common.utils.MyCmd;
+import com.zhuchao.android.fbase.MMLog;
 
 import java.io.FileDescriptor;
 import java.io.PrintWriter;
@@ -109,11 +110,9 @@ import java.util.concurrent.Executor;
  * for the Launcher.
  */
 public class LauncherModel extends BroadcastReceiver implements LauncherAppsCompat.OnAppsChangedCallbackCompat {
-    static final boolean DEBUG_LOADERS = false;
+    private static final String TAG = "Launcher.Model";
+    private static final boolean DEBUG_LOADERS = false;
     private static final boolean DEBUG_RECEIVER = false;
-
-    static final String TAG = "Launcher.Model";
-
     private static final int ITEMS_CHUNK = 6; // batch size for the workspace icons
     private static final long INVALID_SCREEN_ID = -1L;
 
@@ -907,11 +906,11 @@ public class LauncherModel extends BroadcastReceiver implements LauncherAppsComp
             }
 
             if (clearDb) {
-                Log.d(TAG, "loadWorkspace: resetting launcher database");
+                MMLog.d(TAG, "loadWorkspace() resetting launcher database");
                 LauncherSettings.Settings.call(contentResolver, LauncherSettings.Settings.METHOD_CREATE_EMPTY_DB);
             }
 
-            Log.d(TAG, "loadWorkspace: loading default favorites:" + clearDb);
+            MMLog.d(TAG, "loadWorkspace() loading default favorites:" + clearDb);
             LauncherSettings.Settings.call(contentResolver, LauncherSettings.Settings.METHOD_LOAD_DEFAULT_FAVORITES);
 
             synchronized (sBgDataModel) {
@@ -1321,7 +1320,7 @@ public class LauncherModel extends BroadcastReceiver implements LauncherAppsComp
                 }
 
                 // If there are any empty screens remove them, and update.
-                if (unusedScreens.size() != 0) {
+                if (!unusedScreens.isEmpty()) {
                     sBgDataModel.workspaceScreens.removeAll(unusedScreens);
                     updateWorkspaceScreenOrder(context, sBgDataModel.workspaceScreens);
                 }

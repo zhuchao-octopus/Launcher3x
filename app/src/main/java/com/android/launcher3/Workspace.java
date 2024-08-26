@@ -90,6 +90,7 @@ import com.android.launcher3.util.WallpaperOffsetInterpolator;
 import com.android.launcher3.widget.PendingAddShortcutInfo;
 import com.android.launcher3.widget.PendingAddWidgetInfo;
 import com.common.utils.MachineConfig;
+import com.zhuchao.android.fbase.MMLog;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -606,7 +607,7 @@ public class Workspace extends PagedView implements DropTarget, DragSource, View
      */
     @SuppressLint("ClickableViewAccessibility")
     public void bindAndInitFirstWorkspaceScreen(View qsb) {
-        Log.d("atest", "bindAndInitFirstWorkspaceScreen:" + qsb);
+        MMLog.d(TAG, "bindAndInitFirstWorkspaceScreen:" + qsb);
 
         if (!FeatureFlags.QSB_ON_FIRST_SCREEN) {
             return;
@@ -709,8 +710,7 @@ public class Workspace extends PagedView implements DropTarget, DragSource, View
     public void insertNewWorkspaceScreenBeforeEmptyScreen(long screenId) {
         // Find the index to insert this view into.  If the empty screen exists, then
         // insert it before that.
-
-        Log.d("atest", "insertNewWorkspaceScreenBeforeEmptyScreen:" + screenId);
+        MMLog.d(TAG, "insertNewWorkspaceScreenBeforeEmptyScreen:" + screenId);
 
         int insertIndex = mScreenOrder.indexOf(EXTRA_EMPTY_SCREEN_ID);
         if (insertIndex < 0) {
@@ -720,6 +720,7 @@ public class Workspace extends PagedView implements DropTarget, DragSource, View
     }
 
     public void insertNewWorkspaceScreen(long screenId) {
+        MMLog.d(TAG, "insertNewWorkspaceScreen:" + screenId);
         insertNewWorkspaceScreen(screenId, getChildCount());
     }
 
@@ -728,12 +729,12 @@ public class Workspace extends PagedView implements DropTarget, DragSource, View
             throw new RuntimeException("Screen id " + screenId + " already exists!");
         }
 
-        //        Log.d("atest", "insertNewWorkspaceScreen:"+screenId);
+        //MMLog.d(TAG, "insertNewWorkspaceScreen:"+screenId);
 
         // Inflate the cell layout, but do not add it automatically so that we can get the newly
         // created CellLayout.
         CellLayout newScreen;
-        if (screenId == 0) {
+        if (screenId == 1) {
             newScreen = (CellLayout) mLauncher.getLayoutInflater().inflate(R.layout.workspace_screen_ex, this, false /* attachToRoot */);
         } else {
             newScreen = (CellLayout) mLauncher.getLayoutInflater().inflate(R.layout.workspace_screen, this, false /* attachToRoot */);

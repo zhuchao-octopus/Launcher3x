@@ -15,7 +15,7 @@ public class LauncherBackupAgent extends BackupAgent {
         super.onCreate();
 
         ResourceUtil.updateUi(this);
-        //		Log.d("ResourceUtil", "LauncherBackupAgent:");
+        // Log.d("ResourceUtil", "LauncherBackupAgent:");
         // Set the log dir as LauncherAppState is not initialized during restore.
         FileLog.setDir(getFilesDir());
     }

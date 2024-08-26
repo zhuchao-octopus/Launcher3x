@@ -16,7 +16,9 @@
 <!-- Full screen view projects under the status bar and contains the background -->
 <com.android.launcher3.LauncherRootView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:launcher="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/launcher"
+    android:tag="0"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
@@ -47,7 +49,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="right"
-            launcher:layout_ignoreInsets="true" />
+            launcher:layout_ignoreInsets="true"
+            tools:ignore="RtlHardcoded" />
 
         <include
             android:id="@+id/drop_target_bar"
@@ -62,7 +65,8 @@
             android:id="@+id/page_indicator"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_gravity="bottom|left" />
+            android:layout_gravity="bottom|left"
+            tools:ignore="RtlHardcoded" />
 
         <!-- A place holder view instead of the QSB in transposed layout -->
         <View

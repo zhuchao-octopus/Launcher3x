@@ -63,6 +63,7 @@ import com.android.launcher3.util.ManagedProfileHeuristic;
 import com.android.launcher3.util.NoLocaleSqliteContext;
 import com.android.launcher3.util.Preconditions;
 import com.android.launcher3.util.Thunk;
+import com.zhuchao.android.fbase.MMLog;
 
 import java.io.FileDescriptor;
 import java.io.PrintWriter;
@@ -480,7 +481,7 @@ public class LauncherProvider extends ContentProvider {
         SharedPreferences sp = Utilities.getPrefs(getContext());
 
         if (sp.getBoolean(EMPTY_DATABASE_CREATED, false)) {
-            Log.d(TAG, "loading default workspace");
+            MMLog.d(TAG, "loading default workspace");
 
             AppWidgetHost widgetHost = mOpenHelper.newLauncherWidgetHost();
             AutoInstallsLayout loader = createWorkspaceLoaderFromAppRestriction(widgetHost);
@@ -626,7 +627,7 @@ public class LauncherProvider extends ContentProvider {
             }
 
             // Set the flag for empty DB
-            Utilities.getPrefs(mContext).edit().putBoolean(EMPTY_DATABASE_CREATED, true).commit();
+            Utilities.getPrefs(mContext).edit().putBoolean(EMPTY_DATABASE_CREATED, true).apply();
 
             // When a new DB is created, remove all previously stored managed profile information.
             ManagedProfileHeuristic.processAllUsers(Collections.<UserHandle>emptyList(), mContext);
@@ -889,9 +890,7 @@ public class LauncherProvider extends ContentProvider {
             try {
                 // Only consider the primary user as other users can't have a shortcut.
                 long userSerial = getDefaultUserSerial();
-                c = db.query(Favorites.TABLE_NAME, new String[]{
-                        Favorites._ID, Favorites.INTENT,
-                }, "itemType=" + Favorites.ITEM_TYPE_SHORTCUT + " AND profileId=" + userSerial, null, null, null, null);
+                c = db.query(Favorites.TABLE_NAME, new String[]{Favorites._ID, Favorites.INTENT,}, "itemType=" + Favorites.ITEM_TYPE_SHORTCUT + " AND profileId=" + userSerial, null, null, null, null);
 
                 updateStmt = db.compileStatement("UPDATE favorites SET itemType=" + Favorites.ITEM_TYPE_APPLICATION + " WHERE _id=?");
 
@@ -985,9 +984,7 @@ public class LauncherProvider extends ContentProvider {
                 }
 
                 // Get a map for folder ID to folder width
-                Cursor c = db.rawQuery("SELECT container, MAX(cellX) FROM favorites" + " WHERE container IN (SELECT _id FROM favorites WHERE itemType = ?)" + " GROUP BY container;", new String[]{
-                        Integer.toString(LauncherSettings.Favorites.ITEM_TYPE_FOLDER)
-                });
+                Cursor c = db.rawQuery("SELECT container, MAX(cellX) FROM favorites" + " WHERE container IN (SELECT _id FROM favorites WHERE itemType = ?)" + " GROUP BY container;", new String[]{Integer.toString(LauncherSettings.Favorites.ITEM_TYPE_FOLDER)});
 
                 while (c.moveToNext()) {
                     db.execSQL("UPDATE favorites SET rank=cellX+(cellY*?) WHERE " + "container=? AND cellX IS NOT NULL AND cellY IS NOT NULL;", new Object[]{c.getLong(1) + 1, c.getLong(0)});

@@ -19,7 +19,7 @@
     <favorite
         launcher:className="com.my.auxplayer.AUXPlayer"
         launcher:packageName="com.car.ui"
-        launcher:screen="1"
+        launcher:screen="0"
         launcher:x="2"
         launcher:y="0" />
 

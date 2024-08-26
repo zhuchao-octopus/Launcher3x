@@ -47,7 +47,7 @@ public class ConfigMonitor extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         Configuration config = context.getResources().getConfiguration();
         Log.d("ConfigMonitor", "Configuration22 changed, restarting launcher");
-        //        ResourceUtil.updateUi(context);
+        ///ResourceUtil.updateUi(context);
         Launcher.updateUI();
         if (mFontScale != config.fontScale || mDensity != config.densityDpi) {
             Log.d("ConfigMonitor", "Configuration changed, restarting launcher");

@@ -19,9 +19,9 @@ android {
 
     signingConfigs {
         release {
-            keyAlias 'rkpx5'
+            keyAlias 'rkpx6'
             keyPassword 'android'
-            storeFile file('rkpx5.jks')
+            storeFile file('rkpx6.jks')
             storePassword 'android'
         }
     }

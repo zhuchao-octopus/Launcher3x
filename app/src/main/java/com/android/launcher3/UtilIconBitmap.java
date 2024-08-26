@@ -59,9 +59,7 @@ final public class UtilIconBitmap {
     private static final Paint sDisabledPaint = new Paint();
     private static final Rect sOldBounds = new Rect();
     private static final Canvas sCanvas = new Canvas();
-    private static int app_bgs[] = {
-            R.drawable.app_bg_0, R.drawable.app_bg_1, R.drawable.app_bg_2, R.drawable.app_bg_3
-    };
+    private static int app_bgs[] = {R.drawable.app_bg_0, R.drawable.app_bg_1, R.drawable.app_bg_2, R.drawable.app_bg_3};
 
     private static Drawable[] app_bg_drawable = null;
 
@@ -439,8 +437,7 @@ final public class UtilIconBitmap {
         return app_bgs[mFakeBackgroundIndex];
     }
 
-    private static final int app_bgs_color[] = {
-            0x5b36b7, 0x00c654, 0x178fff, 0xff017e, 0xff8a00, 0x00aba2, 0x45c95b, 0x900c0c
+    private static final int app_bgs_color[] = {0x5b36b7, 0x00c654, 0x178fff, 0xff017e, 0xff8a00, 0x00aba2, 0x45c95b, 0x900c0c
 
     };
 

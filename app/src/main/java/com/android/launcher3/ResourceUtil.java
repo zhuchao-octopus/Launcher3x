@@ -57,7 +57,7 @@ public class ResourceUtil {
             sw = 329;
             type = RESOLUTION_1024X600;
         }
-
+        ///sw = 324;
         if (MachineConfig.VALUE_SYSTEM_UI19_KLD1.equals(value)) {
             if (type == RESOLUTION_800X480) {
                 sw = 324;
@@ -71,7 +71,7 @@ public class ResourceUtil {
                 sw = 326;
             }
         } else if (MachineConfig.VALUE_SYSTEM_UI28_7451.equals(value)) {
-            Log.d("ffck", ":" + type);
+            ///Log.d("ffck", ":" + type);
             if (type == RESOLUTION_800X480 || type == RESOLUTION_1280X480) {
                 sw = 328;
             } else {

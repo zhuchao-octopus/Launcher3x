@@ -140,6 +140,7 @@ import com.common.utils.SettingProperties;
 import com.common.utils.UtilCarKey;
 import com.my.dispaux.DispAuxActivity;
 import com.my.dispaux.Utils;
+import com.zhuchao.android.fbase.MMLog;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -362,7 +363,7 @@ public class Launcher extends BaseActivity implements LauncherExterns, View.OnCl
 
     public static Launcher mThis;
 
-    @SuppressLint("InflateParams")
+    @SuppressLint({"InflateParams", "UnclosedTrace"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         String ui = ResourceUtil.updateUi(this);
@@ -416,10 +417,10 @@ public class Launcher extends BaseActivity implements LauncherExterns, View.OnCl
         // this also ensures that any synchronous binding below doesn't re-trigger another
         // LauncherModel load.
         mPaused = false;
-
         mLauncherView = getLayoutInflater().inflate(R.layout.launcher, null);
-
         setupViews();
+        MMLog.d(TAG, "launcher3x layout tag = " + findViewById(R.id.launcher).getTag());
+
         mDeviceProfile.layout(this, false /* notifyListeners */);
         mExtractedColors = new ExtractedColors();
         loadExtractedColorsAndColorItems();
@@ -994,7 +995,7 @@ public class Launcher extends BaseActivity implements LauncherExterns, View.OnCl
             mModel.startLoader(getCurrentWorkspaceScreen());
             mOnResumeNeedsLoad = false;
         }
-        if (mBindOnResumeCallbacks.size() > 0) {
+        if (!mBindOnResumeCallbacks.isEmpty()) {
             // We might have postponed some bind calls until onResume (see waitUntilResume) --
             // execute them here
             long startTimeCallbacks = 0;
@@ -1010,7 +1011,7 @@ public class Launcher extends BaseActivity implements LauncherExterns, View.OnCl
                 Log.d(TAG, "Time spent processing callbacks in onResume: " + (System.currentTimeMillis() - startTimeCallbacks));
             }
         }
-        if (mOnResumeCallbacks.size() > 0) {
+        if (!mOnResumeCallbacks.isEmpty()) {
             for (int i = 0; i < mOnResumeCallbacks.size(); i++) {
                 mOnResumeCallbacks.get(i).run();
             }
@@ -1871,7 +1872,7 @@ public class Launcher extends BaseActivity implements LauncherExterns, View.OnCl
         }
 
         if (mRadioMusicWidgetView != null) {
-            mRadioMusicWidgetView.onDestroy();
+            RadioMusicWidgetView.onDestroy();
         }
     }
 
@@ -2166,6 +2167,7 @@ public class Launcher extends BaseActivity implements LauncherExterns, View.OnCl
     /**
      * Deletes the widget info and the widget id.
      */
+    @SuppressLint("StaticFieldLeak")
     private void deleteWidgetInfo(final LauncherAppWidgetInfo widgetInfo) {
         final LauncherAppWidgetHost appWidgetHost = getAppWidgetHost();
         if (appWidgetHost != null && !widgetInfo.isCustomWidget() && widgetInfo.isWidgetIdAllocated()) {
@@ -2614,7 +2616,6 @@ public class Launcher extends BaseActivity implements LauncherExterns, View.OnCl
         }
     }
 
-    @TargetApi(Build.VERSION_CODES.M)
     public Bundle getActivityLaunchOptions(View v) {
         if (Utilities.ATLEAST_MARSHMALLOW) {
             int left = 0, top = 0;
@@ -2909,7 +2910,7 @@ public class Launcher extends BaseActivity implements LauncherExterns, View.OnCl
      * Shows the overview button, and if {@param requestButtonFocus} is set, will force the focus
      * onto one of the overview panel buttons.
      */
-    void showOverviewMode(boolean animated, boolean requestButtonFocus) {
+    private @Nullable Runnable getRunnable(boolean requestButtonFocus) {
         Runnable postAnimRunnable = null;
         if (requestButtonFocus) {
             postAnimRunnable = new Runnable() {
@@ -2922,6 +2923,11 @@ public class Launcher extends BaseActivity implements LauncherExterns, View.OnCl
                 }
             };
         }
+        return postAnimRunnable;
+    }
+
+    void showOverviewMode(boolean animated, boolean requestButtonFocus) {
+        Runnable postAnimRunnable = getRunnable(requestButtonFocus);
         mWorkspace.setVisibility(View.VISIBLE);
         mStateTransitionAnimation.startAnimationToWorkspace(mState, mWorkspace.getState(), Workspace.State.OVERVIEW, animated, postAnimRunnable);
         setState(State.WORKSPACE);

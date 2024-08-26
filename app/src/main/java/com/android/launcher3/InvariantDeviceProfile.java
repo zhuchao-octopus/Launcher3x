@@ -23,7 +23,6 @@ import android.content.res.XmlResourceParser;
 import android.graphics.Point;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.util.Xml;
 import android.view.Display;
 import android.view.WindowManager;
@@ -31,6 +30,7 @@ import android.view.WindowManager;
 import com.android.launcher3.config.FeatureFlags;
 import com.android.launcher3.config.ProviderConfig;
 import com.android.launcher3.util.Thunk;
+import com.zhuchao.android.fbase.MMLog;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -41,7 +41,7 @@ import java.util.Collections;
 import java.util.Comparator;
 
 public class InvariantDeviceProfile {
-
+    private static final String TAG = "InvariantDeviceProfile";
     // This is a static that we use for the default icon size on a 4/5-inch phone
     private static float DEFAULT_ICON_SIZE_DP = 60;
 
@@ -122,7 +122,7 @@ public class InvariantDeviceProfile {
 
     @TargetApi(23)
     InvariantDeviceProfile(Context context) {
-        Log.d("abcd", "InvariantDeviceProfile");
+
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         Display display = wm.getDefaultDisplay();
         DisplayMetrics dm = new DisplayMetrics();
@@ -177,6 +177,7 @@ public class InvariantDeviceProfile {
         } else {
             defaultWallpaperSize = new Point(Math.max(smallSide * 2, largeSide), largeSide);
         }
+        MMLog.d(TAG, "InvariantDeviceProfile closestProfile.name="+closestProfile.name+" smallestSize="+smallestSize+" largestSize="+largestSize+" largeSide="+largeSide+" smallSide="+smallSide);
     }
 
     private String getAttributeString(AttributeSet attributeSet, String attrName) {
@@ -282,10 +283,7 @@ public class InvariantDeviceProfile {
 
     private int getLauncherIconDensity(int requiredSize) {
         // Densities typically defined by an app.
-        int[] densityBuckets = new int[]{
-                DisplayMetrics.DENSITY_LOW, DisplayMetrics.DENSITY_MEDIUM, DisplayMetrics.DENSITY_TV, DisplayMetrics.DENSITY_HIGH, DisplayMetrics.DENSITY_XHIGH, DisplayMetrics.DENSITY_XXHIGH,
-                DisplayMetrics.DENSITY_XXXHIGH
-        };
+        int[] densityBuckets = new int[]{DisplayMetrics.DENSITY_LOW, DisplayMetrics.DENSITY_MEDIUM, DisplayMetrics.DENSITY_TV, DisplayMetrics.DENSITY_HIGH, DisplayMetrics.DENSITY_XHIGH, DisplayMetrics.DENSITY_XXHIGH, DisplayMetrics.DENSITY_XXXHIGH};
 
         int density = DisplayMetrics.DENSITY_XXXHIGH;
         for (int i = densityBuckets.length - 1; i >= 0; i--) {

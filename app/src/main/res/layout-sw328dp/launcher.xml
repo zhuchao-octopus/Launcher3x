@@ -16,49 +16,52 @@
 <!-- Full screen view projects under the status bar and contains the background -->
 <com.android.launcher3.LauncherRootView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:launcher="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/launcher"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     android:focusable="false"
-    android:fitsSystemWindows="true">
+    android:tag="7">
 
     <com.android.launcher3.dragndrop.DragLayer
         android:id="@+id/drag_layer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/workspace_bg"
         android:clipChildren="false"
         android:clipToPadding="false"
-        android:importantForAccessibility="no"
-        android:layout_width="match_parent"
         android:focusable="false"
-        android:background="@drawable/workspace_bg"
-        android:layout_height="match_parent">
+        android:importantForAccessibility="no">
 
         <!-- The workspace contains 5 screens of cells -->
         <!-- DO NOT CHANGE THE ID -->
         <com.android.launcher3.Workspace
-            android:layout_marginTop="0px"
             android:id="@+id/workspace"
-            android:focusable="false"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
+            android:layout_marginTop="0px"
+            android:focusable="false"
             launcher:pageIndicator="@+id/page_indicator" />
 
         <!-- DO NOT CHANGE THE ID -->
         <include
-            layout="@layout/hotseat"
             android:id="@+id/hotseat"
+            layout="@layout/hotseat"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="right"
-            launcher:layout_ignoreInsets="true" />
+            launcher:layout_ignoreInsets="true"
+            tools:ignore="RtlHardcoded" />
 
         <include
             android:id="@+id/drop_target_bar"
             layout="@layout/drop_target_bar_vert" />
 
         <include
-            layout="@layout/overview_panel"
             android:id="@+id/overview_panel"
+            layout="@layout/overview_panel"
             android:visibility="gone" />
 
         <com.android.launcher3.pageindicators.PageIndicatorCaretLandscape
@@ -69,20 +72,20 @@
 
         <!-- A place holder view instead of the QSB in transposed layout -->
         <View
+            android:id="@+id/workspace_blocked_row"
             android:layout_width="0dp"
-            android:layout_height="10dp"
-            android:id="@+id/workspace_blocked_row" />
+            android:layout_height="10dp" />
 
         <include
-            layout="@layout/widgets_view"
             android:id="@+id/widgets_view"
+            layout="@layout/widgets_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="invisible" />
 
         <include
-            layout="@layout/all_apps"
             android:id="@+id/apps_view"
+            layout="@layout/all_apps"
             android:layout_width="0px"
             android:layout_height="match_parent"
             android:visibility="invisible" />
