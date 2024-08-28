@@ -11,17 +11,17 @@ android {
         applicationId 'com.android.launcher3'
         minSdk 24
         targetSdk 34
-        versionCode 1
-        versionName "1.0"
+        versionCode 11
+        versionName "1.1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     signingConfigs {
         release {
-            keyAlias 'rkpx6'
+            keyAlias 'rkpx5'
             keyPassword 'android'
-            storeFile file('rkpx6.jks')
+            storeFile file('rkpx5.jks')
             storePassword 'android'
         }
     }

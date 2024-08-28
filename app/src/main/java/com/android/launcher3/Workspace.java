@@ -734,7 +734,7 @@ public class Workspace extends PagedView implements DropTarget, DragSource, View
         // Inflate the cell layout, but do not add it automatically so that we can get the newly
         // created CellLayout.
         CellLayout newScreen;
-        if (screenId == 1) {
+        if (screenId == 0) {
             newScreen = (CellLayout) mLauncher.getLayoutInflater().inflate(R.layout.workspace_screen_ex, this, false /* attachToRoot */);
         } else {
             newScreen = (CellLayout) mLauncher.getLayoutInflater().inflate(R.layout.workspace_screen, this, false /* attachToRoot */);
@@ -1112,7 +1112,7 @@ public class Workspace extends PagedView implements DropTarget, DragSource, View
      * See {@link #addInScreen}.
      */
     public void addInScreen(View child, ItemInfo info) {
-        Log.d("abb", "1111111");
+        ///Log.d("abb", "1111111");
         addInScreen(child, info.container, info.screenId, info.cellX, info.cellY, info.spanX, info.spanY);
     }
 

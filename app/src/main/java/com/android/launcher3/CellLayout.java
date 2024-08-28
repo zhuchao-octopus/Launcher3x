@@ -921,8 +921,7 @@ public class CellLayout extends ViewGroup implements BubbleTextShadowHandler {
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
-
-        //    	 Log.d("onLayout", ":"+l+":"+t+":"+r+":"+b+":");
+        // Log.d("onLayout", ":"+l+":"+t+":"+r+":"+b+":");
 
         if (getId() == R.id.celllayout_screen2) {
             int count = getChildCount();
@@ -976,7 +975,6 @@ public class CellLayout extends ViewGroup implements BubbleTextShadowHandler {
         mBackground.setBounds(left - mTempRect.left, top - mTempRect.top, right + mTempRect.right, bottom + mTempRect.bottom);
 
         if (getId() == R.id.celllayout_screen2) {
-
             RadioMusicWidgetView.getInstance(mLauncher);
         }
     }

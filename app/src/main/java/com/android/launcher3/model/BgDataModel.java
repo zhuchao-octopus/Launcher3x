@@ -15,6 +15,7 @@
  */
 package com.android.launcher3.model;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.UserHandle;
 import android.text.TextUtils;
@@ -147,13 +148,14 @@ public class BgDataModel {
         }
     }
 
+    @SuppressLint("UseValueOf")
     private synchronized void dumpProto(String prefix, FileDescriptor fd, PrintWriter writer, String[] args) {
 
         // Add top parent nodes. (L1)
         DumpTargetWrapper hotseat = new DumpTargetWrapper(ContainerType.HOTSEAT.getNumber(), 0);
         LongArrayMap<DumpTargetWrapper> workspaces = new LongArrayMap<>();
         for (int i = 0; i < workspaceScreens.size(); i++) {
-            workspaces.put(new Long(workspaceScreens.get(i)), new DumpTargetWrapper(ContainerType.WORKSPACE.getNumber(), i));
+            workspaces.put(workspaceScreens.get(i), new DumpTargetWrapper(ContainerType.WORKSPACE.getNumber(), i));
         }
         DumpTargetWrapper dtw;
         // Add non leaf / non top nodes (L2)

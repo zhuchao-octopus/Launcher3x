@@ -17,52 +17,6 @@
 <favorites xmlns:launcher="http://schemas.android.com/apk/res-auto">
 
     <favorite
-        launcher:className="com.my.auxplayer.AUXPlayer"
-        launcher:packageName="com.car.ui"
-        launcher:screen="0"
-        launcher:x="2"
-        launcher:y="0" />
-
-    <favorite
-        launcher:className="com.eqset.EQActivity"
-        launcher:packageName="com.eqset"
-        launcher:screen="1"
-        launcher:x="1"
-        launcher:y="1" />
-    <!--     <favorite -->
-    <!--         launcher:className="com.android.gallery3d.app.GalleryActivity" -->
-    <!--         launcher:packageName="com.android.gallery3d" -->
-    <!--         launcher:screen="1" -->
-    <!--         launcher:x="2" -->
-    <!--         launcher:y="0" /> -->
-    <favorite
-        launcher:className="com.my.btmusic.BTMusicActivity"
-        launcher:packageName="com.car.ui"
-        launcher:screen="1"
-        launcher:x="4"
-        launcher:y="0" />
-
-    <favorite
-        launcher:className="com.my.video.VideoActivity"
-        launcher:packageName="com.car.ui"
-        launcher:screen="1"
-        launcher:x="0"
-        launcher:y="0" />
-
-    <favorite
-        launcher:className="com.my.bt.ATBluetoothActivity"
-        launcher:packageName="com.my.bt"
-        launcher:screen="0"
-        launcher:x="3"
-        launcher:y="1" />
-    <favorite
-        launcher:className="com.android.settings.Settings"
-        launcher:packageName="com.android.settings"
-        launcher:screen="0"
-        launcher:x="4"
-        launcher:y="1" />
-
-    <favorite
         launcher:className="com.my.navi.NaviEmptyActivity"
         launcher:packageName="com.car.ui"
         launcher:screen="0"
@@ -75,17 +29,22 @@
         launcher:x="1"
         launcher:y="1" />
     <favorite
-        launcher:className="com.my.audio.MusicActivity"
-        launcher:packageName="com.car.ui"
-        launcher:screen="1"
-        launcher:x="3"
-        launcher:y="0" />
-
-    <favorite
         launcher:className="com.carletter.car.ui.CarletterActivity"
         launcher:packageName="com.carletter.car"
         launcher:screen="0"
         launcher:x="2"
+        launcher:y="1" />
+    <favorite
+        launcher:className="com.my.bt.ATBluetoothActivity"
+        launcher:packageName="com.my.bt"
+        launcher:screen="0"
+        launcher:x="3"
+        launcher:y="1" />
+    <favorite
+        launcher:className="com.android.settings.Settings"
+        launcher:packageName="com.android.settings"
+        launcher:screen="0"
+        launcher:x="4"
         launcher:y="1" />
 
 </favorites>

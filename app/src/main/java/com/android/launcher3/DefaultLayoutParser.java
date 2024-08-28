@@ -82,7 +82,7 @@ public class DefaultLayoutParser extends AutoInstallsLayout {
         out[0] = LauncherSettings.Favorites.CONTAINER_DESKTOP;
         String strContainer = getAttributeValue(parser, ATTR_CONTAINER);
         if (strContainer != null) {
-            out[0] = Long.valueOf(strContainer);
+            out[0] = Long.parseLong(strContainer);
         }
         out[1] = Long.parseLong(getAttributeValue(parser, ATTR_SCREEN));
     }

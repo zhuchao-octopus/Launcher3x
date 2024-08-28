@@ -606,8 +606,19 @@ public class AutoInstallsLayout {
      * before falling back to anonymous attribute.
      */
     protected static String getAttributeValue(XmlResourceParser parser, String attribute) {
-        String value = parser.getAttributeValue("http://schemas.android.com/apk/res-auto/com.android.launcher3", attribute);
+        ///String value = parser.getAttributeValue("http://schemas.android.com/apk/res-auto/com.android.launcher3", attribute);
+        ///if (value == null) {
+        ///    value = parser.getAttributeValue(null, attribute);
+        ///}
+        ///return value;
+        // First try to get the value from the 'http://schemas.android.com/apk/res-auto' namespace
+        String value = parser.getAttributeValue("http://schemas.android.com/apk/res-auto", attribute);
         if (value == null) {
+            // If not found, try with 'http://schemas.android.com/apk/res-auto/com.android.launcher3'
+            value = parser.getAttributeValue("http://schemas.android.com/apk/res-auto/com.android.launcher3", attribute);
+        }
+        if (value == null) {
+            // If still not found, try without any namespace (null)
             value = parser.getAttributeValue(null, attribute);
         }
         return value;
@@ -618,10 +629,24 @@ public class AutoInstallsLayout {
      * first before falling back to anonymous attribute.
      */
     protected static int getAttributeResourceValue(XmlResourceParser parser, String attribute, int defaultValue) {
-        int value = parser.getAttributeResourceValue("http://schemas.android.com/apk/res-auto/com.android.launcher3", attribute, defaultValue);
+        ///int value = parser.getAttributeResourceValue("http://schemas.android.com/apk/res-auto/com.android.launcher3", attribute, defaultValue);
+        ///if (value == defaultValue) {
+        ///    value = parser.getAttributeResourceValue(null, attribute, defaultValue);
+        ///}
+        ///return value;
+        // First try to get the resource value from the 'http://schemas.android.com/apk/res-auto' namespace
+        int value = parser.getAttributeResourceValue("http://schemas.android.com/apk/res-auto", attribute, defaultValue);
+
         if (value == defaultValue) {
+            // If not found, try with 'http://schemas.android.com/apk/res-auto/com.android.launcher3'
+            value = parser.getAttributeResourceValue("http://schemas.android.com/apk/res-auto/com.android.launcher3", attribute, defaultValue);
+        }
+
+        if (value == defaultValue) {
+            // If still not found, try without any namespace (null)
             value = parser.getAttributeResourceValue(null, attribute, defaultValue);
         }
+
         return value;
     }
 

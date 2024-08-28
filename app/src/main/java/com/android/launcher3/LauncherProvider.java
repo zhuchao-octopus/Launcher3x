@@ -48,6 +48,8 @@ import android.os.UserManager;
 import android.text.TextUtils;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import com.android.launcher3.AutoInstallsLayout.LayoutParserCallback;
 import com.android.launcher3.LauncherSettings.Favorites;
 import com.android.launcher3.LauncherSettings.WorkspaceScreens;
@@ -481,7 +483,6 @@ public class LauncherProvider extends ContentProvider {
         SharedPreferences sp = Utilities.getPrefs(getContext());
 
         if (sp.getBoolean(EMPTY_DATABASE_CREATED, false)) {
-            MMLog.d(TAG, "loading default workspace");
 
             AppWidgetHost widgetHost = mOpenHelper.newLauncherWidgetHost();
             AutoInstallsLayout loader = createWorkspaceLoaderFromAppRestriction(widgetHost);
@@ -508,7 +509,10 @@ public class LauncherProvider extends ContentProvider {
             // previous versions of launcher.
             mOpenHelper.createEmptyDB(mOpenHelper.getWritableDatabase());
             // Populate favorites table with initial favorites
-            if ((mOpenHelper.loadFavorites(mOpenHelper.getWritableDatabase(), loader) <= 0) && usingExternallyProvidedLayout) {
+            MMLog.d(TAG, "load default favorites if necessary from "+loader.mSourceRes.getResourceName(loader.mLayoutId));
+            int loadCount = mOpenHelper.loadFavorites(mOpenHelper.getWritableDatabase(), loader);
+
+            if ((loadCount <= 0) && (usingExternallyProvidedLayout)) {
                 // Unable to load external layout. Cleanup and load the internal layout.
                 mOpenHelper.createEmptyDB(mOpenHelper.getWritableDatabase());
                 mOpenHelper.loadFavorites(mOpenHelper.getWritableDatabase(), getDefaultLayoutParser(widgetHost));
@@ -1164,7 +1168,7 @@ public class LauncherProvider extends ContentProvider {
         private LauncherProviderChangeListener mListener;
 
         @Override
-        public boolean handleMessage(Message msg) {
+        public boolean handleMessage(@NonNull Message msg) {
             if (mListener != null) {
                 switch (msg.what) {
                     case MSG_LAUNCHER_PROVIDER_CHANGED:

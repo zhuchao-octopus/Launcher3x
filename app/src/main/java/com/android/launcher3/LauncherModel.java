@@ -16,6 +16,7 @@
 
 package com.android.launcher3;
 
+import android.annotation.SuppressLint;
 import android.appwidget.AppWidgetProviderInfo;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -625,7 +626,7 @@ public class LauncherModel extends BroadcastReceiver implements LauncherAppsComp
      */
     private class LoaderTask implements Runnable {
         private Context mContext;
-        private int mPageToBindFirst;
+        private final int mPageToBindFirst;
 
         @Thunk
         boolean mIsLoadingAndBindingWorkspace;
@@ -729,7 +730,6 @@ public class LauncherModel extends BroadcastReceiver implements LauncherAppsComp
                 synchronized (this) {
                     for (LauncherActivityInfo app : apps) {
 
-
                         //						if (com.common.util.MachineConfig.VALUE_SYSTEM_UI28_7451.equals(ResourceUtil.mSystemUI)){
                         //							if (app.getComponentName().getClassName().equals("com.my.frontcamera.FrontCameraActivity")){
                         //								pendingInstallShortcutInfo.label =
@@ -739,7 +739,6 @@ public class LauncherModel extends BroadcastReceiver implements LauncherAppsComp
                         //							}
                         //						}
 
-
                         if (!AppConfig.isHidePackage(app.getComponentName().getClassName()) && !"com.android.inputmethod.latin.setup.SetupActivity".equals(app.getComponentName().getClassName()) && !"com.google.android.apps.inputmethod.libs.framework.core.LauncherActivity".equals(app.getComponentName().getClassName())) {
 
                             PendingInstallShortcutInfo pendingInstallShortcutInfo = new PendingInstallShortcutInfo(app, context);
@@ -747,7 +746,6 @@ public class LauncherModel extends BroadcastReceiver implements LauncherAppsComp
                             //									mContext, app.getComponentName(), pendingInstallShortcutInfo.label);
                             added.add(pendingInstallShortcutInfo);
                             Log.d("abcd", "loadAllApplications::::" + app.getComponentName().getClassName());
-
                         } else {
                             Log.d("abc", "hide::::" + app.getComponentName().getClassName());
                         }
@@ -759,10 +757,7 @@ public class LauncherModel extends BroadcastReceiver implements LauncherAppsComp
             }
         }
 
-
         public void run() {
-
-
             synchronized (mLock) {
                 if (mStopped) {
                     return;
@@ -775,9 +770,7 @@ public class LauncherModel extends BroadcastReceiver implements LauncherAppsComp
                 // Set to false in bindWorkspace()
                 mIsLoadingAndBindingWorkspace = true;
                 loadWorkspace();
-
-                //                loadAllApplications(); //ww, merge to loadAllApps()
-
+                //loadAllApplications(); //ww, merge to loadAllApps()
                 verifyNotStopped();
                 if (DEBUG_LOADERS) Log.d(TAG, "step 1.2: bind workspace workspace:" + mPageToBindFirst);
                 bindWorkspace(mPageToBindFirst);
@@ -878,6 +871,7 @@ public class LauncherModel extends BroadcastReceiver implements LauncherAppsComp
             }
         }
 
+        @SuppressLint("UnclosedTrace")
         private void loadWorkspace() {
             if (LauncherAppState.PROFILE_STARTUP) {
                 Trace.beginSection("Loading Workspace");
@@ -910,7 +904,7 @@ public class LauncherModel extends BroadcastReceiver implements LauncherAppsComp
                 LauncherSettings.Settings.call(contentResolver, LauncherSettings.Settings.METHOD_CREATE_EMPTY_DB);
             }
 
-            MMLog.d(TAG, "loadWorkspace() loading default favorites:" + clearDb);
+            MMLog.d(TAG, "loadWorkspace() default favorites workspaceScreens.size=" + sBgDataModel.workspaceScreens.size());
             LauncherSettings.Settings.call(contentResolver, LauncherSettings.Settings.METHOD_LOAD_DEFAULT_FAVORITES);
 
             synchronized (sBgDataModel) {
@@ -1442,7 +1436,6 @@ public class LauncherModel extends BroadcastReceiver implements LauncherAppsComp
         }
 
         private void bindWorkspaceItems(final Callbacks oldCallbacks, final ArrayList<ItemInfo> workspaceItems, final ArrayList<LauncherAppWidgetInfo> appWidgets, final Executor executor) {
-
             // Bind the workspace items
             int N = workspaceItems.size();
             for (int i = 0; i < N; i += ITEMS_CHUNK) {
@@ -1735,8 +1728,8 @@ public class LauncherModel extends BroadcastReceiver implements LauncherAppsComp
                     if (!AppConfig.isHidePackage(app.getComponentName().getClassName()) && !"com.android.inputmethod.latin.setup.SetupActivity".equals(app.getComponentName().getClassName()) && !"com.google.android.apps.inputmethod.libs.framework.core.LauncherActivity".equals(app.getComponentName().getClassName())) {
 
                         PendingInstallShortcutInfo pendingInstallShortcutInfo = new PendingInstallShortcutInfo(app, mContext);
-                        //						pendingInstallShortcutInfo.label = FixScreenShortcut.getAppAlternativeTitle(
-                        //								mContext, app.getComponentName(), pendingInstallShortcutInfo.label);
+                        //	pendingInstallShortcutInfo.label = FixScreenShortcut.getAppAlternativeTitle(
+                        //	mContext, app.getComponentName(), pendingInstallShortcutInfo.label);
                         added.add(pendingInstallShortcutInfo);
                         Log.d("abcd", "loadAllApplications::::" + app.getComponentName().getClassName());
                     } else {

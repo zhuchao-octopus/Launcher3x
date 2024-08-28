@@ -92,7 +92,6 @@ public class AddWorkspaceItemsTask extends ExtendedModelTask {
                     throw new RuntimeException("Unexpected info type");
                 }
 
-
                 if (itemInfo.screenId != -1) {
                     boolean isAavilable = IsPosAvailable(app, dataModel, (int) itemInfo.screenId, itemInfo.cellX, itemInfo.cellY, item.spanX, item.spanY);
 

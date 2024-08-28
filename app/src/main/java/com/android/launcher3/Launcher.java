@@ -362,6 +362,7 @@ public class Launcher extends BaseActivity implements LauncherExterns, View.OnCl
     }
 
     public static Launcher mThis;
+    RadioMusicWidgetView mRadioMusicWidgetView;
 
     @SuppressLint({"InflateParams", "UnclosedTrace"})
     @Override
@@ -489,7 +490,6 @@ public class Launcher extends BaseActivity implements LauncherExterns, View.OnCl
         }
     }
 
-    RadioMusicWidgetView mRadioMusicWidgetView;
 
     @Override
     public View findViewById(int id) {
@@ -3251,7 +3251,7 @@ public class Launcher extends BaseActivity implements LauncherExterns, View.OnCl
         if (FeatureFlags.QSB_ON_FIRST_SCREEN && orderedScreenIds.indexOf(Workspace.FIRST_SCREEN_ID) != 0) {
             orderedScreenIds.remove(Workspace.FIRST_SCREEN_ID);
             orderedScreenIds.add(0, Workspace.FIRST_SCREEN_ID);
-            mModel.updateWorkspaceScreenOrder(this, orderedScreenIds);
+            LauncherModel.updateWorkspaceScreenOrder(this, orderedScreenIds);
         } else if (!FeatureFlags.QSB_ON_FIRST_SCREEN && orderedScreenIds.isEmpty()) {
             // If there are no screens, we need to have an empty screen
             mWorkspace.addExtraEmptyScreen();
@@ -3339,7 +3339,7 @@ public class Launcher extends BaseActivity implements LauncherExterns, View.OnCl
         for (int i = start; i < end; i++) {
             final ItemInfo item = items.get(i);
 
-            Log.d("dddd", "1111111:" + item);
+            ///MMLog.d(TAG, "1111111:" + item);
             // Short circuit if we are loading dock items for a configuration which has no dock
             if (item.container == LauncherSettings.Favorites.CONTAINER_HOTSEAT && mHotseat == null) {
                 continue;
