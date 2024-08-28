@@ -728,9 +728,7 @@ public class Workspace extends PagedView implements DropTarget, DragSource, View
         if (mWorkspaceScreens.containsKey(screenId)) {
             throw new RuntimeException("Screen id " + screenId + " already exists!");
         }
-
         //MMLog.d(TAG, "insertNewWorkspaceScreen:"+screenId);
-
         // Inflate the cell layout, but do not add it automatically so that we can get the newly
         // created CellLayout.
         CellLayout newScreen;

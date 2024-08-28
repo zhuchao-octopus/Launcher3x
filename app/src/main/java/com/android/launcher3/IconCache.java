@@ -72,17 +72,12 @@ import java.util.Stack;
  * Cache of application icons.  Icons can be made from any thread.
  */
 public class IconCache {
-
     private static final String TAG = "Launcher.IconCache";
-
     private static final int INITIAL_ICON_CACHE_CAPACITY = 50;
-
     // Empty class name is used for storing package default entry.
     private static final String EMPTY_CLASS_NAME = ".";
-
     private static final boolean DEBUG = false;
     private static final boolean DEBUG_IGNORE_CACHE = false;
-
     private static final int LOW_RES_SCALE_FACTOR = 5;
 
     @Thunk
@@ -122,8 +117,8 @@ public class IconCache {
     private final int mPackageBgColor;
     private final BitmapFactory.Options mLowResOptions;
 
-    private Canvas mLowResCanvas;
-    private Paint mLowResPaint;
+    private final Canvas mLowResCanvas;
+    private final Paint mLowResPaint;
 
     public IconCache(Context context, InvariantDeviceProfile inv) {
         mContext = context;
@@ -295,9 +290,7 @@ public class IconCache {
 
         Cursor c = null;
         try {
-            c = mIconDb.query(new String[]{
-                    IconDB.COLUMN_ROWID, IconDB.COLUMN_COMPONENT, IconDB.COLUMN_LAST_UPDATED, IconDB.COLUMN_VERSION, IconDB.COLUMN_SYSTEM_STATE
-            }, IconDB.COLUMN_USER + " = ? ", new String[]{Long.toString(userSerial)});
+            c = mIconDb.query(new String[]{IconDB.COLUMN_ROWID, IconDB.COLUMN_COMPONENT, IconDB.COLUMN_LAST_UPDATED, IconDB.COLUMN_VERSION, IconDB.COLUMN_SYSTEM_STATE}, IconDB.COLUMN_USER + " = ? ", new String[]{Long.toString(userSerial)});
 
             final int indexComponent = c.getColumnIndex(IconDB.COLUMN_COMPONENT);
             final int indexLastUpdate = c.getColumnIndex(IconDB.COLUMN_LAST_UPDATED);
@@ -375,30 +368,29 @@ public class IconCache {
         if (entry == null) {
             entry = new CacheEntry();
 
-            //            entry.icon = LauncherIcons.createBadgedIconBitmap(getFullResIcon(app), app.getUser(),
-            //                    mContext,  app.getApplicationInfo().targetSdkVersion);
+            // entry.icon = LauncherIcons.createBadgedIconBitmap(getFullResIcon(app), app.getUser(),
+            // mContext,  app.getApplicationInfo().targetSdkVersion);
 
             Drawable d = null;// = getFullResIcon(app);
             boolean isNeedBg = false;
             boolean isOurApk = false;
-            //			if (UtilIconBitmap.mSystemUI != null) {
+            //if (UtilIconBitmap.mSystemUI != null) {
 
             d = UtilIconBitmap.getIconBackground(app.getComponentName().getPackageName(), app.getComponentName().getClassName(), mContext);
             if (d == null) {
-                //					if (MachineConfig.VALUE_SYSTEM_UI19_KLD1.equals(ResourceUtil.mSystemUI)) {
-                //					} else {
+                //if (MachineConfig.VALUE_SYSTEM_UI19_KLD1.equals(ResourceUtil.mSystemUI)) {
+                //} else {
                 isNeedBg = true;
-                //					}
+                //}
             } else {
                 isOurApk = true;
             }
-            //			} else {
-            //				isNeedBg = !AppConfig.isNoNeedLauncherBackground(
-            //						componentName.getPackageName(), componentName.getClassName());
-            //			}
-
-            //				Log.d("cff", d+"11111111::"+isNeedBg);
-            //				Log.d("aad", "x0000:"+app.getComponentName().getClassName()+":"+isNeedBg);
+            //} else {
+            //isNeedBg = !AppConfig.isNoNeedLauncherBackground(
+            //componentName.getPackageName(), componentName.getClassName());
+            //}
+            //Log.d("cff", d+"11111111::"+isNeedBg);
+            //Log.d("aad", "x0000:"+app.getComponentName().getClassName()+":"+isNeedBg);
             if (d == null) {
                 d = getFullResIcon(app);
             }
@@ -558,33 +550,29 @@ public class IconCache {
                 info = infoProvider.get();
                 providerFetchedOnce = true;
 
-                if (info != null) {//                    entry.icon = LauncherIcons.createBadgedIconBitmap(
-                    //                            getFullResIcon(info), info.getUser(), mContext,
-                    //                            infoProvider.get().getApplicationInfo().targetSdkVersion);
-
+                if (info != null) {
+                    //entry.icon = LauncherIcons.createBadgedIconBitmap(
+                    //getFullResIcon(info), info.getUser(), mContext,
+                    //infoProvider.get().getApplicationInfo().targetSdkVersion);
                     Drawable d = getFullResIcon(info);
                     boolean isNeedBg = false;
                     boolean isOurApk = false;
-                    //    				if (UtilIconBitmap.mSystemUI != null) {
-
-
+                    //if (UtilIconBitmap.mSystemUI != null) {
                     d = UtilIconBitmap.getIconBackground(componentName.getPackageName(), componentName.getClassName(), mContext);
                     if (d == null) {
-                        //    						if (MachineConfig.VALUE_SYSTEM_UI19_KLD1.equals(ResourceUtil.mSystemUI)) {
-                        //
-                        //    						} else {
+                        //if (MachineConfig.VALUE_SYSTEM_UI19_KLD1.equals(ResourceUtil.mSystemUI)) {
+                        //} else {
                         isNeedBg = true;
-                        //    						}
+                        //}
                     } else {
                         isOurApk = true;
                     }
-
-                    //    				} else {
-                    //    					isNeedBg = !AppConfig.isNoNeedLauncherBackground(
-                    //    							componentName.getPackageName(), componentName.getClassName());
-                    //    				}
-                    //                    Log.d("cffd", d+"11111111::"+isNeedBg);
-                    //                	Log.d("aad", "0000:"+componentName.getClassName()+":"+isNeedBg);
+                    //} else {
+                    //isNeedBg = !AppConfig.isNoNeedLauncherBackground(
+                    //componentName.getPackageName(), componentName.getClassName());
+                    //}
+                    //Log.d("cffd", d+"11111111::"+isNeedBg);
+                    //Log.d("aad", "0000:"+componentName.getClassName()+":"+isNeedBg);
                     if (d == null) {
                         d = getFullResIcon(info);
                     }
@@ -598,17 +586,16 @@ public class IconCache {
                     } else {
                         entry.icon = UtilIconBitmap.createIconBitmap(d, mContext, isNeedBg);
                     }
-                    if (DEBUG) Log.d(TAG, "icon2 [" + entry.icon.getWidth() + "," + entry.icon.getHeight() + "]" + componentName.getPackageName() + "," + componentName.getClassName());
+                    if (DEBUG)
+                        Log.d(TAG, "icon2 [" + entry.icon.getWidth() + "," + entry.icon.getHeight() + "]" + componentName.getPackageName() + "," + componentName.getClassName());
 
                 } else {
                     if (usePackageIcon) {
                         CacheEntry packageEntry = getEntryForPackageLocked(componentName.getPackageName(), user, false);
-                        if (packageEntry != null) {
-                            if (DEBUG) Log.d(TAG, "using package default icon for " + componentName.toShortString());
-                            entry.icon = packageEntry.icon;
-                            entry.title = packageEntry.title;
-                            entry.contentDescription = packageEntry.contentDescription;
-                        }
+                        if (DEBUG) Log.d(TAG, "using package default icon for " + componentName.toShortString());
+                        entry.icon = packageEntry.icon;
+                        entry.title = packageEntry.title;
+                        entry.contentDescription = packageEntry.contentDescription;
                     }
                     if (entry.icon == null) {
                         if (DEBUG) Log.d(TAG, "using default icon for " + componentName.toShortString());
@@ -632,8 +619,7 @@ public class IconCache {
         if (com.common.utils.MachineConfig.VALUE_SYSTEM_UI28_7451.equals(ResourceUtil.mSystemUI)) {
             if (componentName.getClassName().equals("com.my.frontcamera.FrontCameraActivity")) {
                 entry.title = mContext.getResources().getString(R.string.f_camera_alternative_7451);
-
-                Log.d("ffdd", "loadAllApplications::::" + entry.title);
+                ///Log.d("ffdd", "loadAllApplications::::" + entry.title);
             }
         } else {
             if (Launcher.mFcameraType == 1) {
@@ -648,24 +634,17 @@ public class IconCache {
             //for 619 custom
             String locale = Locale.getDefault().getLanguage();
             //Log.d("abcde", "google map 22locale:"+locale);
-            if (locale != null) {
-                if (locale.equals("es")) {
-                    entry.title = "Mapas";
-                }
-
+            if (locale.equals("es")) {
+                entry.title = "Mapas";
             }
-
-
         } else if ("com.estrongs.android.pop.view.FileExplorerActivity".equals(componentName.getClassName())) {
             //for 619 custom
             String locale = Locale.getDefault().getLanguage();
             //Log.d("abcde", "google map locale:"+locale);
-            if (locale != null) {
-                if (locale.equals("es")) {
-                    entry.title = "Explorador de archivos";
-                }
-
+            if (locale.equals("es")) {
+                entry.title = "Explorador de archivos";
             }
+
         } else if ("com.eqset".equals(componentName.getPackageName())) {
             // Log.d("abcde", "eqset111 map locale:"+Utilities.mIsDSP);
             if (Utilities.mIsDSP) {
@@ -673,11 +652,10 @@ public class IconCache {
             }
         }
 
-        if ("car.carletter.car".equals(componentName.getPackageName())) {
-            Log.d("abcde", "phone link");
-            entry.title = "phonelink";
-        }
-
+        ///if ("car.carletter.car".equals(componentName.getPackageName())) {
+        ///Log.d("abcde", "phone link");
+        ///entry.title = "phonelink";
+        ///}
         //Log.d("abcde", "eeeeee:"+pkgName);
         return entry;
     }
@@ -772,11 +750,7 @@ public class IconCache {
     private boolean getEntryFromDB(ComponentKey cacheKey, CacheEntry entry, boolean lowRes) {
         Cursor c = null;
         try {
-            c = mIconDb.query(new String[]{
-                    lowRes ? IconDB.COLUMN_ICON_LOW_RES : IconDB.COLUMN_ICON, IconDB.COLUMN_LABEL
-            }, IconDB.COLUMN_COMPONENT + " = ? AND " + IconDB.COLUMN_USER + " = ?", new String[]{
-                    cacheKey.componentName.flattenToString(), Long.toString(mUserManager.getSerialNumberForUser(cacheKey.user))
-            });
+            c = mIconDb.query(new String[]{lowRes ? IconDB.COLUMN_ICON_LOW_RES : IconDB.COLUMN_ICON, IconDB.COLUMN_LABEL}, IconDB.COLUMN_COMPONENT + " = ? AND " + IconDB.COLUMN_USER + " = ?", new String[]{cacheKey.componentName.flattenToString(), Long.toString(mUserManager.getSerialNumberForUser(cacheKey.user))});
             if (c.moveToNext()) {
                 entry.icon = loadIconNoResize(c, 0, lowRes ? mLowResOptions : null);
                 entry.isLowResIcon = lowRes;

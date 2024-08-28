@@ -3351,8 +3351,7 @@ public class Launcher extends BaseActivity implements LauncherExterns, View.OnCl
                 case LauncherSettings.Favorites.ITEM_TYPE_SHORTCUT:
                 case LauncherSettings.Favorites.ITEM_TYPE_DEEP_SHORTCUT: {
                     ShortcutInfo info = (ShortcutInfo) item;
-                    if (info.title.equals("T-Link")) info.title = "phonelink";
-
+                    ///if (info.title.equals("T-Link")) info.title = "phonelink";
                     view = createShortcut(info);
                     break;
                 }
